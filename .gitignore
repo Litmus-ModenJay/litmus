@@ -1,0 +1,33 @@
+### Django ###
+*.pyc
+*.log
+__pycache__
+db.sqlite3
+/static
+.DS_Store
+local_settings.py
+media
+
+### Environments ###
+env/
+.env/
+.env-litmus/
+
+### VScode ###
+.vscode/
+
+### Distribution / Packaging ###
+.Python
+build/ 
+evelop-eggs/
+dist/ downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg *.egg

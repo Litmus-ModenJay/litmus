@@ -1,0 +1,122 @@
+{% extends "home/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<br>
+<div class="container-fluid text-center">
+    <div class="row content">
+        <!-- Title -->
+        <div class="col-sm-8 text-left"> 
+            <h3>Color Search</h3>
+            <p></p>
+            <br>
+        </div>
+        <!-- Setting of Link Button -->
+        <div class="col-sm-2" style="text-align:right">
+            <p></p>        
+        </div>
+        <div class="col-sm-2" style="text-align:right">
+            <p><a class="btn btn-info btn-sm" style="background-color:royalblue; width:110pt" 
+                href="{% url 'library:colorList' %}">Back to Color Library</a></p>
+            <p></p>
+        </div>
+    </div>
+    <div class="row content">
+        <!-- Search -->
+        <br>
+        <form class="form-inline" action="{% url 'library:colorSearch' %}" id="color_search" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <input type="text" name="search" class="form-control" placeholder="color name or code">
+                </div>
+                <div class="col-sm-2"><button type="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button></div>
+            </div>
+        </form>
+        <br><br>
+    </div>
+</div>
+<hr>
+<div class="container">
+    {% if total.identicals %}
+    <div class="row content">
+        <div class="col-sm-4 text-left"> 
+            <h6>Colors Identical to "{{word.upper}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.identicals}}</span></h6>
+        </div>
+        <div class="col-sm-6 text-left"> 
+            <table class="table" style="font-size:small;">
+                <tr>
+                    <th>Color Name</th>
+                    <th>Color</th>
+                    <th>Hexa</th>
+                </tr>        
+                {% for item in colors.identicals %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
+                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
+                    <td>{{item.hexa.upper}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+    {% if total.neighbors %}
+    <div class="row content">
+        <div class="col-sm-4 text-left"> 
+            <h6>Neighbor Colors of "{{word.upper}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.neighbors}}</span></h6>
+        </div>
+        <div class="col-sm-6 text-left"> 
+            <table class="table" style="font-size:small;">
+                <tr>
+                    <th>Color Name</th>
+                    <th>Color</th>
+                    <th>Hexa</th>
+                    <th>Distance</th>
+                </tr>        
+                {% for item in colors.neighbors %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
+                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
+                    <td>{{item.hexa.upper}}</td>
+                    <td>{{item.distance|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            </div>
+        </div>
+    <hr>
+    {% endif %}
+    {% if total.substrings %}
+    <div class="row content">
+        <div class="col-sm-4 text-left"> 
+            <h6>Colors containg "{{word.capitalize}}"  <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.substrings}}</span></h6>
+        </div>
+        <div class="col-sm-6 text-left"> 
+            <table class="table" style="font-size:small;">
+                <tr>
+                    <th>Color Name</th>
+                    <th>Color</th>
+                    <th>Hexa</th>
+                </tr>        
+                {% for item in colors.substrings %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
+                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
+                    <td>{{item.hexa.upper}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+</div>
+
+{% endblock %}

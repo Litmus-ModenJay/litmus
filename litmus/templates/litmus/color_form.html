@@ -1,0 +1,26 @@
+{% extends "library/color_base.html" %}
+
+{% block library %}
+
+<div class="container">
+    <hr>
+    <p>{{ message }}</p>
+    <h2>Color List</h1>
+    <table class="table">
+        <tr>
+            <th>Color Name</th>
+            <th>RGB Hexa</th>
+        </tr>
+    {% for color in colors %}
+        <tr>
+            <td>{{ color.name }}</td>
+            <td>{{ color.hexa }}</td>
+        </tr> 
+    {% endfor %}
+    </table>
+    <hr>
+    <p>Post : {{post}} </p>
+    
+</div> <!-- /container -->
+
+{% endblock %}

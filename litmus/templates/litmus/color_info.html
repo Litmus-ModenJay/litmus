@@ -1,0 +1,197 @@
+{% extends "home/base.html" %}
+
+{% block content %}
+<br>
+<div class="container-fluid text-center">
+    <!-- Message for New Color Registration --> 
+    {% if message %}
+    <div id="collapseMessage" class="collapse show" aria-labelledby="headingMessage" > 
+        <div class="alert alert-success" role="alert">
+            <p style="font-weight:bold">New color name "{{litmus.name.capitalize}}" [#{{litmus.hexa}}] was registered to library.</p>
+            <button type="button" class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseMessage">Close</button>
+        </div>
+        <br>  
+    </div>
+    {% endif %}
+    <!-- Action for Collapse Button Delete -->
+    <div id="collapseDelete" class="collapse collapsed" aria-labelledby="headingDelete" >
+        <div class="alert alert-warning" role="alert">
+            <p style="font-weight:bold">The color name "{{litmus.name.capitalize}}" will be deleted from the library.</p>
+            <a class="btn btn-primary collapsed" 
+                href="{% url 'library:colorDelete' pk=litmus.pk %}" >OK</a>
+            <button class="btn btn-secondary collapsed" data-toggle="collapse" data-target="#collapseDelete">Close</button>
+        </div>
+    </div>
+    
+    <div class="row content">
+        <!-- Title -->
+        <div class="col-sm-8 text-left"> 
+            <h3>Color Information</h3>
+        </div>   
+        <!-- Setting of Link Button -->
+        <div class="col-sm-2" style="text-align:right">
+            <p><a class="btn btn-info btn-sm border-light collapsed" style="color:white; background-color:firebrick; width:110pt"
+                data-toggle="collapse" data-target="#collapseDelete" aria-expanded="false" aria-controls="#collapseDelete">
+                Delete This Color</a></p>        
+        </div>
+        <div class="col-sm-2" style="text-align:right">
+            <p><a class="btn btn-info btn-sm" style="background-color:royalblue; width:110pt" 
+                href="{% url 'library:colorList' %}">Back to Color Library</a></p>
+            <p></p>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row content">
+        <div class="col-sm-4 "> 
+            <div class="card" style="width: 16rem; height: 15rem;">
+                <div class="card-body" style="background-color:{{index.code}}">           
+                    {% if litmus.depth == "dark" %}
+                        <h5 class="card-title" style="color:white">{{litmus.name.capitalize}}</h5>
+                        <h6>#{{litmus.hexa}}</h6>
+                    {% else %}
+                        <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name.capitalize}}</h5>
+                        <h6 >#{{litmus.hexa}}</h6>
+                    {% endif %}                    
+                </div> 
+            </div>
+            <br>
+            <div class="container">
+                <table class="table-condensed" style="font-size:small; font-weight:bold">
+                    <tr>
+                        <td>Color Group &ensp;</td>
+                        <td>{{litmus.group.capitalize}}</td>
+                    </tr>
+                    <tr>
+                        <td>Color Depth &ensp;</td>
+                        <td>{{litmus.depth.capitalize}}</td>
+                    </tr>
+                </table>
+                <br>
+            </div> 
+        </div>
+        <div class="col-sm-8 text-left"> 
+            <h5>Color Index</h5>
+            <hr>
+            <table class="table-condensed" style="font-size:small; ">
+                <tr> 
+                    <td>RGB</td>
+                    <td>Index</td>
+                    <td>R {{index.rgb.index.r}}&ensp; G {{index.rgb.index.g}}&ensp; B {{index.rgb.index.b}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Norm </td>
+                    <td>R {{index.rgb.norm.r|floatformat:4}}&ensp; G {{index.rgb.norm.g|floatformat:4}}&ensp; B {{index.rgb.norm.b|floatformat:4}}</td>
+                </tr> 
+                <tr>
+                    <td></td>
+                    <td>HSL </td>
+                    <td>L {{index.rgb.hsl.l|floatformat:4}}&ensp; H {{index.rgb.hsl.h|floatformat:2}}&ensp; S {{index.rgb.hsl.s|floatformat:4}}&ensp; C {{index.rgb.hsl.c|floatformat:4}}</td>
+                </tr>  
+                <tr>
+                    <td></td>    
+                    <td>Parameters </td>
+                    <td>Sum {{index.rgb.param.sum}}&ensp; Max {{index.rgb.param.max}}&ensp; Min {{index.rgb.param.min}}&ensp; Sigma {{index.rgb.param.sigma}}&ensp; Delta {{index.rgb.param.delta}}</td>
+                </tr> 
+                <tr>
+                    <td></td>    
+                    <td>Sphere </td>
+                    <td>Longitude {{index.rgb.sphere.long|floatformat:2}}&ensp; Latitude {{index.rgb.sphere.lati|floatformat:2}}&ensp; Radius {{index.rgb.sphere.r|floatformat:4}}</td>
+                </tr> 
+                <tr> 
+                    <td>HSLV </td> 
+                    <td>HSL</td>
+                    <td>L {{index.hslv.hsl.l|floatformat:4}}&ensp; H {{index.hslv.hsl.h|floatformat:2}}&ensp; S {{index.hslv.hsl.s|floatformat:4}}&ensp; C {{index.hslv.hsl.c|floatformat:4}}</td>
+                </tr>
+                <tr> 
+                    <td></td>
+                    <td>HSV</td>
+                    <td>V {{index.hslv.hsv.v|floatformat:4}}&ensp; H {{index.hslv.hsv.h|floatformat:2}}&ensp; S {{index.hslv.hsv.s|floatformat:4}}&ensp; C {{index.hslv.hsv.c|floatformat:4}}</td>
+                </tr>
+                <tr> 
+                    <td>CMYK &ensp; </td>
+                    <td></td>
+                    <td>K {{index.cmyk.k|floatformat:4}}&ensp; C {{index.cmyk.c|floatformat:4}}&ensp; M {{index.cmyk.m|floatformat:4}}&ensp; Y {{index.cmyk.y|floatformat:4}}</td>
+                </tr>
+                {% for key, value in index.xyz.items %}
+                <tr> 
+                    <td>
+                        {% if forloop.counter == 1 %}
+                        XYZ
+                        {% endif %}
+                    </td>
+                    <td>{{key}} &ensp; </td>
+                    <td>X {{value.X|floatformat:4}}&ensp; Y {{value.Y|floatformat:4}}&ensp; Z {{value.Z|floatformat:4}}&ensp; 
+                        x {{value.x|floatformat:4}}&ensp; y {{value.y|floatformat:4}}&ensp; I {{value.I|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+                {% for key, value in index.labuv.items %}
+                <tr> 
+                    <td>
+                        {% if forloop.counter == 1 %}
+                        Lab 
+                        {% endif %}
+                    </td>
+                    <td>{{key}}&deg; &ensp; </td>
+                    <td>L {{value.lab.l|floatformat:4}}&ensp; H {{value.lab.h|floatformat:2}}&ensp; S {{value.lab.s|floatformat:4}}&ensp; 
+                        C {{value.lab.c|floatformat:4}}&ensp; a* {{value.lab.a|floatformat:4}}&ensp; b* {{value.lab.b|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+                {% for key, value in index.labuv.items %}
+                <tr> 
+                    <td>
+                        {% if forloop.counter == 1 %}
+                        Luv 
+                        {% endif %}
+                    </td>
+                    <td>{{key}}&deg; &ensp; </td>
+                    <td>L {{value.luv.l|floatformat:4}}&ensp; H {{value.luv.h|floatformat:2}}&ensp; S {{value.luv.s|floatformat:4}}&ensp; 
+                        C {{value.luv.c|floatformat:4}}&ensp; u* {{value.luv.u|floatformat:4}}&ensp; v* {{value.luv.v|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% if total.identicals %}
+            <br>
+            <h5>Identical Colors ({{total.identicals}})</h5>
+            <table class="table" style="font-size:small;">       
+                {% for item in colors.identicals %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
+                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
+                    <td>#{{item.hexa.upper}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% endif %}
+            {% if total.neighbors %}
+            <h5>Neighbor Colors ({{total.neighbors}})</h5>
+            <table class="table" style="font-size:small;">     
+                {% for item in colors.neighbors %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
+                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
+                    <td>#{{item.hexa.upper}}</td>
+                    <td>D {{item.distance|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            <br>
+            {% endif %}
+            {% if plot %}
+            <br>
+            <h5>Plot in RGB Space</h5>
+            <hr>
+            <div>{{plot|safe}}</div>
+            <br>
+            {% endif %}
+        </div>
+    </div>
+</div> <!-- /container -->
+
+{% endblock %}

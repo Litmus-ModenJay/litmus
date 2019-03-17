@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container">
+    <div class="row" >
+        <div class="col-md-4">
+            <div class="card" style="width: 15rem;">
+                <div class="card-body" style="background-color:firebrick">
+                    <h3 class="card-title" style="color: white;">Color Library</h3>
+                    <p class="card-text" style="color: white;">Get information about various color names</p>
+                    <a style="color:gold;" href="{% url 'litmus:litmusHome' %}" >&raquo; Go Library</a>      
+                </div> 
+                <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Color Name Database</li>
+                        <li class="list-group-item">Reference Link</li>
+                        <li class="list-group-item">Search Near-by Colors</li>
+                </ul>  
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="width: 15rem;">
+                <div class="card-body" style="background-color:forestgreen">
+                    <h3 class="card-title" style="color: white;">Color Map</h3>
+                    <p class="card-text" style="color: white;">Play with color index in various color spaces</p>
+                    <a style="color:dimgray" href="{% url 'litmus:litmusHome' %}" >&raquo; Go Map</a>      
+                </div> 
+                <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Color Space & Coordinate</li>
+                        <li class="list-group-item">Color Conversion</li>
+                        <li class="list-group-item">Color Mapping</li>
+                </ul>  
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card" style="width: 15rem;">
+                <div class="card-body" style="background-color:darkorchid">
+                    <h3 class="card-title" style="color: white;">Color Logic</h3>
+                    <p class="card-text" style="color: white;">Build logical concept for new design and application</p>
+                    <a style="color:dimgray;" href="{% url 'litmus:litmusHome' %}" >&raquo; Go Logic</a>      
+                </div> 
+                <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Color Difference</li>
+                        <li class="list-group-item">Color Mixing</li>
+                        <li class="list-group-item">Color Balance</li>
+                </ul>  
+            </div>
+        </div>
+    </div>
+    {% if count %}
+        <h5>Number of Colors ({{count}})</h5>
+        <table class="table" style="font-size:small;">     
+            {% for item in data %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{item.hexa.upper}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endif %}
+</div>
+<br>
+
+{% endblock %}

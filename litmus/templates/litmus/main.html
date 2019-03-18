@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container-fluid text-center" style="text-align:center">
+    <!-- Title -->
+    <br>
+    <h4>Search Color</h3>
+    <!-- Search -->
+    <br>
+    <form class="form-inline justify-content-center"  action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
+        {% csrf_token %}
+        <div class="form-group" >
+            <input type="text" name="search" class="form-control" style="text-align:left" placeholder="color name or code">
+            <button type="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button>
+        </div>
+    </form>
+    <br><br>
+</div>
+
+<br>
+<div class="container">
+    
+    {% if count %}
+        <h5>Number of Colors ({{count}})</h5>
+        <table class="table" style="font-size:small;">     
+            {% for item in data %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{item.index.upper}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <br>
+    {% endif %}
+</div>
+<br>
+
+{% endblock %}

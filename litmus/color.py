@@ -1,6 +1,6 @@
 import math
 
-class ColorIndex() :
+class ColorIndex():
     def __init__(self, hexa) :
         self.profile = ["sRGB", "Adobe RGB", "CIE RGB"]
         self.illuminant = ["D50 2", "D65 2"]

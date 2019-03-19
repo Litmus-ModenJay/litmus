@@ -3,7 +3,6 @@ import json
 import math
 
 class LitmusDB():
-    db = []
     
     def __init__(self):
         self.db = self.initialize()
@@ -17,12 +16,9 @@ class LitmusDB():
             hexa=item['index']
             data.append({'name':name, 'hexa':hexa})
         return data
-    
-    @staticmethod
-    def all():
-        return LitmusDB.db
+    def all(self):
+        return self.db
+    def count(self):
+        return len(self.db)
 
-    @staticmethod
-    def count():
-        return len(LitmusDB.db)
-    
+

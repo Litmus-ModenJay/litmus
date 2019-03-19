@@ -1,11 +1,10 @@
 import math
 
-class ColorIndex():
+class ColorVector():
     def __init__(self, hexa) :
         self.profile = ["sRGB", "Adobe RGB", "CIE RGB"]
         self.illuminant = ["D50 2", "D65 2"]
         self.hexa = hexa
-        self.code = '#' + hexa
         self.rgb =  self.get_rgb()
         self.hslv =  self.get_hslv()
         self.cmyk =  self.get_cmyk()
@@ -15,7 +14,7 @@ class ColorIndex():
         self.depth = self.get_depth('rgb')
         
     def get_rgb(self) :
-        index = {"r": int(self.hexa[0:2], 16), "g":int(self.hexa[2:4], 16), "b":int(self.hexa[4:6], 16)}
+        index = {"r": int(self.hexa[1:3], 16), "g":int(self.hexa[3:5], 16), "b":int(self.hexa[5:7], 16)}
         norm = {"r":float(index['r']/255), "g":float(index['g']/255), "b":float(index['b']/255)}
         maximum = max(index.values())
         minimum = min(index.values())

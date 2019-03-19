@@ -1,24 +1,34 @@
 import os
 import json
 import math
+from .color import ColorVector
 
 class Litmus():
-    data = []
+    db = []
     @classmethod
     def initialize(cls, method):
         if method == "Json":
             with open("litmus/litmus.json") as f:
                 dj = json.loads(f.read())
-            cls.data = dj['Default']
+            for index, value in enumerate(dj['Default']):
+                hexa = value['index']
+                vector = ColorVector(hexa)
+                cls.db.append({
+                    'id':index, 
+                    'name':value['name'], 
+                    'hexa':hexa.upper,
+                    'rgb':vector.rgb['norm'],
+                    'sphere':vector.rgb['sphere'],
+                    'group':vector.group,
+                    'depth':vector.depth
+                    })
             return
 
     @staticmethod
     def data():
-        return Litmus.data
+        return Litmus.db
 
     @staticmethod
     def count():
-        return len(Litmus.data)
+        return len(Litmus.db)
 
-
->>>>>>> 7c1824171cf5b548d1656b98ef89a7e68998d26d

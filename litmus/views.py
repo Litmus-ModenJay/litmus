@@ -18,4 +18,4 @@ def main(request):
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):
-    pass
+    return redirect('litmus:main')

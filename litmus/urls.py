@@ -4,5 +4,6 @@ from litmus import views
 app_name = 'litmus'
 urlpatterns = [
     url(r'^$', views.litmus, name='litmus'),
-    url(r'^litmusHome$', views.litmusHome, name='litmusHome'),
+    url(r'^main$', views.main, name='main'),
+    url(r'^colorSearch$', views.colorSearch, name='colorSearch'),
 ]

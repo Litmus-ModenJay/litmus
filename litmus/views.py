@@ -5,14 +5,17 @@ import time
 import os
 import json
 import math
-from .litmus import LitmusDB
+from .litmus import Litmus
 
 def litmus(request):
-    return redirect('litmus:litmusHome')
+    return redirect('litmus:main')
 
-def litmusHome(request):
+def main(request):
     base = {'nav_home':'active', 'title':"Home", 'year':datetime.today().year}
-    data = LitmusDB.all()
-    count = LitmusDB.count()
+    data = Litmus.data
+    count = Litmus.count
     context = {'base':base, 'data':data, 'count':count}
-    return render(request, 'litmus/home.html', context)
+    return render(request, 'litmus/main.html', context)
+
+def colorSearch(request):
+    return redirect('litmus:main')

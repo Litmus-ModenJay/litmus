@@ -12,6 +12,7 @@ media
 env/
 .env/
 .env-litmus/
+env-litmus/
 
 ### VScode ###
 .vscode/

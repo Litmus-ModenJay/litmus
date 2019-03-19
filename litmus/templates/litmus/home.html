@@ -55,8 +55,12 @@
         <table class="table" style="font-size:small;">     
             {% for item in data %}
             <tr>
+                <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.index.upper}}</td>
+                <td>{{item.hexa}}</td>
+                <td>{{item.group}}</td>
+                <td>{{item.depth}}</td>
+                <td>{{item.sphere.long}}</td>
             </tr>
             {% endfor %}
         </table>

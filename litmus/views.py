@@ -11,10 +11,9 @@ def litmus(request):
     return redirect('litmus:main')
 
 def main(request):
-    base = {'nav_home':'active', 'title':"Home", 'year':datetime.today().year}
     data = Litmus.data
     count = Litmus.count
-    context = {'base':base, 'data':data, 'count':count}
+    context = {'data':data, 'count':count}
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):

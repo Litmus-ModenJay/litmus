@@ -1,7 +1,7 @@
 import os
 import json
 import math
-from .colorspace import CVC
+from .color_space import CVC
 
 class Litmus():
     db = []
@@ -13,15 +13,14 @@ class Litmus():
             for index, value in enumerate(dj['Default']):
                 hexa = value['index']
                 rgb = CVC.hexa_rgb(hexa)
-                # vector = ColorVector(hexa)
                 cls.db.append({
                     'id':index, 
                     'name':value['name'], 
                     'hexa':hexa.upper,
                     'rgb': rgb,
                     'geo': CVC.rgb_GEOrgb(rgb),
-                    #'group':vector.group,
-                    #'depth':vector.depth
+                    'group':CVC.rgb_group(rgb).capitalize,
+                    'depth':CVC.rgb_depth(rgb).capitalize
                     })
             return
 

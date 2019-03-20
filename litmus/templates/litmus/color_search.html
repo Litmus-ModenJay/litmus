@@ -1,6 +1,4 @@
-{% extends "home/base.html" %}
-
-{% load crispy_forms_tags %}
+{% extends "base.html" %}
 
 {% block content %}
 
@@ -18,15 +16,14 @@
             <p></p>        
         </div>
         <div class="col-sm-2" style="text-align:right">
-            <p><a class="btn btn-info btn-sm" style="background-color:royalblue; width:110pt" 
-                href="{% url 'library:colorList' %}">Back to Color Library</a></p>
+            <p></p>
             <p></p>
         </div>
     </div>
     <div class="row content">
         <!-- Search -->
         <br>
-        <form class="form-inline" action="{% url 'library:colorSearch' %}" id="color_search" method="POST">
+        <form class="form-inline" action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <div class="col-sm-8">
@@ -40,35 +37,10 @@
 </div>
 <hr>
 <div class="container">
-    {% if total.identicals %}
+    {% if search.identicals.count %}
     <div class="row content">
         <div class="col-sm-4 text-left"> 
-            <h6>Colors Identical to "{{word.upper}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.identicals}}</span></h6>
-        </div>
-        <div class="col-sm-6 text-left"> 
-            <table class="table" style="font-size:small;">
-                <tr>
-                    <th>Color Name</th>
-                    <th>Color</th>
-                    <th>Hexa</th>
-                </tr>        
-                {% for item in colors.identicals %}
-                <tr>
-                    <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
-                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
-                    <td>{{item.hexa.upper}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-    <hr>
-    {% endif %}
-    {% if total.neighbors %}
-    <div class="row content">
-        <div class="col-sm-4 text-left"> 
-            <h6>Neighbor Colors of "{{word.upper}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.neighbors}}</span></h6>
+            <h6>Colors Identical to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h6>
         </div>
         <div class="col-sm-6 text-left"> 
             <table class="table" style="font-size:small;">
@@ -78,12 +50,39 @@
                     <th>Hexa</th>
                     <th>Distance</th>
                 </tr>        
-                {% for item in colors.neighbors %}
+                {% for item in search.identicals.list %}
                 <tr>
                     <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
-                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
-                    <td>{{item.hexa.upper}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
+                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
+                    <td>{{item.hexa}}</td>
+                    <td>{{item.distance|floatformat:4}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+    <hr>
+    {% endif %}
+    {% if search.neighbors.count %}
+    <div class="row content">
+        <div class="col-sm-4 text-left"> 
+            <h6>Colors Neighbor to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h6>
+        </div>
+        <div class="col-sm-6 text-left"> 
+            <table class="table" style="font-size:small;">
+                <tr>
+                    <th>Color Name</th>
+                    <th>Color</th>
+                    <th>Hexa</th>
+                    <th>Distance</th>
+                </tr>        
+                {% for item in search.neighbors.list %}
+                <tr>
+                    <td>{{item.name.capitalize}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
+                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
+                    <td>{{item.hexa}}</td>
                     <td>{{item.distance|floatformat:4}}</td>
                 </tr>
                 {% endfor %}
@@ -92,10 +91,10 @@
         </div>
     <hr>
     {% endif %}
-    {% if total.substrings %}
+    {% if search.matches.count %}
     <div class="row content">
         <div class="col-sm-4 text-left"> 
-            <h6>Colors containg "{{word.capitalize}}"  <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{total.substrings}}</span></h6>
+            <h6>Colors containig "{{word}}"  <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.matches.count}}</span></h6>
         </div>
         <div class="col-sm-6 text-left"> 
             <table class="table" style="font-size:small;">
@@ -104,12 +103,12 @@
                     <th>Color</th>
                     <th>Hexa</th>
                 </tr>        
-                {% for item in colors.substrings %}
+                {% for item in search.matches.list %}
                 <tr>
                     <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:#{{item.hexa}}"
-                        href="{% url 'library:colorInfo' pk=item.pk %}"></a></td>
-                    <td>{{item.hexa.upper}}</td>
+                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
+                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
+                    <td>{{item.hexa}}</td>
                 </tr>
                 {% endfor %}
             </table>

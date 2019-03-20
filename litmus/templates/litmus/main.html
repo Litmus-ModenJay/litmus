@@ -40,8 +40,8 @@
                 <td>{{item.hexa}}</td>
                 <td>{{item.group}}</td>
                 <td>{{item.depth}}</td>
-                <td>{{item.rgb}}</td>
-                <td>{{item.geo}}</td>
+                <td>{{item.rgb.0|floatformat:4}}</td>
+                <td>{{item.geo.0|floatformat:2}}</td>
             </tr>
             {% endfor %}
         </table>

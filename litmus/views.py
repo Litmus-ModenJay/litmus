@@ -8,6 +8,7 @@ import math
 from .litmus_db import Litmus
 from .litmus_search import is_hexa, search_by_hexa, search_by_name
 from .color_vector import ColorVector
+from .litmus_plot import plotRGB
 
 def litmus(request):
     return redirect('litmus:main')
@@ -17,40 +18,44 @@ def main(request):
         word = request.POST['search']
         if len(word):
             hexa = is_hexa(word)
-            radius = 0.1
             if hexa:
-                search = search_by_hexa(hexa, radius)
-                count = {'identicals':len(search['identicals']), 'neighbors':len(search['neighbors'])}
+                search = search_by_hexa(name, hexa, radius=0.1, exclude_me=False)
             else:
                 search = search_by_name(word)
-                count = {'matches':len(search['matches'])}
-            context = {'word':word, 'search':search, 'count':count}
+            plot = plotRGB(search['plot'])
+            context = {'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
 
-    data = Litmus.data
-    count = Litmus.count
+    data, count = Litmus.data, Litmus.count
     context = {'data':data, 'count':count}
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):
-    word = ""
     search = {}
+    plot = {}
+    word = ""
     if request.method == "POST":
         word = request.POST['search']
         if len(word):
             hexa = is_hexa(word)
             if hexa:
-                radius = 0.1
-                search = search_by_hexa(hexa, radius)
+                search = search_by_hexa(hexa, radius=0.1)
             else:
                 search = search_by_name(word)
-    context = {'word':word, 'search':search}
+            plot = plotRGB(search['plot'])
+    context = {'word':word, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_search.html', context)
 
-def colorInfo(request, pk):
- 
-    # url_string = resolve_url('litmus:colorInfo', id=pk)
-    # litmus = get_object_or_404(Litmus, id=pk)
-    # vector = ColorVector(litmus['hexa'])
-    context = {'pk':pk}
-    return render(request, 'litmus/color_info1.html', context)
+def colorInfo(request, pk): 
+    id = int(pk)
+    litmus = Litmus.get_by_id(id)
+    hexa = litmus['hexa']
+    vector = ColorVector(hexa).all
+    search = search_by_hexa(hexa, radius=0.1)
+    plot = plotRGB(search['plot'])
+    message = ""
+    context = {'message':message, 'litmus':litmus, 'vector':vector, 'search':search, 'plot':plot}
+    return render(request, 'litmus/color_info.html', context)
+
+def colorLibrary(request):
+    return render(request, 'litmus/color_library.html')

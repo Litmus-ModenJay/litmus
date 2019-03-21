@@ -16,7 +16,7 @@ class Litmus():
                 cls.db.append({
                     'id':index, 
                     'name':value['name'], 
-                    'hexa':hexa.upper,
+                    'hexa':hexa,
                     'rgb': rgb,
                     'geo': CVC.rgb_GEOrgb(rgb),
                     'group':CVC.rgb_group(rgb).capitalize,
@@ -32,3 +32,6 @@ class Litmus():
     def count():
         return len(Litmus.db)
 
+    @staticmethod
+    def get_by_id(id):
+        return Litmus.db[id]

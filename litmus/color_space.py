@@ -7,15 +7,15 @@ class CVC():
         return tuple(int(hexa[2*i+1:2*i+3], 16) for i in range(0,3))
     @staticmethod
     def hexa_rgb(hexa):
-        return tuple(float(int(hexa[2*i+1:2*i+3], 16)/255) for i in range(0,3))
+        return tuple(float(int(hexa[2*i+1:2*i+3], 16))/255 for i in range(0,3))
     @staticmethod
     def RGB_rgb(RGB):
-        return tuple(float(RGB[i]/255) for i in range(0,3))
+        return tuple(float(RGB[i])/255 for i in range(0,3))
     @staticmethod
-    def RGB_parameters(RGB):
-        summation = sum(RGB)
-        maximum = max(RGB)
-        minimum = min(RGB)
+    def rgb_parameters(rgb):
+        summation = sum(rgb)
+        maximum = max(rgb)
+        minimum = min(rgb)
         sigma = maximum + minimum
         delta = maximum - minimum
         return (summation, maximum, minimum, sigma, delta)
@@ -67,7 +67,10 @@ class CVC():
             else :
                 hue = (float((r-g)/delta) % 6 + 4) * 60
             sl = delta / (1 - abs(2*light - 1))
-            sv = delta/maximum
+            if maximum :
+                sv = delta/maximum
+            else:
+                sv = 0
         return (hue, sl, light, sv, maximum, delta)
     @staticmethod
     def rgb_CMYK(rgb):

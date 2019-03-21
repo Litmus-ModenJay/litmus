@@ -11,18 +11,20 @@ class ColorVector():
         self.HSLV =  self.get_HSLV()
         self.CMYK =  self.get_CMYK()
         self.XYZ =  self.get_XYZ()
-        self.Labuv =  self.get_labuv()
+        self.Labuv =  self.get_Labuv()
         self.group = self.get_group('rgb')
         self.depth = self.get_depth('rgb')
+        self.all = {'hexa':self.hexa, 'rgb':self.rgb, 'RGB': self.RGB, 'HSLV': self.HSLV, 'CMYK': self.CMYK, 
+                    'XYZ':self.XYZ, 'Labuv':self.Labuv, 'group':self.group, 'depth':self.depth}
         
-    def get_RGB(self) :
+    def get_RGB(self):
         # from hexa to RGB & rgb
         RGB = CVC.hexa_RGB(self.hexa)
         rgb = self.rgb
-        RGB_dic = {"R": RGB[0], "G":RGB[1], "b":RGB[2]}
+        RGB_dic = {"R": RGB[0], "G":RGB[1], "B":RGB[2]}
         rgb_dic = {"r":rgb[0], "g":rgb[1], "b":rgb[2]}
         # from RGB to RGB parameters
-        param = CVC.RGB_parameters(RGB)
+        param = CVC.rgb_parameters(rgb)
         param_dic = {"Sum":param[0], "Max":param[1], "Min":param[2], "Sigma":param[3], "Delta":param[4]}
         # from rgb to HSL(rgb)
         HSL = CVC.rgb_HSLrgb(rgb)
@@ -30,32 +32,32 @@ class ColorVector():
         # from rgb to GEOrgb
         geo = CVC.rgb_GEOrgb(rgb)
         GEO_dic = {"Long": geo[0], "Lati": geo[1], "Radius": geo[2]}
-        return {"RGB": RGB_dic, "rgb": rgb_dic, "Parameters": param_dic, "HSL(rgb)": HSL_dic, "GEO(rgb)": GEO_dic}
+        return {"RGB": RGB_dic, "rgb": rgb_dic, "Param": param_dic, "HSL": HSL_dic, "GEO": GEO_dic}
 
-    def get_HSLV(self) :
+    def get_HSLV(self):
         HSLV = CVC.rgb_HSLV(self.rgb)
-        HSL_dic = {"H": HSLV(0), "S": HSLV(1), "L": HSLV(2), "C": HSLV(5)}
-        HSV_dic = {"H": HSLV(0), "S": HSLV(3), "V": HSLV(4), "C": HSLV(5)}
+        HSL_dic = {"H": HSLV[0], "S": HSLV[1], "L": HSLV[2], "C": HSLV[5]}
+        HSV_dic = {"H": HSLV[0], "S": HSLV[3], "V": HSLV[4], "C": HSLV[5]}
         return {'HSL': HSL_dic, 'HSV': HSV_dic}
 
-    def get_CMYK(self) :
+    def get_CMYK(self):
         CMYK = CVC.rgb_CMYK(self.rgb)
         return {"C": CMYK[0], "M": CMYK[1], "Y": CMYK[2], "K": CMYK[3]}
 
-    def get_XYZ(self) :
+    def get_XYZ(self):
         XYZ = {}
         for profile in self.profile:
-            xyz = rgb_XYZ(self.rgb, profile)
-            xyz_dic = {"X": XYZ[0], "Y": XYZ[1], "Z": XYZ[2], "L": XYZ[3], "x": XYZ[4], "y": XYZ[5]}
+            xyz = CVC.rgb_XYZ(self.rgb, profile)
+            xyz_dic = {"X": xyz[0], "Y": xyz[1], "Z": xyz[2], "I": xyz[3], "x": xyz[4], "y": xyz[5]}
             XYZ.update({profile: xyz_dic})
         return XYZ
 
-    def get_Labuv(self) :
+    def get_Labuv(self):
         Labuv = {}
         for profile in self.profile :
             for illuminant in self.illuminant :
                 title = profile + " " + illuminant
-                XYZ = rgb_XYZ(self.rgb, profile)
+                XYZ = CVC.rgb_XYZ(self.rgb, profile)
                 L= CVC.XYZ_Labuv(XYZ, illuminant)
                 Lab = {"L":L[0], "a": L[1], "b": L[1], "H": L[3], "S": L[4], "C": L[6]}
                 Luv = {"L":L[0], "u": L[0], "v": L[7], "H": L[8], "S": L[9], "C": L[10]}    

@@ -6,6 +6,7 @@ def search_by_hexa(hexa, radius):
     me = CVC.hexa_rgb(hexa)
     identicals = []
     neighbors = []
+    plotRGBdata = []
     for litmus in Litmus.data():
         you = litmus['rgb']
         d = tuple(abs(you[i] - me[i]) for i in range(0,3))
@@ -13,20 +14,24 @@ def search_by_hexa(hexa, radius):
             distance = (d[0]**2 + d[1]**2+ d[2]**2)**0.5
             if distance < 0.0001 :
                 identicals.append({'name':litmus['name'], 'hexa':litmus['hexa'], 'id':litmus['id'], 'distance':distance})
+                plotRGBdata.append({'x':you[0], 'y':you[1], 'z': you[2], 'name':litmus['name'], 'hexa':litmus['hexa'], 'case':'identicals'})
             elif distance < radius:
                 neighbors.append({'name':litmus['name'], 'hexa':litmus['hexa'], 'id':litmus['id'], 'distance':distance})
+                plotRGBdata.append({'x':you[0], 'y':you[1], 'z': you[2], 'name':litmus['name'], 'hexa':litmus['hexa'], 'case':'neighbors'})
     sorted_i = sorted(identicals, key=lambda i: i['name'])
     sorted_n = sorted(neighbors, key=lambda n: n['distance'])
-    return {'identicals':{'count':len(sorted_i), 'list':sorted_i}, 'neighbors':{'count':len(sorted_n), 'list':sorted_n}}
+    return {'identicals':{'count':len(sorted_i), 'list':sorted_i}, 'neighbors':{'count':len(sorted_n), 'list':sorted_n}, 'plot':plotRGBdata}
 
 def search_by_name(word):
     matches = []
+    plotRGBdata = []
     for litmus in Litmus.data():
         name = litmus['name']
         if (word.lower() in name.lower()):
             matches.append({'name':litmus['name'], 'hexa':litmus['hexa'], 'id':litmus['id']})
+            plotRGBdata.append({'x':litmus['rgb'][0], 'y':litmus['rgb'][1], 'z': litmus['rgb'][2], 'name':litmus['name'], 'hexa':litmus['hexa'], 'case':'matches'})
     sorted_m = sorted(matches, key=lambda m: m['name'])
-    return {'matches':{'count':len(sorted_m), 'list':sorted_m}}
+    return {'matches':{'count':len(sorted_m), 'list':sorted_m}, 'plot':plotRGBdata}
 
 def is_hexa(word):
     if len(word) == 7 and word[0]=="#":

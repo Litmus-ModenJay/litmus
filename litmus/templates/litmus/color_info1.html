@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+<br>
+<div class="container-fluid text-center">
+    
+    
+    <div class="row content">
+        <!-- Title -->
+        <div class="col-sm-8 text-left"> 
+            <h3>Color Information {{pk}}</h3>
+        </div>   
+       
+    </div>
+</div>
+<br>
+<div class="container">
+    <div class="row content">
+        <div class="col-sm-4 "> 
+            <div class="card" style="width: 16rem; height: 15rem;">
+                <div class="card-body" style="background-color:{{litmus.hexa}}">           
+                    {% if litmus.depth == "dark" %}
+                        <h5 class="card-title" style="color:white">{{litmus.name.capitalize}}</h5>
+                        <h6>#{{litmus.hexa}}</h6>
+                    {% else %}
+                        <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name.capitalize}}</h5>
+                        <h6 >#{{litmus.hexa}}</h6>
+                    {% endif %}                    
+                </div> 
+            </div>
+            <br>
+            <div class="container">
+                <table class="table-condensed" style="font-size:small; font-weight:bold">
+                    <tr>
+                        <td>Color Group &ensp;</td>
+                        <td>{{litmus.group.capitalize}}</td>
+                    </tr>
+                    <tr>
+                        <td>Color Depth &ensp;</td>
+                        <td>{{litmus.depth.capitalize}}</td>
+                    </tr>
+                </table>
+                <br>
+            </div> 
+        </div>
+        
+            
+        </div>
+    </div>
+</div> <!-- /container -->
+
+{% endblock %}

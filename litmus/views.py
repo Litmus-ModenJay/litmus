@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, resolve_url
 from django.urls import reverse
 from datetime import datetime
 import time
@@ -7,6 +7,7 @@ import json
 import math
 from .litmus_db import Litmus
 from .litmus_search import is_hexa, search_by_hexa, search_by_name
+from .color_vector import ColorVector
 
 def litmus(request):
     return redirect('litmus:main')
@@ -47,4 +48,9 @@ def colorSearch(request):
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk):
-    return render(request, 'litmus/color_search.html')
+ 
+    # url_string = resolve_url('litmus:colorInfo', id=pk)
+    # litmus = get_object_or_404(Litmus, id=pk)
+    # vector = ColorVector(litmus['hexa'])
+    context = {'pk':pk}
+    return render(request, 'litmus/color_info1.html', context)

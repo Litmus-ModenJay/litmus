@@ -34,9 +34,9 @@ class ColorVector():
 
     def get_HSLV(self) :
         HSLV = CVC.rgb_HSLV(self.rgb)
-        hsl-dic = {"H": HSLV(0), "S": HSLV(1), "L": HSLV(2), "C": HSLV(5)}
-        hsv-dic = {"H": HSLV(0), "S": HSLV(3), "V": HSLV(4), "C": HSLV(5)}
-        return {'HSL': hsl-dic, 'HSV': hsv-dic}
+        HSL_dic = {"H": HSLV(0), "S": HSLV(1), "L": HSLV(2), "C": HSLV(5)}
+        HSV_dic = {"H": HSLV(0), "S": HSLV(3), "V": HSLV(4), "C": HSLV(5)}
+        return {'HSL': HSL_dic, 'HSV': HSV_dic}
 
     def get_CMYK(self) :
         CMYK = CVC.rgb_CMYK(self.rgb)
@@ -46,8 +46,8 @@ class ColorVector():
         XYZ = {}
         for profile in self.profile:
             xyz = rgb_XYZ(self.rgb, profile)
-            xyz-dic = {"X": XYZ[0], "Y": XYZ[1], "Z": XYZ[2], "L": XYZ[3], "x": XYZ[4], "y": XYZ[5]}
-            XYZ.update({profile: xyz-dic})
+            xyz_dic = {"X": XYZ[0], "Y": XYZ[1], "Z": XYZ[2], "L": XYZ[3], "x": XYZ[4], "y": XYZ[5]}
+            XYZ.update({profile: xyz_dic})
         return XYZ
 
     def get_Labuv(self) :

@@ -1,4 +1,4 @@
-from .litmus_db import Litmus
+from .litmus_database import Litmus
 from .color_space import CVC
 
 
@@ -7,7 +7,7 @@ def search_by_hexa(hexa, radius):
     identicals = []
     neighbors = []
     plotRGBdata = []
-    for litmus in Litmus.data():
+    for litmus in Litmus.db:
         you = litmus['rgb']
         d = tuple(abs(you[i] - me[i]) for i in range(0,3))
         if d[0] < radius and d[1] < radius and d[2] < radius: 
@@ -25,7 +25,7 @@ def search_by_hexa(hexa, radius):
 def search_by_name(word):
     matches = []
     plotRGBdata = []
-    for litmus in Litmus.data():
+    for litmus in Litmus.db:
         name = litmus['name']
         if (word.lower() in name.lower()):
             matches.append({'name':litmus['name'], 'hexa':litmus['hexa'], 'id':litmus['id']})

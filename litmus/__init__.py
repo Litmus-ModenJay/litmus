@@ -1,4 +1,4 @@
-from .litmus_db import Litmus
+from .litmus_database import Litmus
 
 # Litmus Database Initialization
 Litmus.initialize('Json')

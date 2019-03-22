@@ -47,7 +47,7 @@
                 {% else %}
                 <button class="btn btn-dark btn-sm collapsed" style="width:100px;" data-toggle="collapse" data-target="#collapse{{key}}" aria-expanded="false" aria-controls="#collapse{{key}}">
                 {% endif %}
-                <span class="badge badge-dark" style="font-size:12pt; width:50px; text-align:right">{{value.total}}</span>
+                <span class="badge badge-dark" style="font-size:12pt; width:50px; text-align:right">{{value.count}}</span>
                 &ensp; &nabla;
                 </button>   
             </h5>  
@@ -59,18 +59,18 @@
         {% endif %}
             <div class="card-body">
                 <div class="row">
-                {% for color in value.queryset %}
+                {% for color in value.data %}
                     <div class="col-3">             
                         {% if color.depth == "dark" or color.depth == "deep"%}
                             <p><a class="btn btn-primary btn-block border-light"
-                                style="font-size:8pt; text-align:left; color:white; background-color:#{{color.hexa}}; "
-                                href="{% url 'library:colorInfo' pk=color.pk %}">
+                                style="font-size:8pt; text-align:left; color:white; background-color:{{color.hexa}}; "
+                                href="{% url 'litmus:colorInfo' pk=color.id %}">
                                 {{ color.name.capitalize }}
                             </a></p>
                         {% else %}
                             <p><a class="btn btn-default btn-block border-light font-weight-bold"
-                                style="font-size:8pt; text-align:left; color:black; background-color:#{{color.hexa}}"
-                                href="{% url 'library:colorInfo' pk=color.pk %}">
+                                style="font-size:8pt; text-align:left; color:black; background-color:{{color.hexa}}"
+                                href="{% url 'litmus:colorInfo' pk=color.id %}">
                                 {{ color.name.capitalize }} 
                             </a></p>
                         {% endif %}

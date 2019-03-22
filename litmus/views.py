@@ -5,10 +5,10 @@ import time
 import os
 import json
 import math
-from .litmus_db import Litmus
+from .litmus_database import Litmus
 from .litmus_search import is_hexa, search_by_hexa, search_by_name
 from .color_vector import ColorVector
-from .litmus_plot import plotRGB
+from .litmus_plot import plot_RGB
 
 def litmus(request):
     return redirect('litmus:main')
@@ -22,12 +22,11 @@ def main(request):
                 search = search_by_hexa(name, hexa, radius=0.1, exclude_me=False)
             else:
                 search = search_by_name(word)
-            plot = plotRGB(search['plot'])
+            plot = plot_RGB(search['plot'])
             context = {'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
 
-    data, count = Litmus.data, Litmus.count
-    context = {'data':data, 'count':count}
+    context = {'data':Litmus.db, 'count':Litmus.count()}
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):
@@ -39,10 +38,11 @@ def colorSearch(request):
         if len(word):
             hexa = is_hexa(word)
             if hexa:
+
                 search = search_by_hexa(hexa, radius=0.1)
             else:
                 search = search_by_name(word)
-            plot = plotRGB(search['plot'])
+            plot = plot_RGB(search['plot'])
     context = {'word':word, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_search.html', context)
 
@@ -52,10 +52,14 @@ def colorInfo(request, pk):
     hexa = litmus['hexa']
     vector = ColorVector(hexa).all
     search = search_by_hexa(hexa, radius=0.1)
-    plot = plotRGB(search['plot'])
+    plot = plot_RGB(search['plot'])
     message = ""
     context = {'message':message, 'litmus':litmus, 'vector':vector, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_info.html', context)
 
 def colorLibrary(request):
-    return render(request, 'litmus/color_library.html')
+    db = Litmus.classify_by_group('name', 'ascend')
+    total = Litmus.count()
+    context = {'colors':db, 'total':total}
+
+    return render(request, 'litmus/color_library.html', context)

@@ -2,7 +2,7 @@
 import plotly.graph_objs as go
 from plotly.offline import plot
 
-def plotRGB(plotdata):
+def plot_RGB(plotdata):
 
     data = []
     for item in plotdata :

@@ -22,31 +22,14 @@
         {% csrf_token %}
         <div class="form-group" >
             <button class="input-group-addon btn btn-Warning" id="color_picker"><i class="fas fa-palette color:green"></i></button>
-            <input type="text" name="search" id="search_input" class="form-control input-group colorpicker-component" style="text-align:left" placeholder="color name or code">
-            <button type="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button>   
+            <input type="text"  name="search" id="search_input" class="form-control input-group colorpicker-component" style="text-align:left" placeholder="color name or code">
+            <button type="submit" onkeydown="enterkey();" name="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button>   
         </div>
     </form>
 </div>
 
-<br>
-<div class="container">
-    {% if count %}
-        <h5>Number of Colors ({{count}})</h5>
-        <table class="table" style="font-size:small;">     
-            {% for item in data %}
-            <tr>
-                <td>{{item.id}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.hexa}}</td>
-                <td>{{item.group}}</td>
-                <td>{{item.depth}}</td>
-                <td>{{item.rgb.0|floatformat:4}}</td>
-                <td>{{item.geo.0|floatformat:2}}</td>
-            </tr>
-            {% endfor %}
-        </table>
-        <br>
-    {% endif %}
+<div class="container-fluid text-center" style="text-align:center; padding:50px">
+    <p>{{ count }}</p>
 </div>
 <br>
 
@@ -56,10 +39,11 @@
 <script>
     $(function () {
         $('#color_picker').colorpicker({
-            format: 'hex',   
+            format: 'hex',
         });
         $('#color_picker').colorpicker().on('changeColor', function(e) {
             document.getElementById("search_input").value = e.color.toHex().toUpperCase();
+
         });
     });
 </script>

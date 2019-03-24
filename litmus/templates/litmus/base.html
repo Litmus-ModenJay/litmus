@@ -43,10 +43,15 @@
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <h6 style="display: inline-block; color:yellow; padding-top: 12px;">Litmus Project</h6>
+      <a style=" color:yellow; padding-top: 0px; font-size: 16px;">Litmus Project</h6>
+      {% if login.status == 'logout' %}
+      <a style="color:white; padding-top: 0px; font-size: 16px" href="{{login.urls.login}}" >McScience</a>  
+      {% else %}
+      <a style="color:white; padding-top: 0px; font-size: 16px" href="{{login.urls.logout}}" >{{login.user}}</a>  
+      {% endif %}
     </div>
   </nav>
-    
+  
   <div class="container body-content">
       {% block content %}{% endblock %}
       <hr />

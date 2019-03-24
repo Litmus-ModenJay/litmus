@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,3 +131,28 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# Import secret keys in secrets.json
+from django.core.exceptions import ImproperlyConfigured
+ 
+with open("zeroth/secrets.json") as f:
+    secrets = json.loads(f.read())
+ 
+def get_secret(setting, secrets=secrets):
+    try:
+        return secrets[setting]
+    except KeyError:
+        error_msg = "Set the {0} environment variable".format(setting)
+        raise ImproperlyConfigured(error_msg)
+ 
+SECRET_KEY = get_secret("SECRET_KEY")
+
+# Microsoft Azure Active Directory
+AZUREAD_OAUTH2_KEY = get_secret("AZUREAD_OAUTH2_KEY")
+AZUREAD_OAUTH2_SECRET = get_secret("AZUREAD_OAUTH2_SECRET")
+AZUREAD_OAUTH2_RESOURCE = 'https://graph.windows.net' # https://graph.windows.net or https://<your Sharepoint site name>-my.sharepoint.com.
+
+AZUREAD_TENANT_OAUTH2_KEY = get_secret("AZUREAD_OAUTH2_KEY")
+AZUREAD_TENANT_OAUTH2_SECRET = get_secret("AZUREAD_OAUTH2_SECRET")
+AZUREAD_TENANT_OAUTH2_TENANT_ID = get_secret("AZUREAD_OAUTH2_TENANT_ID")
+AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.windows.net'

@@ -17,6 +17,10 @@ env-litmus/
 ### VScode ###
 .vscode/
 
+### Confidential ###
+sectret.json
+litmus.json
+
 ### Distribution / Packaging ###
 .Python
 build/ 

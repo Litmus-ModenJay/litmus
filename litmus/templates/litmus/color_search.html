@@ -27,11 +27,10 @@
         <br>
         <form class="form-inline" action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
             {% csrf_token %}
-            <div class="form-group">
-                <div class="col-sm-8">
-                    <input type="text" name="search" class="form-control" placeholder="color name or code">
-                </div>
-                <div class="col-sm-2"><button type="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button></div>
+            <div class="form-group" >
+                <button class="input-group-addon btn btn-Warning" id="color_picker"><i class="fas fa-palette color:green"></i></button>
+                <input type="text"  name="search" id="search_input" class="form-control input-group colorpicker-component" style="text-align:left" placeholder="color name or code">
+                <button type="submit" onkeydown="enterkey();" name="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button>   
             </div>
         </form>
         <br><br>
@@ -116,9 +115,9 @@
             </table>
         </div>
     </div>
-    <hr>
+    <hr>ß
     {% endif %}
-    {% if plot %}
+    {% if word %}
     <br>
     <h5>Plot in RGB Space</h5>
     <hr>
@@ -127,4 +126,18 @@
     {% endif %}
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#color_picker').colorpicker({
+            format: 'hex',
+        });
+        $('#color_picker').colorpicker().on('changeColor', function(e) {
+            document.getElementById("search_input").value = e.color.toHex().toUpperCase();
+
+        });
+    });
+</script>
 {% endblock %}

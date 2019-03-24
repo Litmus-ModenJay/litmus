@@ -1,6 +1,14 @@
 from .litmus_database import Litmus
 from .color_space import CVC
 
+def search_color(word):
+    radius = 0.1
+    hexa = is_hexa(word)
+    if hexa:
+        search = search_by_hexa(hexa, radius)
+    else:
+        search = search_by_name(word)
+    return search
 
 def search_by_hexa(hexa, radius):
     me = CVC.hexa_rgb(hexa)

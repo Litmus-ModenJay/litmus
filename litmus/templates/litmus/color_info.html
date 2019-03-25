@@ -26,7 +26,7 @@
         </div>
         <div class="col-sm-2" style="text-align:right">
             <p><a class="btn btn-info btn-sm border-light" style="background-color:deeppink; width:110pt"
-                href="{% url 'litmus:colorSearch' %}">Color Search</a></p>
+                href="{% url 'litmus:main' %}">Color Search</a></p>
             <p></p>
         </div>
     </div>
@@ -39,10 +39,11 @@
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
                     {% if litmus.depth == "dark" or litmus.depth == "deep" %}
                     <h5 class="card-title" style="color:white">{{litmus.name.capitalize}}</h5>
+                    <h6 style="color:white">{{litmus.hexa}}</h6>  
                     {% else %}
                     <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name.capitalize}}</h5>
-                    {% endif %}
-                    <h6 >{{litmus.hexa}}</h6>                    
+                    <h6 style="color:black">{{litmus.hexa}}</h6> 
+                    {% endif %}                  
                 </div> 
             </div>
             <br>
@@ -57,7 +58,7 @@
             </div> 
         </div>
         <div class="col-sm-8 text-left"> 
-            <h5>Color Vectors</h5>
+            <h5>Color Coordinates</h5>
             <hr>
             <table class="table-condensed" style="font-size:small; ">
                 <tr><td>RGB</td>
@@ -109,12 +110,14 @@
             <h5>Identical Colors ({{search.identicals.count}})</h5>
             <table class="table" style="font-size:small;">       
                 {% for item in search.identicals.list %}
+                {% if not(litmus.name.kower == item.name.lower)}
                 <tr>
                     <td>{{item.name.capitalize}}</td>
                     <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
                         href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
                     <td>#{{item.hexa}}</td>
                 </tr>
+                {% endif %}
                 {% endfor %}
             </table>
             <br>

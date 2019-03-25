@@ -40,7 +40,7 @@ def plot_RGB(plotdata):
         margin=dict(l=0, r=0, b=0, t=30)
         # xaxis='R',
         # yaxis='G',
-        # zaxis=
+        # zaxis='Z'
     )
     fig = go.Figure(data=data, layout=layout)
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)

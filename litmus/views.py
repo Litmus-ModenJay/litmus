@@ -10,7 +10,7 @@ from .litmus_database import Litmus
 from .litmus_search import is_hexa, search_by_hexa, search_by_name
 from .color_vector import ColorVector
 from .litmus_plot import plot_RGB
-from .litmus_login import MSlogin
+from .ms_login import MSlogin
 from .ms_auth import url_sign_in, url_sign_out, get_token_from_code, get_access_token
 from .ms_graph import get_me 
 
@@ -38,8 +38,8 @@ def main(request):
             context = {'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
     
-    mslogin = MSlogin.check(id=request.COOKIES.get('id'))
-    context = {'count':mslogin['status'], 'login':mslogin}
+    check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+    context = {'count':check_login['status'], 'login':check_login}
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):
@@ -55,7 +55,8 @@ def colorSearch(request):
             else:
                 search = search_by_name(word)
             plot = plot_RGB(search['plot'])
-    context = {'word':word, 'search':search, 'plot':plot}
+    check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 
@@ -66,51 +67,27 @@ def colorInfo(request, pk):
     search = search_by_hexa(hexa, radius=0.1)
     plot = plot_RGB(search['plot'])
     message = ""
-    context = {'message':message, 'litmus':litmus, 'vector':vector, 'search':search, 'plot':plot}
+    check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+    context = {'login':check_login, 'message':message, 'litmus':litmus, 'vector':vector, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_info.html', context)
 
 def colorLibrary(request):
     db = Litmus.classify_by_group('name', 'ascend')
     total = Litmus.count()
-    context = {'colors':db, 'total':total}
+    check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+    context = {'login':check_login, 'colors':db, 'total':total}
     return render(request, 'litmus/color_library.html', context)
     
 def msLogin(request):
-    # Access Token
-    redirect_uri = MSlogin.redirect['login']
-    auth_code = request.GET['code']
-    token = get_token_from_code(auth_code, redirect_uri)
-    access_token = token['access_token']
-    refresh_token = token['refresh_token']
-    expires_in = token['expires_in']
-    # expires_in is in seconds
-    # Get current timestamp (seconds since Unix Epoch) and
-    # add expires_in to get expiration time
-    # Subtract 5 minutes to allow for clock differences
-    expiration = int(time.time()) + expires_in - 300
-
-    # Save the token in the session
-    # request.session['access_token'] = access_token
-    # request.session['refresh_token'] = refresh_token
-    # request.session['token_expires'] = expiration
-
-    # User information
-    user = get_me(access_token)
-    id= user['mail']
-    tokens = {'access': access_token, 'refresh':refresh_token, 'expire':expiration}
-    MSlogin.users.update({id:tokens})
-    
+    code = request.GET['code']
+    user_id = MSlogin.sign_in(code)
     # Set Cookie
     response = HttpResponseRedirect('/litmus/main')
-    response.set_cookie('id', user['mail'])
-
+    response.set_cookie('id', user_id)
     return response
     
 def msLogout(request):
-    id=request.COOKIES.get('id')
-    access_token = MSlogin.users[id]['access']
-    
+    user_id = request.COOKIES.get('id')
     MSlogin.status = 'logout'
-    del MSlogin.users[id]
-
+    del MSlogin.users[user_id]
     return redirect('/litmus/main')

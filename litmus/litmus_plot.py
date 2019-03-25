@@ -37,7 +37,8 @@ def plot_RGB(plotdata):
         data.append(trace)
     layout = go.Layout(
         height=500,
-        margin=dict(l=0, r=0, b=0, t=30)
+        width=500,
+        margin=dict(l=0, r=0, b=30, t=30)
         # xaxis='R',
         # yaxis='G',
         # zaxis='Z'

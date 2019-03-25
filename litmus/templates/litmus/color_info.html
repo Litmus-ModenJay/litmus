@@ -105,12 +105,12 @@
                 {% endfor %}
             </table>
             <br>
-            {% if search.identicals.count %}
+            {% if search.identicals.count > 1 %}
             <br>
-            <h5>Identical Colors ({{search.identicals.count}})</h5>
+            <h5>Identical Colors ({{search.identicals.count|add:"-1" }})</h5>
             <table class="table" style="font-size:small;">       
                 {% for item in search.identicals.list %}
-                {% if not(litmus.name.kower == item.name.lower)}
+                {% if not litmus.name.lower == item.name.lower %}
                 <tr>
                     <td>{{item.name.capitalize}}</td>
                     <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"

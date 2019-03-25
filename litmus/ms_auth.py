@@ -1,8 +1,8 @@
 from urllib.parse import quote, urlencode
 import base64
+import requests
 import json
 import time
-import requests
 from django.conf import settings
 
 # Client ID and secret from setting.py

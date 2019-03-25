@@ -1,8 +1,15 @@
 import requests
 import uuid
 import json
+from django.conf import settings
 
 graph_endpoint = 'https://graph.microsoft.com/v1.0{0}'
+
+# SharePoint ID and secret from setting.py
+sp_group_id = getattr(settings, 'MCSCIENCE_SHAREPOINT_GROUP_ID')
+sp_teamsite_id = getattr(settings, 'MCSCIENCE_SHAREPOINT_ETUDE_TEAMSITE_ID')
+sp_drive_id  = getattr(settings, 'MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_DRIVE_ID')
+sp_list_id  = getattr(settings, 'MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_LIST_ID')
 
 # Generic API Sending
 def make_api_call(method, url, token, payload = None, parameters = None):
@@ -85,9 +92,9 @@ def get_users(access_token):
     return "{0}: {1}".format(r.status_code, r.text)
 
 def get_sp_list(access_token):
-  # SharePoint List
-  get_sp_list_url = graph_endpoint.format('/groups/ce2b52cd-1c1b-4cfd-8fa3-96bc8e6b3b85/sites/mcscience.sharepoint.com,8e26e1d0-373b-40ac-b6bd-b4523483479c,4c63f1f8-9721-403e-a449-63af9610adae/drives/b!0OEmjjs3rEC2vbRSNINHnPjxY0whlz5ApEljr5YQra7jjbA7jDc4SJoPAxz1OeAv/root/children?')
- 
+  # SharePoint List url
+  sp_url = "{0}{1}{2}{3}{4}{5}{6}".format('/groups/', sp_group_id, '/sites/', sp_teamsite_id, '/drives/', sp_drive_id, '/root/children?')
+  get_sp_list_url = graph_endpoint.format(sp_url)
 
   # Use OData query parameters to control the results
   #  - Retrieves the total count of matching resources

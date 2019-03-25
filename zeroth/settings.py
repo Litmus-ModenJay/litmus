@@ -135,7 +135,7 @@ STATICFILES_DIRS = (
 # Import secret keys in secrets.json
 from django.core.exceptions import ImproperlyConfigured
  
-with open("zeroth/secrets.json") as f:
+with open("static/secret/secrets.json") as f:
     secrets = json.loads(f.read())
  
 def get_secret(setting, secrets=secrets):
@@ -156,3 +156,8 @@ AZUREAD_TENANT_OAUTH2_KEY = get_secret("AZUREAD_OAUTH2_KEY")
 AZUREAD_TENANT_OAUTH2_SECRET = get_secret("AZUREAD_OAUTH2_SECRET")
 AZUREAD_TENANT_OAUTH2_TENANT_ID = get_secret("AZUREAD_OAUTH2_TENANT_ID")
 AZUREAD_TENANT_OAUTH2_RESOURCE = 'https://graph.windows.net'
+
+MCSCIENCE_SHAREPOINT_GROUP_ID = get_secret("MCSCIENCE_SHAREPOINT_GROUP_ID")
+MCSCIENCE_SHAREPOINT_ETUDE_TEAMSITE_ID = get_secret("MCSCIENCE_SHAREPOINT_ETUDE_TEAMSITE_ID")
+MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_DRIVE_ID = get_secret("MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_DRIVE_ID")
+MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_LIST_ID = get_secret("MCSCIENCE_SHAREPOINT_ETUDE_EXCEL_LIST_ID")

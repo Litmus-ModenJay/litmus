@@ -36,62 +36,46 @@
         <br><br>
     </div>
 </div>
-<hr>
+<div class="container-fluid text-center" style="text-align:center; padding:10px">
+    <p></p>
+</div>
+
+
 <div class="container">
     {% if search.identicals.count %}
-    <div class="row content">
-        <div class="col-sm-4 text-left"> 
-            <h6>Colors Identical to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h6>
-        </div>
-        <div class="col-sm-6 text-left"> 
-            <table class="table" style="font-size:small;">
-                <tr>
-                    <th>Color Name</th>
-                    <th>Color</th>
-                    <th>Hexa</th>
-                    <th>Distance</th>
-                </tr>        
-                {% for item in search.identicals.list %}
-                <tr>
-                    <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
-                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
-                    <td>{{item.hexa}}</td>
-                    <td>{{item.distance|floatformat:4}}</td>
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-    </div>
-    <hr>
-    {% endif %}
-    {% if search.neighbors.count %}
-    <div class="row content">
-        <div class="col-sm-4 text-left"> 
-            <h6>Colors Neighbor to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h6>
-        </div>
-        <div class="col-sm-6 text-left"> 
-            <table class="table" style="font-size:small;">
-                <tr>
-                    <th>Color Name</th>
-                    <th>Color</th>
-                    <th>Hexa</th>
-                    <th>Distance</th>
-                </tr>        
-                {% for item in search.neighbors.list %}
-                <tr>
-                    <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
-                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
-                    <td>{{item.hexa}}</td>
-                    <td>{{item.distance|floatformat:4}}</td>
-                </tr>
-                {% endfor %}
-            </table>
+        <hr>
+        <h6>Colors Identical to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h6>
+        <br>
+        {% for item in search.identicals.list %}
+        <div style="display: inline-block;">
+            <div class="card" style="width: 5rem; height: 6rem;" href="{% url 'litmus:colorInfo' pk=item.id %}">
+                <div class="card-header" style="font-size:8pt; font-weight:bold; padding:2px;">{{item.name.capitalize|slice:':13'}}</div>
+                <div class="card-body" style="background-color:{{item.hexa}}; "></div>
+                <div class="card-footer" style="background-color:white; font-size:8pt; font-weight:normal; padding:2px">d={{item.distance|floatformat:4}}</div>
             </div>
-        </div>
-    <hr>
+        </div> 
+        {% endfor %}
     {% endif %}
+<br><br>
+
+    {% if search.neighbors.count %}
+        <hr>
+        <h6>Colors Neighbor to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h6>
+        <br>
+        {% for item in search.neighbors.list %}
+        <div style="display: inline-block;">
+            <div class="card" style="width: 5rem; height: 6rem;" href="{% url 'litmus:colorInfo' pk=item.id %}">
+                <div class="card-header" style="font-size:8pt; font-weight:bold; padding:2px;">
+                    {{item.name.capitalize|slice:':13'}}</div>
+                <div class="card-body" style="background-color:{{item.hexa}}; "></div>
+                <div class="card-footer" style="background-color:white; font-size:8pt; font-weight:normal; text-align:center; padding:2px">
+                    d={{item.distance|floatformat:4}}</div>
+            </div>
+        </div> 
+        {% endfor %}
+    {% endif %}
+    <br><br>
+    
     {% if search.matches.count %}
     <div class="row content">
         <div class="col-sm-4 text-left"> 
@@ -115,7 +99,6 @@
             </table>
         </div>
     </div>
-    <hr>ß
     {% endif %}
     {% if word %}
     <br>

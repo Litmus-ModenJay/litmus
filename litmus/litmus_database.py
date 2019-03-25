@@ -11,7 +11,7 @@ class Litmus():
     @classmethod
     def initialize(cls, method):
         if method == "Json":
-            with open("litmus/litmus.json") as f:
+            with open("static/secret/litmus.json") as f:
                 dj = json.loads(f.read())
             for index, value in enumerate(dj['Default']):
                 hexa = value['index']

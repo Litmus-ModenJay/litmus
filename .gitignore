@@ -18,8 +18,8 @@ env-litmus/
 .vscode/
 
 ### Confidential ###
-sectret.json
-litmus.json
+/zeroth/sectret.json
+/litmus/litmus.json
 
 ### Distribution / Packaging ###
 .Python

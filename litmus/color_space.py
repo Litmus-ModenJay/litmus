@@ -232,11 +232,11 @@ class CVC():
     def rgb_depth(rgb) :
         L = CVC.rgb_HSLrgb(rgb)[2]
         depth = ''
-        if L > 0.75 :
+        if L >= 0.75 :
             depth = "light"
-        elif L > 0.5 :
+        elif L >= 0.5 :
             depth = "soft"
-        elif L > 0.25 :
+        elif L >= 0.25 :
             depth = "deep"
         else :
             depth = "dark"

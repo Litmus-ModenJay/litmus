@@ -34,8 +34,9 @@ def main(request):
                 search = search_by_hexa(hexa, radius=0.1)
             else:
                 search = search_by_name(word)
-            plot = plot_RGB(search['plot'])
-            context = {'word':word, 'search':search, 'plot':plot}
+            plot = plot_RGB(search)
+            check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
     
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
@@ -54,18 +55,18 @@ def colorSearch(request):
                 search = search_by_hexa(hexa, radius=0.1)
             else:
                 search = search_by_name(word)
-            plot = plot_RGB(search['plot'])
+            plot = plot_RGB(search)
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
     context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 
-    id = int(pk)
-    litmus = Litmus.get_by_id(id)
+    color_id = int(pk)
+    litmus = Litmus.get_by_id(color_id)
     hexa = litmus['hexa']
     vector = ColorVector(hexa).all
     search = search_by_hexa(hexa, radius=0.1)
-    plot = plot_RGB(search['plot'])
+    plot = plot_RGB(search)
     message = ""
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
     context = {'login':check_login, 'message':message, 'litmus':litmus, 'vector':vector, 'search':search, 'plot':plot}

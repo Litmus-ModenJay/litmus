@@ -37,7 +37,7 @@
         <div class="col-sm-4 "> 
             <div class="card" style="width: 16rem; height: 15rem;">
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
-                    {% if litmus.depth == "dark" or litmus.depth == "deep" %}
+                    {% if litmus.depth == "dark" %}
                     <h5 class="card-title" style="color:white">{{litmus.name.capitalize}}</h5>
                     <h6 style="color:white">{{litmus.hexa}}</h6>  
                     {% else %}
@@ -106,38 +106,52 @@
             </table>
             <br>
             {% if search.identicals.count > 1 %}
-            <br>
-            <h5>Identical Colors ({{search.identicals.count|add:"-1" }})</h5>
-            <table class="table" style="font-size:small;">       
+                <hr>
+                <h6>Colors Identical to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h6>
+                <br>
                 {% for item in search.identicals.list %}
-                {% if not litmus.name.lower == item.name.lower %}
-                <tr>
-                    <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
-                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
-                    <td>#{{item.hexa}}</td>
-                </tr>
-                {% endif %}
+                <div style="display: inline-block;">
+                    {% if item.litmus.depth == "dark" %}
+                        <p><a class="btn btn-primary btn-block border-light"
+                            style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
+                            href="{% url 'litmus:colorInfo' pk=item.id %}">
+                            {{ item.litmus.name.capitalize|slice:':17' }}
+                        </a></p>
+                    {% else %}
+                        <p><a class="btn btn-default btn-block border-light font-weight-bold"
+                            style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
+                            href="{% url 'litmus:colorInfo' pk=item.id %}">
+                            {{ item.litmus.name.capitalize|slice:':17' }}
+                        </a></p>
+                    {% endif %}
+                </div>
                 {% endfor %}
-            </table>
-            <br>
+                <br><br>
             {% endif %}
             {% if search.neighbors.count %}
-            <h5>Neighbor Colors ({{search.neighbors.count}})</h5>
-            <table class="table" style="font-size:small;">     
+                <hr>
+                <h6>Colors Neighbor to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h6>
+                <br>
                 {% for item in search.neighbors.list %}
-                <tr>
-                    <td>{{item.name.capitalize}}</td>
-                    <td><a class="btn btn-primary btn-lg border-dark" style="font-size:12pt; background-color:{{item.hexa}}"
-                        href="{% url 'litmus:colorInfo' pk=item.id %}"></a></td>
-                    <td>#{{item.hexa}}</td>
-                    <td>D {{item.distance|floatformat:4}}</td>
-                </tr>
+                <div style="display: inline-block;">
+                    {% if item.litmus.depth == "dark" %}
+                        <p><a class="btn btn-primary btn-block border-light"
+                            style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
+                            href="{% url 'litmus:colorInfo' pk=item.id %}">
+                            {{ item.litmus.name.capitalize|slice:':15' }}<br>d={{item.distance|floatformat:4}}
+                        </a></p>
+                    {% else %}
+                        <p><a class="btn btn-default btn-block border-light font-weight-bold"
+                            style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
+                            href="{% url 'litmus:colorInfo' pk=item.id %}">
+                            {{ item.litmus.name.capitalize|slice:':15' }}<br>d={{item.distance|floatformat:4}}
+                        </a></p>
+                    {% endif %}
+                </div>
                 {% endfor %}
-            </table>
-            <br>
+                <br><br>
             {% endif %}
-            {% if plot %}
+            {% if search.neighbors.count %}
             <br>
             <h5>Plot in RGB Space</h5>
             <hr>

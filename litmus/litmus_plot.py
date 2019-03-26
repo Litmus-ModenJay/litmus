@@ -5,36 +5,38 @@ from plotly.offline import plot
 def plot_RGB(plotdata):
 
     data = []
-    for item in plotdata :
-        pointname = item['name']
-        if item['case'] == 'identicals' :
-            pointsize = 14
-            pointsymbol = 'square'
-        else :
-            pointsize = 6
-            pointsymbol = 'circle'
+    keys = plotdata.keys()
+    for key in keys :
+        for item in plotdata[key]['list']:
+            pointname = item['litmus']['name']
+            if item['case'] == 'identicals' :
+                pointsize = 14
+                pointsymbol = 'square'
+            else :
+                pointsize = 6
+                pointsymbol = 'circle'
 
-        trace = go.Scatter3d(
-            x=[item['x']],
-            y=[item['y']],
-            z=[item['z']],
-            name = pointname.capitalize(),
-            mode='markers + text', 
-            text= pointname.capitalize(),      
-            marker=dict(
-                size = pointsize,
-                color= item['hexa'],
-                opacity=1,
-                symbol=pointsymbol,
-            ),
-            hoverinfo='name',  
-            hoverlabel=dict(
-                bgcolor = '#d0d0d0',
-                bordercolor = '#808080',
-            ),
-            showlegend = False
-        )
-        data.append(trace)
+            trace = go.Scatter3d(
+                x=[item['litmus']['rgb'][0]],
+                y=[item['litmus']['rgb'][1]],
+                z=[item['litmus']['rgb'][2]],
+                name = pointname.capitalize(),
+                mode='markers + text', 
+                text= pointname.capitalize(),      
+                marker=dict(
+                    size = pointsize,
+                    color= item['litmus']['hexa'],
+                    opacity=1,
+                    symbol=pointsymbol,
+                ),
+                hoverinfo='name',  
+                hoverlabel=dict(
+                    bgcolor = '#d0d0d0',
+                    bordercolor = '#808080',
+                ),
+                showlegend = False
+            )
+            data.append(trace)
     layout = go.Layout(
         height=500,
         width=500,

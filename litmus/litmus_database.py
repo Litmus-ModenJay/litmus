@@ -49,7 +49,7 @@ class Litmus():
             if order == "ascend":
                 sorted(db[group]['data'], key=lambda g:  g[sort])
             elif order == "descend":
-                sorted(db[group]['data'], reverse=true, key=lambda g:  g[sort])
+                sorted(db[group]['data'], reverse=True, key=lambda g:  g[sort])
         
         return db
 

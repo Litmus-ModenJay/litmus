@@ -36,7 +36,8 @@ def main(request):
                 search = search_by_name(word)
             plot = plot_RGB(search)
             check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
+            test = ["aaa", "bbb"]
+            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot, 'test':test}
             return render(request, 'litmus/color_search.html', context)
     
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
@@ -57,7 +58,8 @@ def colorSearch(request):
                 search = search_by_name(word)
             plot = plot_RGB(search)
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
+    test = ["aaa", "bbb"]
+    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot, 'test':test}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 

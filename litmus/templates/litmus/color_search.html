@@ -157,14 +157,42 @@
     });
 </script>
 <script>
-        var map;
-        function initMap() {
-            var map_center = {lat: 0, lng: 150};
-            var map = new google.maps.Map(document.getElementById('map'), {zoom: 1, center: map_center});
-            
-            
-            
-            var marker = new google.maps.Marker({position: map_center, map: map});
+    var map;
+    function initMap() {
+        var map_center = {lat: 0, lng: 150};
+        var map_right = {lat: 0, lng: 180};
+        var map = new google.maps.Map(document.getElementById('map'), {zoom: 1, center: map_center});
+        var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
+        
+        var count = {{search.neighbors.count}}
+        if (count){
+            for (i=0; i<count; i++){
+                var litmus = "{{search.neighbors.list.litmus.i.geo.long}}";
+                var marker = new google.maps.Marker({
+                position: {lat: 0, lng: 190+i*5}, 
+                map: map
+                });
+            };
+            /*
+            for (var position in search_list) {
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(0, 160), 
+                    map: map
+                });
+            };
+            */
         }
-    </script>
+        /*
+        if  (count > 0} {
+            for (var geo in {{search.neighbors.list}}) {
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng({{geo.litmus.RGB.geo.Lati}}, {{geo.litmus.RGB.geo.Long}}), 
+                    map: map,
+                    // title: {{geo.litmus.name.capitalize}} //s
+                });
+            };
+        };
+        */
+    }
+</script>
 {% endblock %}

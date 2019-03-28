@@ -36,8 +36,8 @@ def main(request):
                 search = search_by_name(word)
             plot = plot_RGB(search)
             check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-            test = ["aaa", "bbb"]
-            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot, 'test':test}
+            # geo_key = '{0}{1}{2}'.format('https://maps.googleapis.com/maps/api/js?key=', GOOGLE_MAPS_API_KEY_LITMUS, '&callback=initMap')
+            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
     
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))

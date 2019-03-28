@@ -31,7 +31,7 @@ class ColorVector():
         HSL_dic = {"H": HSL[0], "S": HSL[1], "L":HSL[2], "C": HSL[3]}
         # from rgb to GEOrgb
         geo = CVC.rgb_GEOrgb(rgb)
-        GEO_dic = {"Long": geo[0], "Lati": geo[1], "Radius": geo[2]}
+        GEO_dic = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
         return {"RGB": RGB_dic, "rgb": rgb_dic, "Param": param_dic, "HSL": HSL_dic, "GEO": GEO_dic}
 
     def get_HSLV(self):
@@ -59,9 +59,11 @@ class ColorVector():
                 title = profile + " " + illuminant
                 XYZ = CVC.rgb_XYZ(self.rgb, profile)
                 L= CVC.XYZ_Labuv(XYZ, illuminant)
+                geo = CVC.Labuv_GeoLuv(L)
+                GeoLuv = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
                 Lab = {"L":L[0], "a": L[1], "b": L[1], "H": L[3], "S": L[4], "C": L[6]}
                 Luv = {"L":L[0], "u": L[0], "v": L[7], "H": L[8], "S": L[9], "C": L[10]}    
-                Labuv.update({title: {'Lab': Lab, 'Luv': Luv}})
+                Labuv.update({title: {'Lab': Lab, 'Luv': Luv, 'GeoLuv': GeoLuv}})
         return Labuv
 
     def get_group(self, method) :

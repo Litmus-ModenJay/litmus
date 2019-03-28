@@ -43,12 +43,12 @@ class CVC():
         hue = HSLrgb[0]
         z = HSLrgb[2]
         if hue >= 180 :
-            longditude = hue - 360
+            longitude = hue - 360
         else:
-            longditude = hue
+            longitude = hue
         latitude = math.degrees(math.asin(2*z-1))
         radius = 2 * max([abs(rgb[0]-0.5), abs(rgb[1]-0.5), abs(rgb[2]-0.5)])
-        return (latitude, longditude, radius)
+        return (latitude, longitude, radius)
     
     @staticmethod
     def rgb_HSLV(rgb):
@@ -104,7 +104,7 @@ class CVC():
             x, y = 0, 0
         else :
             x, y = X / sum, Y / sum
-        return (X, Y, X, sum/3, x, y)
+        return (X, Y, Z, sum/3, x, y)
     @staticmethod
     def XYZ_Labuv(XYZ, illuminant):
         X, Y, Z = XYZ[0], XYZ[1], XYZ[2]
@@ -113,7 +113,7 @@ class CVC():
         elif illuminant == "D65 2" :
             Xn, Yn, Zn = 0.95047, 1.0000, 1.08883
         xn, yn = Xn / (Xn + Yn + Zn), Yn / (Xn + Yn + Zn)
-        un, vn = 4*xn / (-2*xn + 12*yn + 3), 9*yn / (-2*xn + 12*yn + 3)
+        un, vn = 4*xn / ((-2)*xn + 12*yn + 3), 9*yn / ((-2)*xn + 12*yn + 3)
         if X+Y+Z == 0:
             L = 0.0001
             a, b = 0, 0
@@ -155,12 +155,12 @@ class CVC():
         hue = Labuv[8]
         z = Labuv[0]
         if hue >= 180 :
-            longditude = hue - 360
+            longitude = hue - 360
         else:
-            longditude = hue
+            longitude = hue
         latitude = math.degrees(math.asin(2*z-1))
         radius = ((Labuv[0]-1/2)**2 + Labuv[6]**2 + Labuv[7]**2)**(1.0/2.0)
-        return (latitude, longditude, radius)
+        return (latitude, longitude, radius)
 
     @staticmethod
     def rgb_GEOluv(rgb, profile, illuminant):

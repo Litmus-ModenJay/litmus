@@ -1,5 +1,16 @@
 {% extends "base.html" %}
 
+{% block head %}
+<style>
+    #map { height: 515px; width:512px}
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        }
+</style>
+{% endblock %}
+
 {% block content %}
 
 <br>
@@ -79,6 +90,67 @@
             </div>
         {% endfor %}
     </div>
-</div>
+    <br>
+    <h5>Geo Map</h5>
+    <hr>
+    <div id="map"></div>
+</div>  
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr7uqzPRQYrFASLrIVkMbK8yCk6vbavtQ&callback=initMap"
+></script>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(function () {
+        $('#color_picker').colorpicker({
+            format: 'hex',
+        });
+        $('#color_picker').colorpicker().on('changeColor', function(e) {
+            document.getElementById("search_input").value = e.color.toHex().toUpperCase();
+
+        });
+    });
+</script>
+<script>
+    var map;
+    function initMap() {
+        var map_center = {lat: 0, lng: 150}; 
+        var map_right = {lat: 0, lng: 180};
+        var map = new google.maps.Map(document.getElementById('map'), {zoom: 1, center: map_center});
+        // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
+        
+        var locations = [
+            {% for key, value in colors.items %}
+            {% for litmus in value.data %}
+            ["{{litmus.id}}", {{litmus.geo.0}}, {{litmus.geo.1}}, "{{litmus.name.capitalize}}", "{{litmus.hexa}}", "all"],
+            {% endfor %}
+            {% endfor %}
+        
+        ]
+        for (var i = 0; i < locations.length; i++) {
+            var marker = new google.maps.Marker({ 
+                position: {lat: locations[i][1], lng: locations[i][2]}, 
+                map: map,
+                label: {
+                    color: 'black',
+                    fontWeight: 'bold',
+                    fontSize: '11px',
+                    text: locations[i][3]
+                },
+                icon: {
+                    path: google.maps.SymbolPath.CIRCLE,
+                    scale : 6,
+                    strokeWeight : 2,
+                    fillColor: locations[i][4],
+                    fillOpacity: 1.0,
+                    strokeColor: 'gray',
+                    // anchor: new google.maps.Point(0, 0),
+                    labelOrigin: new google.maps.Point(0, 2)
+                },
+            }); 
+        }
+    }
+</script>
 
 {% endblock %}

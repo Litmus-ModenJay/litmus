@@ -59,10 +59,12 @@ class ColorVector():
                 title = profile + " " + illuminant
                 XYZ = CVC.rgb_XYZ(self.rgb, profile)
                 L= CVC.XYZ_Labuv(XYZ, illuminant)
+                Lab = {"L":L[0], "a": L[1], "b": L[2], "H": L[3], "S": L[4], "C": L[5]}
+                Luv = {"L":L[0], "u": L[6], "v": L[7], "H": L[8], "S": L[9], "C": L[10]}
                 geo = CVC.Labuv_GeoLuv(L)
                 GeoLuv = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
-                Lab = {"L":L[0], "a": L[1], "b": L[2], "H": L[3], "S": L[4], "C": L[5]}
-                Luv = {"L":L[0], "u": L[6], "v": L[7], "H": L[8], "S": L[9], "C": L[10]}    
+                geo = CVC.Labuv_GeoLab(L)
+                GeoLab = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
                 Labuv.update({title: {'Lab': Lab, 'Luv': Luv, 'GeoLuv': GeoLuv}})
         return Labuv
 

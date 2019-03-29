@@ -163,11 +163,30 @@ class CVC():
         return (latitude, longitude, radius)
 
     @staticmethod
+    def Labuv_GeoLab(Labuv):
+        hue = Labuv[3]
+        z = Labuv[0]
+        if hue >= 180 :
+            longitude = hue - 360
+        else:
+            longitude = hue
+        latitude = math.degrees(math.asin(2*z-1))
+        radius = ((Labuv[0]-1/2)**2 + Labuv[1]**2 + Labuv[2]**2)**(1.0/2.0)
+        return (latitude, longitude, radius)
+
+    @staticmethod
     def rgb_GEOluv(rgb, profile, illuminant):
         XYZ = CVC.rgb_XYZ(rgb, profile)
         Labuv = CVC.XYZ_Labuv(XYZ, illuminant)
         GeoLuv = CVC.Labuv_GeoLuv(Labuv)
         return GeoLuv
+
+    @staticmethod
+    def rgb_GEOlab(rgb, profile, illuminant):
+        XYZ = CVC.rgb_XYZ(rgb, profile)
+        Labuv = CVC.XYZ_Labuv(XYZ, illuminant)
+        GeoLab = CVC.Labuv_GeoLab(Labuv)
+        return GeoLab
     
     @staticmethod
     def F(value):

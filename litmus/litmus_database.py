@@ -22,7 +22,8 @@ class Litmus():
                     'hexa':hexa,
                     'rgb': rgb,
                     # 'geo': CVC.rgb_GEOrgb(rgb),
-                    'geo': CVC.rgb_GEOluv(rgb, profile='sRGB', illuminant='D65 2'),
+                    # 'geo': CVC.rgb_GEOluv(rgb, profile='sRGB', illuminant='D65 2'),
+                    'geo': CVC.rgb_GEOlab(rgb, profile='Adobe RGB', illuminant='D65 2'),
                     'group':CVC.rgb_group(rgb),
                     'depth':CVC.rgb_depth(rgb)
                     })

@@ -4,7 +4,7 @@ from .color_space import CVC
 class ColorVector():
     def __init__(self, hexa) :
         self.profile = ["sRGB", "Adobe RGB", "CIE RGB"]
-        self.illuminant = ["D50 2", "D65 2"]
+        self.illuminant = ["D50 2", "D65 2", "E"]
         self.hexa = hexa
         self.rgb = CVC.hexa_rgb(hexa)
         self.RGB=  self.get_RGB()
@@ -65,7 +65,7 @@ class ColorVector():
                 GeoLuv = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
                 geo = CVC.Labuv_GeoLab(L)
                 GeoLab = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
-                Labuv.update({title: {'Lab': Lab, 'Luv': Luv, 'GeoLuv': GeoLuv}})
+                Labuv.update({title: {'Lab': Lab, 'Luv': Luv, 'GeoLuv': GeoLuv, 'GeoLab': GeoLab}})
         return Labuv
 
     def get_group(self, method) :

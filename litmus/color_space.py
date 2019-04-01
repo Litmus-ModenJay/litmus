@@ -37,18 +37,20 @@ class CVC():
         else : 
             saturation = chroma / z
         return (hue, saturation, z, chroma)
+
     @staticmethod
     def rgb_GEOrgb(rgb):
         HSLrgb= CVC.rgb_HSLrgb(rgb)
         hue = HSLrgb[0]
-        z = HSLrgb[2]
+        z = HSLrgb[2] * 2 - 1
+        c = HSLrgb[3]
+        radius = (z**2 + c**2)**0.5
+        theta = z / radius
         if hue >= 180 :
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(2*z-1))
-        radius = 2 * max([abs(rgb[0]-0.5), abs(rgb[1]-0.5), abs(rgb[2]-0.5)])
-        return (latitude, longitude, radius)
+        latitude = math.degrees(math.asin(theta))*0.99
     
     @staticmethod
     def rgb_HSLV(rgb):
@@ -73,6 +75,22 @@ class CVC():
             else:
                 sv = 0
         return (hue, sl, light, sv, maximum, delta)
+
+    @staticmethod
+    def rgb_GEOHSL(rgb):
+        HSLV= CVC.rgb_HSLV(rgb)
+        hue = HSLV[0]
+        z = HSLV[2] * 2 -1
+        c = HSLV[5]
+        radius = (z**2 + c**2)**0.5
+        theta = z / radius
+        if hue >= 180 :
+            longitude = hue - 360
+        else:
+            longitude = hue
+        latitude = math.degrees(math.asin(theta)) * 0.99
+        return (latitude, longitude, radius)
+
     @staticmethod
     def rgb_CMYK(rgb):
         r, g, b = rgb[0], rgb[1], rgb[2]
@@ -84,6 +102,7 @@ class CVC():
             m = (1 - g - k) / (1 - k)
             y = (1 - b - k) / (1 - k)
         return (c, m, y, k)
+
     @staticmethod
     def rgb_XYZ(rgb, profile):
         r, g, b = rgb[0], rgb[1], rgb[2]
@@ -112,6 +131,8 @@ class CVC():
             Xn, Yn, Zn = 0.966797, 1.0000, 0.825188
         elif illuminant == "D65 2" :
             Xn, Yn, Zn = 0.95047, 1.0000, 1.08883
+        elif illuminant == "E" :
+            Xn, Yn, Zn = 1.0000, 1.0000, 1.0000
         xn, yn = Xn / (Xn + Yn + Zn), Yn / (Xn + Yn + Zn)
         un, vn = 4*xn / ((-2)*xn + 12*yn + 3), 9*yn / ((-2)*xn + 12*yn + 3)
         if X+Y+Z == 0:
@@ -153,25 +174,32 @@ class CVC():
     @staticmethod
     def Labuv_GeoLuv(Labuv):
         hue = Labuv[8]
-        z = Labuv[0]
+        z = Labuv[0]*2 -1
+        c = Labuv[10]
+        radius = (z**2 + c**2)**0.5
+        theta = z / radius
         if hue >= 180 :
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(2*z-1))
-        radius = ((Labuv[0]-1/2)**2 + Labuv[6]**2 + Labuv[7]**2)**(1.0/2.0)
+        latitude = math.degrees(math.asin(theta)) *0.99
+        # radius = ((Labuv[0]-1/2)**2 + Labuv[6]**2 + Labuv[7]**2)**(1.0/2.0)
         return (latitude, longitude, radius)
 
     @staticmethod
     def Labuv_GeoLab(Labuv):
         hue = Labuv[3]
-        z = Labuv[0]
+        z = Labuv[0]*2 -1
+        c = Labuv[5]
+        radius = (z**2 + c**2)**0.5
+        theta = z / radius
         if hue >= 180 :
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(2*z-1))
-        radius = ((Labuv[0]-1/2)**2 + Labuv[1]**2 + Labuv[2]**2)**(1.0/2.0)
+        latitude = math.degrees(math.asin(theta)) *0.99
+
+        # radius = ((Labuv[0]-1/2)**2 + Labuv[1]**2 + Labuv[2]**2)**(1.0/2.0)
         return (latitude, longitude, radius)
 
     @staticmethod

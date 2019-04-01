@@ -2,7 +2,7 @@
 
 {% block head %}
 <style>
-    #map { height: 550px; width:900px}
+    #map { height: 600px; width:900px}
     html, body {
         height: 100%;
         margin: 0;
@@ -115,7 +115,7 @@
 <script>
     var map;
     function initMap() {
-        var map_center = {lat: 37, lng: 130}; 
+        var map_center = {lat: 35, lng: 125}; 
         var map = new google.maps.Map(document.getElementById('map'), {zoom: 1.6, center: map_center});
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
         

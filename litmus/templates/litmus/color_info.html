@@ -115,6 +115,11 @@
                         H {{value.Luv.H|floatformat:2}}&ensp; C {{value.Luv.C|floatformat:4}}&ensp; S {{value.Luv.S|floatformat:4}}</td></tr>
                 {% endfor %}
                 {% for key, value in vector.Labuv.items %}
+                <tr><td>{% if forloop.counter == 1 %}GeoLab {% endif %}</td>
+                    <td>{{key}}&deg; &ensp; </td>
+                    <td>Latitude {{value.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLab.Long|floatformat:2}}&ensp; Radius {{value.GeoLab.Radius|floatformat:4}}</td></tr> 
+                {% endfor %}
+                {% for key, value in vector.Labuv.items %}
                 <tr><td>{% if forloop.counter == 1 %}GeoLuv {% endif %}</td>
                     <td>{{key}}&deg; &ensp; </td>
                     <td>Latitude {{value.GeoLuv.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLuv.Long|floatformat:2}}&ensp; Radius {{value.GeoLuv.Radius|floatformat:4}}</td></tr> 
@@ -203,8 +208,7 @@
 <script>
     var map;
     function initMap() {
-        var map_center = {lat: 0, lng: 150}; 
-        var map_right = {lat: 0, lng: 180};
+        var map_center = {lat: 35, lng: 130}; 
         var map = new google.maps.Map(document.getElementById('map'), {zoom: 1, center: map_center});
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
         

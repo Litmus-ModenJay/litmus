@@ -20,10 +20,11 @@ class Litmus():
                     'id':index, 
                     'name':value['name'], 
                     'hexa':hexa,
-                    'rgb': rgb,
+                    'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),
-                    # 'geo': CVC.rgb_GEOluv(rgb, profile='sRGB', illuminant='D65 2'),
-                    'geo': CVC.rgb_GEOlab(rgb, profile='Adobe RGB', illuminant='D65 2'),
+                    # 'geo': CVC.rgb_GEOHSL(rgb),
+                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='E'),
+                    'geo': CVC.rgb_GEOlab(rgb, profile='CIE RGB', illuminant='E'),
                     'group':CVC.rgb_group(rgb),
                     'depth':CVC.rgb_depth(rgb)
                     })

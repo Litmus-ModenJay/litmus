@@ -50,7 +50,8 @@ class CVC():
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(theta))*0.99
+        latitude = math.degrees(math.asin(z))
+        return (latitude, longitude, radius)
     
     @staticmethod
     def rgb_HSLV(rgb):
@@ -88,7 +89,7 @@ class CVC():
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(theta)) * 0.99
+        latitude = math.degrees(math.asin(z)) * 0.99
         return (latitude, longitude, radius)
 
     @staticmethod
@@ -182,7 +183,7 @@ class CVC():
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(theta)) *0.99
+        latitude = math.degrees(math.asin(z)) 
         # radius = ((Labuv[0]-1/2)**2 + Labuv[6]**2 + Labuv[7]**2)**(1.0/2.0)
         return (latitude, longitude, radius)
 
@@ -197,7 +198,7 @@ class CVC():
             longitude = hue - 360
         else:
             longitude = hue
-        latitude = math.degrees(math.asin(theta)) *0.99
+        latitude = math.degrees(math.asin(z))
 
         # radius = ((Labuv[0]-1/2)**2 + Labuv[1]**2 + Labuv[2]**2)**(1.0/2.0)
         return (latitude, longitude, radius)

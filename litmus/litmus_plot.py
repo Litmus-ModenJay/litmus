@@ -20,9 +20,9 @@ def plot_RGB(plotdata):
                 x=[item['litmus']['rgb'][0]],
                 y=[item['litmus']['rgb'][1]],
                 z=[item['litmus']['rgb'][2]],
-                name = pointname.capitalize(),
+                name = pointname,
                 mode='markers + text', 
-                text= pointname.capitalize(),      
+                text= pointname,      
                 marker=dict(
                     size = pointsize,
                     color= item['litmus']['hexa'],

@@ -49,10 +49,10 @@
             <div class="card" style="width: 16rem; height: 15rem;">
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
                     {% if litmus.depth == "dark" %}
-                    <h5 class="card-title" style="color:white">{{litmus.name.capitalize}}</h5>
+                    <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
                     <h6 style="color:white">{{litmus.hexa}}</h6>  
                     {% else %}
-                    <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name.capitalize}}</h5>
+                    <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name}}</h5>
                     <h6 style="color:black">{{litmus.hexa}}</h6> 
                     {% endif %}                  
                 </div> 
@@ -61,9 +61,9 @@
             <div class="container">
                 <table class="table-condensed" style="font-size:small; font-weight:bold">
                     <tr><td>Color Group &ensp;</td>
-                        <td>{{litmus.group.capitalize}}</td></tr>
+                        <td>{{litmus.group}}</td></tr>
                     <tr><td>Color Depth &ensp;</td>
-                        <td>{{litmus.depth.capitalize}}</td></tr>
+                        <td>{{litmus.depth}}</td></tr>
                 </table>
                 <br>
             </div> 
@@ -140,13 +140,13 @@
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name.capitalize|slice:':17' }}
+                    {{ item.litmus.name|slice:':17' }}
                 </a></p>
             {% else %}
                 <p><a class="btn btn-default btn-block border-light font-weight-bold"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name.capitalize|slice:':17' }}
+                    {{ item.litmus.name|slice:':17' }}
                 </a></p>
             {% endif %}
         </div>
@@ -163,13 +163,13 @@
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name.capitalize|slice:':15' }}<br>d={{item.distance|floatformat:4}}
+                    {{ item.litmus.name|slice:':15' }}<br>d={{item.distance|floatformat:4}}
                 </a></p>
             {% else %}
                 <p><a class="btn btn-default btn-block border-light font-weight-bold"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name.capitalize|slice:':15' }}<br>d={{item.distance|floatformat:4}}
+                    {{ item.litmus.name|slice:':15' }}<br>d={{item.distance|floatformat:4}}
                 </a></p>
             {% endif %}
         </div>
@@ -215,19 +215,19 @@
         var locations = [
             {% if search.identicals.count %}
             {% for item in search.identicals.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name.capitalize}}", "{{item.litmus.hexa}}", "identicals"],
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "identicals"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
             {% endfor%}
             {% endif %}
             {% if search.neighbors.count %}
             {% for item in search.neighbors.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name.capitalize}}", "{{item.litmus.hexa}}", "neighbors"],
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "neighbors"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
             {% endfor%}
             {% endif %}
             {% if search.matches.count %}
             {% for item in search.matches.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name.capitalize}}", "{{item.litmus.hexa}}", "matches"],
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "matches"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
             {% endfor%}
             {% endif %}

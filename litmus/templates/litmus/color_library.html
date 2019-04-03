@@ -75,13 +75,13 @@
                         <p><a class="btn btn-primary btn-block border-light"
                             style="width: 80px; height: 40px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{litmus.hexa}};"
                             href="{% url 'litmus:colorInfo' pk=litmus.id %}">
-                            {{ litmus.name.capitalize|slice:':12' }}
+                            {{ litmus.name|slice:':12' }}
                         </a></p>
                     {% else %}
                         <p><a class="btn btn-default btn-block border-light font-weight-bold"
                             style="width: 80px; height: 40px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{litmus.hexa}}"
                             href="{% url 'litmus:colorInfo' pk=litmus.id %}">
-                            {{ litmus.name.capitalize|slice:':12' }}
+                            {{ litmus.name|slice:':12' }}
                         </a></p>
                     {% endif %}
                 </div>
@@ -122,7 +122,7 @@
         var locations = [
             {% for key, value in colors.items %}
             {% for litmus in value.data %}
-            ["{{litmus.id}}", {{litmus.geo.0}}, {{litmus.geo.1}}, "{{litmus.name.capitalize}}", "{{litmus.hexa}}", "all"],
+            ["{{litmus.id}}", {{litmus.geo.0}}, {{litmus.geo.1}}, "{{litmus.name}}", "{{litmus.hexa}}", "all"],
             {% endfor %}
             {% endfor %}
         

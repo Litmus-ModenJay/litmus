@@ -11,14 +11,15 @@ class Litmus():
     @classmethod
     def initialize(cls, method):
         if method == "Json":
-            with open("static/secret/litmus.json") as f:
+            with open("static/secret/Litmus 20190403.json") as f:
                 dj = json.loads(f.read())
-            for index, value in enumerate(dj['Default']):
-                hexa = value['index']
+            # for index, value in enumerate(dj['Default']):
+            for index, value in enumerate(dj):
+                hexa = value['Hexa']
                 rgb = CVC.hexa_rgb(hexa)
                 cls.db.append({
                     'id':index, 
-                    'name':value['name'], 
+                    'name':value['Name'], 
                     'hexa':hexa,
                     'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),

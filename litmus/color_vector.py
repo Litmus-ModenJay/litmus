@@ -4,7 +4,7 @@ from .color_space import CVC
 class ColorVector():
     def __init__(self, hexa) :
         self.profile = ["sRGB", "Adobe RGB", "CIE RGB"]
-        self.illuminant = ["D50 2", "D65 2", "E"]
+        self.illuminant = ["D50 2", "D65 2"]
         self.hexa = hexa
         self.rgb = CVC.hexa_rgb(hexa)
         self.RGB=  self.get_RGB()

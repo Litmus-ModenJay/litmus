@@ -22,7 +22,8 @@ def litmus(request):
     sign_out = url_sign_out(uri_out)
     MSlogin.redirect = {'login':uri_in, 'logout': uri_out}
     MSlogin.urls = {'login':sign_in, 'logout': sign_out}
-    return redirect('litmus:main')
+    return redirect(sign_in)
+    #return redirect('litmus:main')
 
 def main(request):
     

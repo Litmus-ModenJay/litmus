@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load static %}
+
 {% block head %}
 <style>
     #map { height: 425px; }
@@ -15,20 +17,10 @@
 
 <div class="container-fluid text-center" style="text-align:center; padding:100px">
     <!-- Title -->
-    <h3><span style="color:royalblue">S</span>
-        <span style="color:orange">e</span>
-        <span style="color:seagreen">a</span>
-        <span style="color:firebrick">r</span>
-        <span style="color:midnightblue">c</span>
-        <span style="color:saddlebrown">h </span>
-        <span style="color:magenta">  &ensp; C</span>
-        <span style="color:gold">o</span>
-        <span style="color:lightskyblue">l</span>
-        <span style="color:orangered">o</span>
-        <span style="color:green">r</span>
-        <span style="color:dodgerblue">s</span></h3>
+    <img src="{% static 'icon/Color Studio-Litmus Project(title)-20190404.jpg' %}" style="width: 38%; height: auto;" alt="Search Colors"/>
+
     <!-- Search with Color Picker-->
-    <br><br>
+    <br><br><br><br>
     <form class="form-inline justify-content-center"  action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
         {% csrf_token %}
         <div class="form-group" >
@@ -40,34 +32,6 @@
 </div>
 
 <div class="container-fluid text-center" style="text-align:center; padding:50px">
-    <p>{{ count }}</p>
 </div>
-<br>
-<div class="container-fluid text-center" id="map""></div>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr7uqzPRQYrFASLrIVkMbK8yCk6vbavtQ&callback=initMap"
-></script>
-
-{% endblock %}
-
-{% block scripts %}
-<script>
-    $(function () {
-        $('#color_picker').colorpicker({
-            format: 'hex',
-        });
-        $('#color_picker').colorpicker().on('changeColor', function(e) {
-            document.getElementById("search_input").value = e.color.toHex().toUpperCase();
-
-        });
-    });
-</script>
-<script>
-    var map;
-    function initMap() {
-        var uluru = {lat: -25.344, lng: 131.036};
-        var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: uluru});
-        var marker = new google.maps.Marker({position: uluru, map: map});
-    }
-</script>
 
 {% endblock %}

@@ -1,3 +1,5 @@
+20190405 Supernova 컨셉 수립, proximity 계산 및 plot 과 geo map 표시
+20190404 Deploy 버전 정돈 (최초)
 20190328 Geo Map 기능 구현
 20190326 MSlogin 기능 구현, 컬러 버튼 리스트 방법 변경
 20190322 Litmus Project v0.2 시작

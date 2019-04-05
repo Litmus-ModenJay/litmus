@@ -7,7 +7,7 @@ import os
 import json
 import math
 from .litmus_database import Litmus
-from .litmus_search import is_hexa, search_by_hexa, search_by_name
+from .litmus_search import is_hexa, search_by_hexa, search_by_name, search_color
 from .color_vector import ColorVector
 from .litmus_plot import plot_RGB
 from .ms_login import MSlogin
@@ -29,15 +29,10 @@ def main(request):
     
     if request.method == "POST":
         word = request.POST['search']
-        if len(word):
-            hexa = is_hexa(word)
-            if hexa:
-                search = search_by_hexa(hexa, radius=0.1)
-            else:
-                search = search_by_name(word)
+        if len(word) > 1:
+            search = search_color(word)
             plot = plot_RGB(search)
             check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-            # geo_key = '{0}{1}{2}'.format('https://maps.googleapis.com/maps/api/js?key=', GOOGLE_MAPS_API_KEY_LITMUS, '&callback=initMap')
             context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
     
@@ -51,16 +46,11 @@ def colorSearch(request):
     word = ""
     if request.method == "POST":
         word = request.POST['search']
-        if len(word):
-            hexa = is_hexa(word)
-            if hexa:
-                search = search_by_hexa(hexa, radius=0.1)
-            else:
-                search = search_by_name(word)
+        if len(word) > 1:
+            search = search_color(word)
             plot = plot_RGB(search)
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-    test = ["aaa", "bbb"]
-    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot, 'test':test}
+    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 

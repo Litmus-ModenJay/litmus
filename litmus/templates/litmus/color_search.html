@@ -54,7 +54,7 @@
         <hr>
         {% for item in search.identicals.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "dark" %}
+            {% if item.litmus.depth == "Dark" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -78,7 +78,7 @@
         <hr>
         {% for item in search.neighbors.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "dark" %}
+            {% if item.litmus.depth == "Dark" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -102,7 +102,7 @@
         <hr>
         {% for item in search.matches.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "dark" %}
+            {% if item.litmus.depth == "Dark" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -156,6 +156,10 @@
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
         
         var locations = [
+            {% for item in search.supernovas.list %}
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "supernovass"],
+                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
+            {% endfor%}
             {% if search.identicals.count %}
             {% for item in search.identicals.list %}
                 ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "identicals"],

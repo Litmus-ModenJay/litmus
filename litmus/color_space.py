@@ -3,14 +3,24 @@ import math
 # Color Vector Conversion & Classification
 class CVC():
     @staticmethod
+    def supernova():
+        return [('Red','#FF0000'), ('Orange', '#FF7F00'), ('Yellow', '#FFFF00'), 
+            ('Green', '#00FF00'), ('Cyan', '#00FFFF'), ('Blue', '#0000FF'), 
+            ('Purple', '#800080'), ('Pink', '#FFC0CB'), ('Brown', '#964800'), 
+            ('White', '#FFFFFF'), ('Gray', '#808080'), ('Black', '#000000')]
+    
+    @staticmethod
     def hexa_RGB(hexa):
         return tuple(int(hexa[2*i+1:2*i+3], 16) for i in range(0,3))
+
     @staticmethod
     def hexa_rgb(hexa):
         return tuple(float(int(hexa[2*i+1:2*i+3], 16))/255 for i in range(0,3))
+    
     @staticmethod
     def RGB_rgb(RGB):
         return tuple(float(RGB[i])/255 for i in range(0,3))
+    
     @staticmethod
     def rgb_parameters(rgb):
         summation = sum(rgb)
@@ -225,92 +235,105 @@ class CVC():
         else:
             transform = value / 3 / (delta**2.0) + 4 / 29
         return transform
-    
+
+    @staticmethod
+    def supernova_group(rgb):
+        proximity = 2.0
+        for star in CVC.supernova():
+            s_rgb = CVC.hexa_rgb(star[1])
+            d =  ((s_rgb[0]-rgb[0])**2 + (s_rgb[1]-rgb[1])**2 + (s_rgb[2]-rgb[2])**2)**0.5
+            if d < proximity:
+                proximity = d
+                name = star[0]
+        return name
+
+    @staticmethod
+    def rgb_depth(rgb) :
+        L = CVC.rgb_HSLrgb(rgb)[2]
+        depth = ''
+        if L >= 0.75 :
+            depth = "Light"
+        elif L >= 0.5 :
+            depth = "Soft"
+        elif L >= 0.25 :
+            depth = "Deep"
+        else :
+            depth = "Dark"
+        return depth
+
     @staticmethod
     def rgb_group(rgb):
         HSL = CVC.rgb_HSLrgb(rgb)
         H, L, C = HSL[0], HSL[2], HSL[3]
         group = ''
         if L > 0.9 :
-            group = "white"
+            group = "White"
         elif L < 0.1 :
-            group = "black"
+            group = "Black"
         else :
             if C < 0.1 :
-                group = "gray"
+                group = "Gray"
             else :
                 if H >= 15 and H < 45 :
                     if L >= 0.4 :
-                        group = "orange"
+                        group = "Orange"
                     else :
-                        group = "brown"
+                        group = "Brown"
                 elif H >= 45 and H < 75 :
-                    group = "yellow"
+                    group = "Yellow"
                 elif H >= 75 and H < 105 :
                     if L >= 0.5 :
                         if H >= 90 :
-                            group = "green"
+                            group = "Green"
                         else :
-                            group = "yellow"
+                            group = "Yellow"
                     else :
-                        group = "green"
+                        group = "Green"
                 elif H >= 105 and H < 135 :
-                    group = "green"
+                    group = "Green"
                 elif H >= 135 and H < 165 :
                     if L >= 0.5 :
-                        group = "cyan"
+                        group = "Cyan"
                     else :
-                        group = "green"
+                        group = "Green"
                 elif H >= 165 and H < 195 :
                     if L < 0.5 :
                         if H >= 180 :
-                            group = "blue"
+                            group = "Blue"
                         else :
-                            group = "green"
+                            group = "Green"
                     else :
-                        group = "cyan"
+                        group = "Cyan"
                 elif H >= 195 and H < 225 :
                     if L >= 0.5 :
-                        group = "cyan"
+                        group = "Cyan"
                     else :
-                        group = "blue"
+                        group = "Blue"
                 elif H >= 225 and H < 255 :
-                    group = "blue"
+                    group = "Blue"
                 elif H >= 255 and H < 285 :
                     if L >= 0.5 :
-                        group = "purple"
+                        group = "Purple"
                     else :
-                        group = "blue"
+                        group = "Blue"
                 elif H >= 285 and H < 315 :
                     if L < 0.7 :
-                        group = "purple"
+                        group = "Purple"
                     else :
-                        group = "pink"
+                        group = "Pink"
                 elif H >= 315 and H < 345 :
                     if L < 0.7 :
                         if H >= 330 :
-                            group = "red"
+                            group = "Red"
                         else :
-                            group = "purple"
+                            group = "Purple"
                     else :
-                        group = "pink"
+                        group = "Pink"
                 else :
                     if L < 0.7 :
-                        group = "red"
+                        group = "Red"
                     else :
-                        group = "pink"
+                        group = "Pink"
         return group 
-    @staticmethod
-    def rgb_depth(rgb) :
-        L = CVC.rgb_HSLrgb(rgb)[2]
-        depth = ''
-        if L >= 0.75 :
-            depth = "light"
-        elif L >= 0.5 :
-            depth = "soft"
-        elif L >= 0.25 :
-            depth = "deep"
-        else :
-            depth = "dark"
-        return depth
+
     

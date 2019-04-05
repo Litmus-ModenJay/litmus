@@ -8,6 +8,7 @@ def search_color(word):
         search = search_by_hexa(hexa, radius)
     else:
         search = search_by_name(word)
+    search.update({'supernovas':{'count':len(Litmus.supernovas), 'list':Litmus.supernovas}})
     return search
 
 def search_by_hexa(hexa, radius):

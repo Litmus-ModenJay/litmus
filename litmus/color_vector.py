@@ -12,10 +12,13 @@ class ColorVector():
         self.CMYK =  self.get_CMYK()
         self.XYZ =  self.get_XYZ()
         self.Labuv =  self.get_Labuv()
+        self.proximity = self.get_proximity('rgb')
         self.group = self.get_group('rgb')
         self.depth = self.get_depth('rgb')
-        self.all = {'hexa':self.hexa, 'rgb':self.rgb, 'RGB': self.RGB, 'HSLV': self.HSLV, 'CMYK': self.CMYK, 
-                    'XYZ':self.XYZ, 'Labuv':self.Labuv, 'group':self.group, 'depth':self.depth}
+        self.all = {'hexa':self.hexa, 'rgb':self.rgb, 'RGB': self.RGB, 
+                    'HSLV': self.HSLV, 'CMYK': self.CMYK, 
+                    'XYZ':self.XYZ, 'Labuv':self.Labuv, 
+                    'proximity':self.proximity,'group':self.group, 'depth':self.depth}
         
     def get_RGB(self):
         # from hexa to RGB & rgb
@@ -67,6 +70,17 @@ class ColorVector():
                 GeoLab = {"Lati": geo[0], "Long": geo[1], "Radius": geo[2]}
                 Labuv.update({title: {'Lab': Lab, 'Luv': Luv, 'GeoLuv': GeoLuv, 'GeoLab': GeoLab}})
         return Labuv
+    
+    def get_proximity(self, method):
+        if method == 'rgb' :
+            proximity = []
+            for star in CVC.supernova():
+                rgb = CVC.hexa_rgb(star[1])
+                distance = ((self.rgb[0]-rgb[0])**2 + (self.rgb[1]-rgb[1])**2 + (self.rgb[2]-rgb[2])**2)**0.5
+                proximity.append({'name':star[0], 'hexa':star[1], 'distance':distance})
+            return proximity
+
+        return proximity
 
     def get_group(self, method) :
         if method == 'rgb' :

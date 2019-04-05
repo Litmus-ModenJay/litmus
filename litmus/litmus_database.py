@@ -5,9 +5,10 @@ from .color_space import CVC
 
 class Litmus():
     db = []
-    group = ['red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'purple', 'pink', 'brown', 'white', 'gray', 'black']
-    depth = ['light', 'soft', 'deep', 'dark']
-    
+    group = ['Red', 'Orange', 'Yellow', 'Green', 'cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
+    depth = ['Light', 'Soft', 'Deep', 'Dark']
+    supernovas = []
+
     @classmethod
     def initialize(cls, method):
         if method == "Json":
@@ -15,20 +16,25 @@ class Litmus():
                 dj = json.loads(f.read())
             # for index, value in enumerate(dj['Default']):
             for index, value in enumerate(dj):
+                name = value['Name']
                 hexa = value['Hexa']
                 rgb = CVC.hexa_rgb(hexa)
-                cls.db.append({
+                litmus = {
                     'id':index, 
-                    'name':value['Name'], 
+                    'name':name, 
                     'hexa':hexa,
                     'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),
                     # 'geo': CVC.rgb_GEOHSL(rgb),
-                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='E'),
-                    'geo': CVC.rgb_GEOlab(rgb, profile='CIE RGB', illuminant='E'),
+                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='D65 2'),
+                    'geo': CVC.rgb_GEOlab(rgb, profile='CIE RGB', illuminant='D65 2'),
                     'group':CVC.rgb_group(rgb),
                     'depth':CVC.rgb_depth(rgb)
-                    })
+                    }
+                for star in CVC.supernova():
+                    if name == star[0]:
+                        cls.supernovas.append({'id':index, 'case':'supernovas', 'litmus':litmus})
+                cls.db.append(litmus)
             return
 
     @staticmethod
@@ -42,8 +48,8 @@ class Litmus():
     @staticmethod
     def classify_by_group(sort, order):
         db = {}
-        for group in Litmus.group:
-            db.update({group: {'count':0, 'data':[] }})
+        for star in CVC.supernova():
+            db.update({star[0]: {'count':0, 'data':[] }})
         for litmus in Litmus.db:
             group = litmus['group']
             db[group]['count'] = db[group]['count'] + 1

@@ -2,7 +2,7 @@ import math
 from .color_space import CVC
 # Two Color Operation
 
-class CO2():
+class CVO():
     @staticmethod
     def distance_rgb(hexa1, hexa2):
         rgb1 = CVC.hexa_rgb(hexa1)

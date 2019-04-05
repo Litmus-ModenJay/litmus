@@ -45,10 +45,10 @@
 <br>
 <div class="container">
     <div class="row content">
-        <div class="col-sm-4 "> 
-            <div class="card" style="width: 16rem; height: 15rem;">
+        <div class="col-sm-3 "> 
+            <div class="card" style="width: 12rem; height: 12rem;">
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
-                    {% if litmus.depth == "dark" %}
+                    {% if litmus.depth == "Dark" %}
                     <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
                     <h6 style="color:white">{{litmus.hexa}}</h6>  
                     {% else %}
@@ -68,7 +68,7 @@
                 <br>
             </div> 
         </div>
-        <div class="col-sm-8 text-left"> 
+        <div class="col-sm-9 text-left"> 
             <h5>Color Coordinates</h5>
             <hr>
             <table class="table-condensed" style="font-size:small; ">
@@ -115,12 +115,12 @@
                         H {{value.Luv.H|floatformat:2}}&ensp; C {{value.Luv.C|floatformat:4}}&ensp; S {{value.Luv.S|floatformat:4}}</td></tr>
                 {% endfor %}
                 {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}GeoLab {% endif %}</td>
+                <tr><td>{% if forloop.counter == 1 %}GeoLab &ensp; &ensp;{% endif %}</td>
                     <td>{{key}}&deg; &ensp; </td>
                     <td>Latitude {{value.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLab.Long|floatformat:2}}&ensp; Radius {{value.GeoLab.Radius|floatformat:4}}</td></tr> 
                 {% endfor %}
                 {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}GeoLuv {% endif %}</td>
+                <tr><td>{% if forloop.counter == 1 %}GeoLuv &ensp; &ensp;{% endif %}</td>
                     <td>{{key}}&deg; &ensp; </td>
                     <td>Latitude {{value.GeoLuv.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLuv.Long|floatformat:2}}&ensp; Radius {{value.GeoLuv.Radius|floatformat:4}}</td></tr> 
                 {% endfor %}
@@ -132,11 +132,11 @@
 <div class="container">
     {% if search.identicals.count > 1 %}
         <br>
-        <h5>Colors Identical to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h5>
+        <h5>Identical Colors <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h5>
         <hr>
         {% for item in search.identicals.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "dark" %}
+            {% if item.litmus.depth == "Dark" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -155,11 +155,11 @@
     {% endif %}
     {% if search.neighbors.count %}
         <br>
-        <h5>Colors Neighbor to "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h5>
+        <h5>Neighbor Colors" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h5>
         <hr>
         {% for item in search.neighbors.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "dark" %}
+            {% if item.litmus.depth == "Dark" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -176,6 +176,27 @@
         {% endfor %}
         <br><br>
     {% endif %}
+        <br>
+        <h5>Proximity</h5>
+        <hr>
+        {% for item in vector.proximity %}
+        <div style="display: inline-block;">
+            {% if item.name == "Black" or item.name == "Purple" or item.name == "Brown"%}
+                <p><a class="btn btn-primary btn-block border-light"
+                    style="width: 90px; height: 90px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.hexa}};">
+                    {{ item.name }}<br>
+                    {{ item.distance|floatformat:4 }}
+                </a></p>
+            {% else %}
+                <p><a class="btn btn-default btn-block border-light font-weight-bold"
+                    style="width: 90px; height: 90px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.hexa}}">
+                    {{ item.name }}<br>
+                    {{ item.distance|floatformat:4 }}
+                </a></p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <br><br>
     {% if search.neighbors.count %}
         <br>
         <h5>Plot in RGB Space</h5>

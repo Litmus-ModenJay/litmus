@@ -1,9 +1,9 @@
 # import numpy as np
 import plotly.graph_objs as go
 from plotly.offline import plot
+from .litmus_database import Litmus 
 
 def plot_RGB(plotdata):
-
     data = []
     keys = plotdata.keys()
     for key in keys :
@@ -12,6 +12,9 @@ def plot_RGB(plotdata):
             if item['case'] == 'identicals' :
                 pointsize = 14
                 pointsymbol = 'square'
+            elif item['case'] == 'supernovas':
+                pointsize = 10
+                pointsymbol = 'diamond'
             else :
                 pointsize = 6
                 pointsymbol = 'circle'

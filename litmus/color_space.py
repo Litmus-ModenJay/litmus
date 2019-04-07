@@ -235,7 +235,7 @@ class CVC():
         else:
             transform = value / 3 / (delta**2.0) + 4 / 29
         return transform
-
+"""
     @staticmethod
     def supernova_group(rgb):
         proximity = 2.0
@@ -335,5 +335,5 @@ class CVC():
                     else :
                         group = "Pink"
         return group 
-
+"""
     

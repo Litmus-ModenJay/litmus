@@ -8,34 +8,35 @@ def search_color(word):
         search = search_by_hexa(hexa, radius)
     else:
         search = search_by_name(word)
-    search.update({'supernovas':{'count':len(Litmus.supernovas), 'list':Litmus.supernovas}})
+    search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
+    search.update({'giant':{'count':len(Litmus.giant), 'list':Litmus.giant}})
     return search
 
 def search_by_hexa(hexa, radius):
     me = CVC.hexa_rgb(hexa)
-    identicals = []
-    neighbors = []
+    identical = []
+    neighbor = []
     for litmus in Litmus.db:
         you = litmus['rgb']
         d = tuple(abs(you[i] - me[i]) for i in range(0,3))
         if d[0] < radius and d[1] < radius and d[2] < radius: 
             distance = (d[0]**2 + d[1]**2+ d[2]**2)**0.5
             if distance < 0.0001 :
-                identicals.append({'id': litmus['id'], 'case':'identicals', 'distance':distance,'litmus':litmus})
+                identical.append({'id': litmus['id'], 'case':'identical', 'distance':distance,'litmus':litmus})
             elif distance < radius:
-                neighbors.append({'id': litmus['id'], 'case':'neighbors', 'distance':distance,'litmus':litmus})
-    sorted_i = sorted(identicals, key=lambda i: i['litmus']['name'])
-    sorted_n = sorted(neighbors, key=lambda n: n['distance'])
-    return {'identicals':{'count':len(sorted_i), 'list':sorted_i}, 'neighbors':{'count':len(sorted_n), 'list':sorted_n}}
+                neighbor.append({'id': litmus['id'], 'case':'neighbor', 'distance':distance,'litmus':litmus})
+    sorted_i = sorted(identical, key=lambda i: i['litmus']['name'])
+    sorted_n = sorted(neighbor, key=lambda n: n['distance'])
+    return {'identical':{'count':len(sorted_i), 'list':sorted_i}, 'neighbor':{'count':len(sorted_n), 'list':sorted_n}}
 
 def search_by_name(word):
-    matches = []
+    match = []
     for litmus in Litmus.db:
         name = litmus['name']
         if (word.lower() in name.lower()):
-            matches.append({'id': litmus['id'], 'case':'matches', 'litmus':litmus})
-    sorted_m = sorted(matches, key=lambda m: m['litmus']['name'])
-    return {'matches':{'count':len(sorted_m), 'list':sorted_m}}
+            match.append({'id': litmus['id'], 'case':'match', 'litmus':litmus})
+    sorted_m = sorted(match, key=lambda m: m['litmus']['name'])
+    return {'match':{'count':len(sorted_m), 'list':sorted_m}}
 
 def is_hexa(word):
     if len(word) == 7 and word[0]=="#":

@@ -2,7 +2,7 @@
 
 {% block head %}
 <style>
-    #map { height: 600px; width:900px}
+    #map {height: 500px; width:800px}
     html, body {
         height: 100%;
         margin: 0;
@@ -48,7 +48,7 @@
         <div class="col-sm-3 "> 
             <div class="card" style="width: 12rem; height: 12rem;">
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
-                    {% if litmus.depth == "Dark" %}
+                    {% if litmus.depth == "Dark" or litmus.depth == "Deep"%}
                     <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
                     <h6 style="color:white">{{litmus.hexa}}</h6>  
                     {% else %}
@@ -58,13 +58,17 @@
                 </div> 
             </div>
             <br>
-            <div class="container">
-                <table class="table-condensed" style="font-size:small; font-weight:bold">
-                    <tr><td>Color Group &ensp;</td>
-                        <td>{{litmus.group}}</td></tr>
-                    <tr><td>Color Depth &ensp;</td>
-                        <td>{{litmus.depth}}</td></tr>
-                </table>
+            <div class="container" style="padding:10px">
+                <p style="font-weight:bold; line-height:100%">Color Group</p>
+                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.group}}</p><br>
+                <p style="font-weight:bold; line-height:100%">Color Depth</p>
+                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.depth}}</p><br>
+                <p style="font-weight:bold; line-height:100%">Class</p>
+                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.star}}</p><br>
+                <p style="font-weight:bold; line-height:100%">Family</p>
+                {% for item in litmus.family %}
+                <p style="font-weight:normal; font-size:small; line-height:50%">{{item}}</p>
+                {% endfor %}
                 <br>
             </div> 
         </div>
@@ -130,13 +134,13 @@
     </div>
 </div>
 <div class="container">
-    {% if search.identicals.count > 1 %}
+    {% if search.identical.count > 1 %}
         <br>
-        <h5>Identical Colors <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identicals.count}}</span></h5>
+        <h5>Identical Colors <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identical.count}}</span></h5>
         <hr>
-        {% for item in search.identicals.list %}
+        {% for item in search.identical.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" %}
+            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -153,13 +157,13 @@
         {% endfor %}
         <br><br>
     {% endif %}
-    {% if search.neighbors.count %}
+    {% if search.neighbor.count %}
         <br>
-        <h5>Neighbor Colors" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbors.count}}</span></h5>
+        <h5>Neighbor Colors" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbor.count}}</span></h5>
         <hr>
-        {% for item in search.neighbors.list %}
+        {% for item in search.neighbor.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" %}
+            {% if item.litmus.depth == "Dark"  or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -179,7 +183,7 @@
         <br>
         <h5>Proximity</h5>
         <hr>
-        {% for item in vector.proximity %}
+        {% for item in litmus.proximity %}
         <div style="display: inline-block;">
             {% if item.name == "Black" or item.name == "Purple" or item.name == "Brown"%}
                 <p><a class="btn btn-primary btn-block border-light"
@@ -197,7 +201,7 @@
         </div>
         {% endfor %}
         <br><br>
-    {% if search.neighbors.count %}
+    {% if search.neighbor.count %}
         <br>
         <h5>Plot in RGB Space</h5>
         <hr>
@@ -228,51 +232,99 @@
 <script>
     var map;
     function initMap() {
-        var map_center = {lat: 34, lng: 130}; 
-        var map = new google.maps.Map(document.getElementById('map'), {zoom: 1.6, center: map_center});
+        var map_center = {lat: 40, lng: 150}; 
+        var map = new google.maps.Map(document.getElementById('map'), {zoom: 1.4, center: map_center});
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
-        
+        var my_id = "{{litmus.id}}"
         var locations = [
-            {% if search.identicals.count %}
-            {% for item in search.identicals.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "identicals"],
+            {% for item in search.supernova.list %}
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "supernova"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
             {% endfor%}
-            {% endif %}
-            {% if search.neighbors.count %}
-            {% for item in search.neighbors.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "neighbors"],
+            {% if search.identical.count %}
+            {% for item in search.identical.list %}
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "identical"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
+            {% endfor %}
             {% endif %}
-            {% if search.matches.count %}
-            {% for item in search.matches.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "matches"],
+            {% if search.neighbor.count %}
+            {% for item in search.neighbor.list %}
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "neighbor"],
                 // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
+            {% endfor %}
             {% endif %}
-        ]
+            {% if search.match.count %}
+            {% for item in search.match.list %}
+                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "match"],
+                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
+            {% endfor %}
+            {% endif %}
+        ];
         for (var i = 0; i < locations.length; i++) {
-            var marker = new google.maps.Marker({ 
-                position: {lat: locations[i][1], lng: locations[i][2]}, 
-                map: map,
-                label: {
-                    color: 'black',
-                    fontWeight: 'bold',
-                    fontSize: '11px',
-                    text: locations[i][3]
-                },
-                icon: {
-                    path: google.maps.SymbolPath.CIRCLE,
-                    scale : 6,
-                    strokeWeight : 2,
-                    fillColor: locations[i][4],
-                    fillOpacity: 1.0,
-                    strokeColor: 'gray',
-                    anchor: new google.maps.Point(0, 0),
-                    labelOrigin: new google.maps.Point(0, 2)
-                },
-            }); 
+            if (locations[i][5] == 'supernova') {
+                var marker = new google.maps.Marker({ 
+                    position: {lat: locations[i][1], lng: locations[i][2]}, 
+                    map: map,
+                    label: {
+                        color: 'black',
+                        fontWeight: 'bold',
+                        fontSize: '11px',
+                        text: locations[i][3]
+                    },
+                    icon: {
+                        path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                        scale : 4,
+                        strokeWeight : 1,
+                        fillColor: locations[i][4],
+                        fillOpacity: 1.0,
+                        strokeColor: 'black',
+                        // anchor: new google.maps.Point(0, 0),
+                        labelOrigin: new google.maps.Point(0, 2)
+                    },
+                });
+            } else if (locations[i][0] == my_id) {
+                var marker = new google.maps.Marker({ 
+                    position: {lat: locations[i][1], lng: locations[i][2]}, 
+                    map: map,
+                    label: {
+                        color: 'black',
+                        fontWeight: 'bold',
+                        fontSize: '11px',
+                        text: locations[i][3]
+                    },
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale : 8,
+                        strokeWeight : 6,
+                        fillColor: locations[i][4],
+                        fillOpacity: 1.0,
+                        strokeColor: 'red',
+                        // anchor: new google.maps.Point(0, 0),
+                        labelOrigin: new google.maps.Point(0, 2)
+                    },
+                });
+            } else {
+                var marker = new google.maps.Marker({ 
+                    position: {lat: locations[i][1], lng: locations[i][2]}, 
+                    map: map,
+                    label: {
+                        color: 'black',
+                        fontWeight: 'bold',
+                        fontSize: '11px',
+                        text: locations[i][3]
+                    },
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale : 5,
+                        strokeWeight : 1,
+                        fillColor: locations[i][4],
+                        fillOpacity: 1.0,
+                        strokeColor: 'black',
+                        // anchor: new google.maps.Point(0, 0),
+                        labelOrigin: new google.maps.Point(0, 2)
+                    },
+                });
+            }
         }
     }
 </script>

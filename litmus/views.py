@@ -58,7 +58,7 @@ def colorInfo(request, pk):
     litmus = Litmus.get_by_id(color_id)
     hexa = litmus['hexa']
     vector = ColorVector(hexa).all
-    search = search_by_hexa(hexa, radius=0.1)
+    search = search_color(hexa)
     plot = plot_RGB(search)
     message = ""
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))

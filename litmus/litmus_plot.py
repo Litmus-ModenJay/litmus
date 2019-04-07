@@ -8,38 +8,39 @@ def plot_RGB(plotdata):
     keys = plotdata.keys()
     for key in keys :
         for item in plotdata[key]['list']:
-            pointname = item['litmus']['name']
-            if item['case'] == 'identicals' :
-                pointsize = 14
-                pointsymbol = 'square'
-            elif item['case'] == 'supernovas':
-                pointsize = 10
-                pointsymbol = 'diamond'
-            else :
-                pointsize = 6
-                pointsymbol = 'circle'
+            if not item['case'] == 'giant':
+                pointname = item['litmus']['name']
+                if item['case'] == 'identical' :
+                    pointsize = 14
+                    pointsymbol = 'square'
+                elif item['case'] == 'supernova':
+                    pointsize = 10
+                    pointsymbol = 'diamond'
+                else :
+                    pointsize = 6
+                    pointsymbol = 'circle'
 
-            trace = go.Scatter3d(
-                x=[item['litmus']['rgb'][0]],
-                y=[item['litmus']['rgb'][1]],
-                z=[item['litmus']['rgb'][2]],
-                name = pointname,
-                mode='markers + text', 
-                text= pointname,      
-                marker=dict(
-                    size = pointsize,
-                    color= item['litmus']['hexa'],
-                    opacity=1,
-                    symbol=pointsymbol,
-                ),
-                hoverinfo='name',  
-                hoverlabel=dict(
-                    bgcolor = '#d0d0d0',
-                    bordercolor = '#808080',
-                ),
-                showlegend = False
-            )
-            data.append(trace)
+                trace = go.Scatter3d(
+                    x=[item['litmus']['rgb'][0]],
+                    y=[item['litmus']['rgb'][1]],
+                    z=[item['litmus']['rgb'][2]],
+                    name = pointname,
+                    mode='markers + text', 
+                    text= pointname,      
+                    marker=dict(
+                        size = pointsize,
+                        color= item['litmus']['hexa'],
+                        opacity=1,
+                        symbol=pointsymbol,
+                    ),
+                    hoverinfo='name',  
+                    hoverlabel=dict(
+                        bgcolor = '#d0d0d0',
+                        bordercolor = '#808080',
+                    ),
+                    showlegend = False
+                )
+                data.append(trace)
     layout = go.Layout(
         height=500,
         width=500,

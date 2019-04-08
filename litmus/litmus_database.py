@@ -64,17 +64,17 @@ class Litmus():
     def classify_by_group(sort, order):
         db = {}
         for star in Litmus.supernova:
-            db.update({star['litmus']['name']: {'count':0, 'data':[] }})
+            db.update({star['litmus']['name']: {'count':0, 'litmus':[] }})
         for litmus in Litmus.db:
             group = litmus['group']
             db[group]['count'] = db[group]['count'] + 1
-            db[group]['data'].append(litmus)
+            db[group]['litmus'].append(litmus)
         keys = db.keys()
         for group in keys:
             if order == "ascend":
-                db[group]['data'] = sorted(db[group]['data'], key=lambda g: g[sort])
+                db[group]['litmus'] = sorted(db[group]['litmus'], key=lambda g: g[sort])
             elif order == "descend":
-                db[group]['data'] = sorted(db[group]['data'], reverse=True, key=lambda g: g[sort])
+                db[group]['litmus'] = sorted(db[group]['litmus'], reverse=True, key=lambda g: g[sort])
         
         return db
         

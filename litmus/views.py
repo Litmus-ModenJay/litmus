@@ -7,7 +7,7 @@ import os
 import json
 import math
 from .litmus_database import Litmus
-from .litmus_search import is_hexa, search_by_hexa, search_by_name, search_color
+from .litmus_search import search_main
 from .color_vector import ColorVector
 from .litmus_plot import plot_RGB
 from .ms_login import MSlogin
@@ -29,28 +29,27 @@ def main(request):
     
     if request.method == "POST":
         word = request.POST['search']
-        if len(word) > 1:
-            search = search_color(word)
+        search = search_main(word)
+        if search:
             plot = plot_RGB(search)
             check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
             context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
             return render(request, 'litmus/color_search.html', context)
-    
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
     context = {'count':check_login['status'], 'login':check_login}
     return render(request, 'litmus/main.html', context)
 
 def colorSearch(request):
-    search = {}
-    plot = {}
-    word = ""
     if request.method == "POST":
         word = request.POST['search']
-        if len(word) > 1:
-            search = search_color(word)
+        search = search_main(word)
+        if search:
             plot = plot_RGB(search)
+            check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
+            context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
+            return render(request, 'litmus/color_search.html', context)
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))
-    context = {'login':check_login, 'word':word, 'search':search, 'plot':plot}
+    context = {'count':check_login['status'], 'login':check_login}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 

@@ -95,7 +95,29 @@
         {% endfor %}
         <br><br>
     {% endif %}
-    
+    {% if search.family.count %}
+        <br>
+        <h5>Family colors of "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.family.count}}</span></h5>
+        <hr>
+        {% for item in search.family.list %}
+        <div style="display: inline-block;">
+            {% if item.litmus.depth == "Dark" or litmus.depth == "Deep" %}
+                <p><a class="btn btn-primary btn-block border-light"
+                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
+                    href="{% url 'litmus:colorInfo' pk=item.id %}">
+                    {{ item.litmus.name|slice:':15' }}
+                </a></p>
+            {% else %}
+                <p><a class="btn btn-default btn-block border-light font-weight-bold"
+                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
+                    href="{% url 'litmus:colorInfo' pk=item.id %}">
+                    {{ item.litmus.name|slice:':15' }}
+                </a></p>
+            {% endif %}
+        </div>
+        {% endfor %}
+        <br><br>
+    {% endif %}
     {% if search.match.count %}
         <br>
         <h5>Colors including word "{{word}}" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.match.count}}</span></h5>
@@ -155,28 +177,11 @@
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
         
         var locations = [
-            {% for item in search.supernova.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "supernova"],
-                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
-            {% if search.identical.count %}
-            {% for item in search.identical.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "identical"],
-                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
-            {% endif %}
-            {% if search.neighbor.count %}
-            {% for item in search.neighbor.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "neighbor"],
-                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
-            {% endif %}
-            {% if search.match.count %}
-            {% for item in search.match.list %}
-                ["{{item.id}}",{{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "match"],
-                // [{{item.name}}, "<a href={% url 'litmus:colorInfo' pk=item.id %}</a>", {{item.geo.lati}}, {{item.geo.long}}],
-            {% endfor%}
-            {% endif %}
+            {% for key, value in search.items %}
+            {% for item in value.list %}
+            ["{{item.id}}", {{item.litmus.geo.0}}, {{item.litmus.geo.1}}, "{{item.litmus.name}}", "{{item.litmus.hexa}}", "{{item.case}}"],
+            {% endfor %}
+            {% endfor %}
         ];
         for (var i = 0; i < locations.length; i++) {
             if (locations[i][5] == 'supernova') {
@@ -191,7 +196,7 @@
                     },
                     icon: {
                         path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                        scale : 4,
+                        scale : 3,
                         strokeWeight : 1,
                         fillColor: locations[i][4],
                         fillOpacity: 1.0,

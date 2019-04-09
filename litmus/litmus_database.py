@@ -6,6 +6,7 @@ from .color_space import CVC
 class Litmus():
     db = []
     # group = ['Red', 'Orange', 'Yellow', 'Green', 'cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
+    group = []
     depth = ['Light', 'Soft', 'Deep', 'Dark']
     supernova = []
     giant = []

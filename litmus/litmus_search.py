@@ -13,7 +13,7 @@ def search_main(word):
         else:
             category = is_tag(tag) # 키워드인지 확인 - #Family or #Keyword
             if category == 'family':
-                search = serch_by_family(tag)
+                search = search_by_family(tag)
             elif category == 'keyword':
                 search = serch_by_keyword(tag)
     elif word[0] == '@':
@@ -26,6 +26,14 @@ def search_main(word):
         # 디폴트 리스트를 검색 결과에 추가 (supernova & giant)
         search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
         # search.update({'giant':{'count':len(Litmus.giant), 'list':Litmus.giant}})
+    return search
+
+def search_info(my_id, hexa):
+    search = search_by_hexa(hexa, radius=0.1)
+    for item in search['identical']['list']:
+        if my_id == item['id']:
+            item['case'] = 'self'
+    search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
     return search
 
 def search_by_hexa(hexa, radius):
@@ -60,7 +68,7 @@ def search_by_name(word):
     else:
         return {}
 
-def search_by_family(tag):
+def search_by_family(tag): 
     family = []
     for litmus in Litmus.db:
         for item in litmus['family']:
@@ -105,13 +113,13 @@ def is_hexa(tag):
 def is_tag(tag):
     # tag 가 Litmus.giant 에 속하는지 검색
     for star in Litmus.giant:
-        if tag== star['litmus']['name']:
-            return ('family')
+        if tag == star['litmus']['name']:
+            return 'family'
     """
     # tag 가 Litmus.keyword 에 속하는지 검색
     for word in Litmus.keyword:
         if tag == word:
-            return ('keyword')
+            return 'keyword'
     """
     return ''
 

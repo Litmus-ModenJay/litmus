@@ -10,7 +10,7 @@ def plot_RGB(plotdata):
         for item in plotdata[key]['list']:
             if not item['case'] == 'giant':
                 pointname = item['litmus']['name']
-                if item['case'] == 'identical' :
+                if item['case'] == 'self' :
                     pointsize = 14
                     pointsymbol = 'square'
                 elif item['case'] == 'supernova':

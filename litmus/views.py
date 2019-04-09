@@ -7,7 +7,7 @@ import os
 import json
 import math
 from .litmus_database import Litmus
-from .litmus_search import search_main
+from .litmus_search import search_main, search_info
 from .color_vector import ColorVector
 from .litmus_plot import plot_RGB
 from .ms_login import MSlogin
@@ -26,7 +26,6 @@ def litmus(request):
     #return redirect('litmus:main')
 
 def main(request):
-    
     if request.method == "POST":
         word = request.POST['search']
         search = search_main(word)
@@ -57,7 +56,7 @@ def colorInfo(request, pk):
     litmus = Litmus.get_by_id(color_id)
     hexa = litmus['hexa']
     vector = ColorVector(hexa).all
-    search = search_color(hexa)
+    search = search_info(color_id, hexa)
     plot = plot_RGB(search)
     message = ""
     check_login = MSlogin.check(user_id=request.COOKIES.get('id'))

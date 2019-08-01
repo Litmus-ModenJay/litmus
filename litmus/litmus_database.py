@@ -5,6 +5,7 @@ from .color_space import CVC
 
 class Litmus():
     db = []
+    cell = []
     # group = ['Red', 'Orange', 'Yellow', 'Green', 'cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
     group = []
     depth = ['Light', 'Soft', 'Deep', 'Dark']
@@ -15,16 +16,24 @@ class Litmus():
     @classmethod
     def initialize(cls, method):
         if method == "Json":
-            with open("static/secret/Litmus 20190407.json") as f:
+            with open("static/secret/LitmusGroup 20190801.json") as f:
+                cj = json.loads(f.read())
+            for index, value in enumerate(cj):
+                cell = {'id':index, 'room':value['Cell'], 'color':value['Group']}
+                cls.cell.append(cell)
+
+            with open("static/secret/LitmusDB 20190801.json") as f:
                 dj = json.loads(f.read())
             # for index, value in enumerate(dj['Default']):
             for index, value in enumerate(dj):
                 name = value['Name']
                 hexa = value['Hexa']
                 star = value['Class']
-                family = value['Family'].split(';')
+                family = value['Family']
                 if family == '':
                     family = 'Single'
+                tag = value['Keyword'].split(';')
+                
                 rgb = CVC.hexa_rgb(hexa)
                 litmus = {
                     'id':index, 
@@ -35,10 +44,11 @@ class Litmus():
                     'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),
                     # 'geo': CVC.rgb_GEOHSL(rgb),
-                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='D65 2'),
-                    'geo': CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65 2'),
+                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='D65_2'),
+                    'geo': CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2'),
                     #'group':'',
-                    'group':cls.get_group(rgb, 'rgb'),
+                    'cell':cls.get_cell(rgb),
+                    'group':cls.get_group(rgb, 'cell'),
                     'depth':cls.get_depth(rgb),
                     'proximity':{}
                     }
@@ -135,7 +145,37 @@ class Litmus():
         return depth
 
     @staticmethod
+    def get_cell(rgb):
+        room_r = int((rgb[0]*64)//8 + 1)
+        if room_r >= 9:
+            room_r = 8
+        room_g = int((rgb[1]*64)//8 + 1)
+        if room_g >= 9:
+            room_g = 8
+        room_b = int((rgb[2]*64)//8 + 1)
+        if room_b >= 9:
+            room_b = 8  
+        room = str(room_r) + str(room_g) + str(room_b)
+        return room
+
+    @staticmethod
     def get_group(rgb, method):
+        if method == 'cell':
+            room_r = (rgb[0]*64)//8
+            if room_r >= 8:
+                room_r = 7
+            room_g = (rgb[1]*64)//8
+            if room_g >= 8:
+                room_g = 7
+            room_b = (rgb[2]*64)//8
+            if room_b >= 8:
+                room_b = 7  
+            room = int(room_r*64 + room_g*8 + room_b)
+            group = Litmus.cell[room]['color']
+        return group
+
+    @staticmethod
+    def get_group_old(rgb, method):
         if method == 'rgb':
             HSL = CVC.rgb_HSLrgb(rgb)
             H, L, C = HSL[0], HSL[2], HSL[3]

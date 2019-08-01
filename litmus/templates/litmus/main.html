@@ -17,14 +17,13 @@
 
 <div class="container-fluid text-center" style="text-align:center; padding:100px">
     <!-- Title -->
-    <img src="{% static 'icon/Color Studio-Litmus Project(title)-20190404.jpg' %}" style="width: 38%; height: auto;" alt="Search Colors"/>
+    <img src="{% static 'icon/Color Studio-Litmus Project(title)-20190404.jpg' %}" style="width: 50%; height: auto;" alt="Search Colors"/>
 
     <!-- Search with Color Picker-->
     <br><br><br><br>
     <form class="form-inline justify-content-center"  action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
         {% csrf_token %}
         <div class="form-group" >
-            <button class="input-group-addon btn btn-Warning" id="color_picker"><i class="fas fa-palette color:green"></i></button>
             <input type="text"  name="search" id="search_input" class="form-control input-group colorpicker-component" style="text-align:left" placeholder="color name or code">
             <button type="submit" onkeydown="enterkey();" name="submit" class="btn btn-Warning"><i class="fas fa-search"></i></button>   
         </div>

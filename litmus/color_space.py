@@ -116,16 +116,22 @@ class CVC():
 
     @staticmethod
     def rgb_XYZ(rgb, profile):
-        r, g, b = rgb[0], rgb[1], rgb[2]
+        rgb_linearized = [0,0,0]
+        for i in range(0,3):
+            if rgb[i] < 0.04045:
+                rgb_linearized[i] = rgb[i] / 12.92
+            else:
+                rgb_linearized[i] = ((rgb[i] + 0.055) / 1.055) ** 2.4
+        r, g, b = rgb_linearized[0], rgb_linearized[1], rgb_linearized[2]
         if profile == "sRGB" :
             X = 0.4124564*r + 0.3575761*g + 0.1804375*b
             Y = 0.2126729*r + 0.7151522*g + 0.0721750*b
             Z = 0.0193339*r + 0.1191920*g + 0.9503041*b
-        elif profile == "Adobe RGB" :
+        elif profile == "AdobeRGB" :
             X = 0.5767309*r + 0.1855540*g + 0.1881852*b
             Y = 0.2973769*r + 0.6273491*g + 0.0752741*b
             Z = 0.0270343*r + 0.0706872*g + 0.9911085*b
-        elif profile == "CIE RGB" :
+        elif profile == "CIERGB" :
             X = 0.4887180*r + 0.3106803*g + 0.2006017*b
             Y = 0.1762044*r + 0.8129847*g + 0.0108109*b
             Z = 0.0000000*r + 0.0102048*g + 0.9897952*b
@@ -135,15 +141,17 @@ class CVC():
         else :
             x, y = X / sum, Y / sum
         return (X, Y, Z, sum/3, x, y)
+
     @staticmethod
     def XYZ_Labuv(XYZ, illuminant):
         X, Y, Z = XYZ[0], XYZ[1], XYZ[2]
-        if illuminant == "D50 2" :
+        if illuminant == "D50_2" :
             Xn, Yn, Zn = 0.966797, 1.0000, 0.825188
-        elif illuminant == "D65 2" :
+        elif illuminant == "D65_2" :
             Xn, Yn, Zn = 0.95047, 1.0000, 1.08883
         elif illuminant == "E" :
             Xn, Yn, Zn = 1.0000, 1.0000, 1.0000
+        
         xn, yn = Xn / (Xn + Yn + Zn), Yn / (Xn + Yn + Zn)
         un, vn = 4*xn / ((-2)*xn + 12*yn + 3), 9*yn / ((-2)*xn + 12*yn + 3)
         if X+Y+Z == 0:

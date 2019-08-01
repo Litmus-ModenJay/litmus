@@ -79,7 +79,7 @@ def search_by_family(tag):
         return {'family':{'count':len(sorted_f), 'list':sorted_f}}
     else:
         return {}
-
+  
 def search_by_geo(geo, radius):
     identical = []
     neighbor = []

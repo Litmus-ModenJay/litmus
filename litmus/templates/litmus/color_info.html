@@ -36,7 +36,7 @@
             <p></p>
         </div>
         <div class="col-sm-2" style="text-align:right">
-            <p><a class="btn btn-info btn-sm border-light" style="background-color:deeppink; width:110pt"
+            <p><a class="btn btn-info btn-sm border-light" style="background-color:royalblue; width:110pt"
                 href="{% url 'litmus:main' %}">Color Search</a></p>
             <p></p>
         </div>
@@ -46,7 +46,7 @@
 <div class="container">
     <div class="row content">
         <div class="col-sm-3 "> 
-            <div class="card" style="width: 12rem; height: 12rem;">
+            <div class="card" style="width: 160px; height: 160px;">
                 <div class="card-body" style="background-color:{{litmus.hexa}}">           
                     {% if litmus.depth == "Dark" or litmus.depth == "Deep"%}
                     <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
@@ -58,76 +58,41 @@
                 </div> 
             </div>
             <br>
-            <div class="container" style="padding:10px">
-                <p style="font-weight:bold; line-height:100%">Color Group</p>
-                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.group}}</p><br>
-                <p style="font-weight:bold; line-height:100%">Color Depth</p>
-                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.depth}}</p><br>
-                <p style="font-weight:bold; line-height:100%">Class</p>
-                <p style="font-weight:normal; font-size:small; line-height:50%">{{litmus.star}}</p><br>
-                <p style="font-weight:bold; line-height:100%">Family</p>
-                {% for item in litmus.family %}
-                <p style="font-weight:normal; font-size:small; line-height:50%">{{item}}</p>
-                {% endfor %}
-                <br>
-            </div> 
+            <table class="table-condensed" style="font-size:small; padding:10px">
+                <tr><td>&ensp;</td><td>Group&ensp;</td><td>{{litmus.group}}</td></tr>
+                <tr><td>&ensp;</td><td>Cell</td><td>{{litmus.cell}}</td></tr>
+                <tr><td>&ensp;</td><td>Class</td><td>{{litmus.star}}</td></tr>
+                <tr><td>&ensp;</td><td>Family</td><td>{{litmus.family}}</td></tr>
+            </table>
+            <br>
         </div>
         <div class="col-sm-9 text-left"> 
             <h5>Color Coordinates</h5>
             <hr>
             <table class="table-condensed" style="font-size:small; ">
                 <tr><td>RGB</td>
-                    <td>RGB</td>
                     <td>R {{vector.RGB.RGB.R}}&ensp; G {{vector.RGB.RGB.G}}&ensp; B {{vector.RGB.RGB.B}}</td></tr>
-                <tr><td></td>
-                    <td>rgb </td>
+                <tr><td>rgb</td>
                     <td>r {{vector.RGB.rgb.r|floatformat:4}}&ensp; g {{vector.RGB.rgb.g|floatformat:4}}&ensp; b {{vector.RGB.rgb.b|floatformat:4}}</td></tr> 
-                <tr><td></td>
-                    <td>HSL </td>
-                    <td>H {{vector.RGB.HSL.H|floatformat:2}}&ensp; S {{vector.RGB.HSL.S|floatformat:4}}&ensp; L {{vector.RGB.HSL.L|floatformat:4}}&ensp; C {{vector.RGB.HSL.C|floatformat:4}}</td></tr>  
-                <tr><td></td>    
-                    <td>Parameter &ensp;</td>
+                <tr><td>rgb Parameters &ensp; </td>    
                     <td>Sum {{vector.RGB.Param.Sum|floatformat:4}}&ensp; Max {{vector.RGB.Param.Max|floatformat:4}}&ensp; Min {{vector.RGB.Param.Min|floatformat:4}}&ensp; Sigma {{vector.RGB.Param.Sigma|floatformat:4}}&ensp; Delta {{vector.RGB.Param.Delta|floatformat:4}}</td></tr> 
-                <tr><td></td>
-                    <td>Geo </td>
-                    <td>Latitude {{vector.RGB.GEO.Lati|floatformat:2}}&ensp; Longitude {{vector.RGB.GEO.Long|floatformat:2}}&ensp; Radius {{vector.RGB.GEO.Radius|floatformat:4}}</td></tr> 
-                <tr><td>HSLV </td> 
-                    <td>HSL</td>
+                <tr><td>HSL </td> 
                     <td>H {{vector.HSLV.HSL.H|floatformat:2}}&ensp; S {{vector.HSLV.HSL.S|floatformat:4}}&ensp; L {{vector.HSLV.HSL.L|floatformat:4}}&ensp; C {{vector.HSLV.HSL.C|floatformat:4}}</td></tr>
-                <tr><td></td>
-                    <td>HSV</td>
+                <tr><td>HSV</td>
                     <td>H {{vector.HSLV.HSV.H|floatformat:2}}&ensp; S {{vector.HSLV.HSV.S|floatformat:4}}&ensp; V {{vector.HSLV.HSV.V|floatformat:4}}&ensp; C {{vector.HSLV.HSV.C|floatformat:4}}</td></tr>
                 <tr><td>CMYK &ensp; </td>
-                    <td>CMYK</td>
                     <td>K {{vector.CMYK.K|floatformat:4}}&ensp; C {{vector.CMYK.C|floatformat:4}}&ensp; M {{vector.CMYK.M|floatformat:4}}&ensp; Y {{vector.CMYK.Y|floatformat:4}}</td></tr>
-                {% for key, value in vector.XYZ.items %}
-                <tr><td>{% if forloop.counter == 1 %}XYZ {% endif %}</td>
-                    <td>{{key}}&deg; &ensp; </td>
-                    <td>X {{value.X|floatformat:4}}&ensp; Y {{value.Y|floatformat:4}}&ensp; Z {{value.Z|floatformat:4}}&ensp; 
-                        x {{value.x|floatformat:4}}&ensp; y {{value.y|floatformat:4}}&ensp; I {{value.I|floatformat:4}}</td></tr>
-                {% endfor %}
-                {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}Lab {% endif %}</td>
-                    <td>{{key}}&deg; &ensp; </td>
-                    <td>L {{value.Lab.L|floatformat:4}}&ensp; a* {{value.Lab.a|floatformat:4}}&ensp; b* {{value.Lab.b|floatformat:4}}&ensp; 
-                        H {{value.Lab.H|floatformat:2}}&ensp; C {{value.Lab.C|floatformat:4}}&ensp; S {{value.Lab.S|floatformat:4}}</td></tr>
-                {% endfor %}
-                {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}Luv {% endif %}</td>
-                    <td>{{key}}&deg; &ensp; </td>
-                    <td>L {{value.Luv.L|floatformat:4}}&ensp; u* {{value.Luv.u|floatformat:4}}&ensp; v* {{value.Luv.v|floatformat:4}}&ensp; 
-                        H {{value.Luv.H|floatformat:2}}&ensp; C {{value.Luv.C|floatformat:4}}&ensp; S {{value.Luv.S|floatformat:4}}</td></tr>
-                {% endfor %}
-                {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}GeoLab &ensp; &ensp;{% endif %}</td>
-                    <td>{{key}}&deg; &ensp; </td>
-                    <td>Latitude {{value.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLab.Long|floatformat:2}}&ensp; Radius {{value.GeoLab.Radius|floatformat:4}}</td></tr> 
-                {% endfor %}
-                {% for key, value in vector.Labuv.items %}
-                <tr><td>{% if forloop.counter == 1 %}GeoLuv &ensp; &ensp;{% endif %}</td>
-                    <td>{{key}}&deg; &ensp; </td>
-                    <td>Latitude {{value.GeoLuv.Lati|floatformat:2}}&ensp; Longitude {{value.GeoLuv.Long|floatformat:2}}&ensp; Radius {{value.GeoLuv.Radius|floatformat:4}}</td></tr> 
-                {% endfor %}
+                <tr><td>XYZ &ensp; </td>
+                    <td>X {{vector.XYZ.sRGB.X|floatformat:4}}&ensp; Y {{vector.XYZ.sRGB.Y|floatformat:4}}&ensp; Z {{vector.XYZ.sRGB.Z|floatformat:4}}&ensp; 
+                        x {{vector.XYZ.sRGB.x|floatformat:4}}&ensp; y {{vector.XYZ.sRGB.y|floatformat:4}}&ensp; I {{vector.XYZ.sRGB.I|floatformat:4}}</td></tr>
+                <tr><td>Lab &ensp; </td>
+                    <td>L {{vector.Labuv.sRGB_D65_2.Lab.L|floatformat:4}}&ensp; a* {{vector.Labuv.sRGB_D65_2.Lab.a|floatformat:4}}&ensp; b* {{vector.Labuv.sRGB_D65_2.Lab.b|floatformat:4}}&ensp; 
+                        H {{vector.Labuv.sRGB_D65_2.Lab.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Lab.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Lab.S|floatformat:4}}</td></tr>
+                <tr><td>Luv &ensp;</td>
+                    <td>L {{vector.Labuv.sRGB_D65_2.Luv.L|floatformat:4}}&ensp; u* {{vector.Labuv.sRGB_D65_2.Luv.u|floatformat:4}}&ensp; v* {{vector.Labuv.sRGB_D65_2.Luv.v|floatformat:4}}&ensp; 
+                        H {{vector.Labuv.sRGB_D65_2.Luv.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Luv.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Luv.S|floatformat:4}}</td></tr>
+                <tr><td>GeoLab</td>
+                    <td>Latitude {{vector.Labuv.sRGB_D65_2.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{vector.Labuv.sRGB_D65_2.GeoLab.Long|floatformat:2}}&ensp; Radius {{vector.Labuv.sRGB_D65_2.GeoLab.Radius|floatformat:4}}</td></tr> 
             </table>
             <br>
         </div>
@@ -226,14 +191,7 @@
         </div>
         {% endfor %}
         <br><br>
-    {% if search.neighbor.count %}
-        <br>
-        <h5>Plot in RGB Space</h5>
-        <hr>
-        <div>{{plot|safe}}</div>
-        <br>
-    {% endif %}
-    <br>
+
     <h5>Geo Map</h5>
     <hr>
     <div id="map"></div>
@@ -244,16 +202,7 @@
 {% endblock %}
 
 {% block scripts %}
-<script>
-    $(function () {
-        $('#color_picker').colorpicker({
-            format: 'hex',
-        });
-        $('#color_picker').colorpicker().on('changeColor', function(e) {
-            document.getElementById("search_input").value = e.color.toHex().toUpperCase();
-        });
-    });
-</script>
+
 <script>
     var map;
     function initMap() {

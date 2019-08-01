@@ -3,8 +3,8 @@ from .color_space import CVC
 
 class ColorVector():
     def __init__(self, hexa) :
-        self.profile = ["sRGB", "Adobe RGB", "CIE RGB"]
-        self.illuminant = ["D50 2", "D65 2"]
+        self.profile = ["sRGB", "AdobeRGB", "CIERGB"]
+        self.illuminant = ["D50_2", "D65_2"]
         self.hexa = hexa
         self.rgb = CVC.hexa_rgb(hexa)
         self.RGB=  self.get_RGB()
@@ -58,7 +58,7 @@ class ColorVector():
         Labuv = {}
         for profile in self.profile :
             for illuminant in self.illuminant :
-                title = profile + " " + illuminant
+                title = profile + "_" + illuminant
                 XYZ = CVC.rgb_XYZ(self.rgb, profile)
                 L= CVC.XYZ_Labuv(XYZ, illuminant)
                 Lab = {"L":L[0], "a": L[1], "b": L[2], "H": L[3], "S": L[4], "C": L[5]}

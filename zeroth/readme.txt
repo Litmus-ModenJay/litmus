@@ -1,3 +1,9 @@
+20190801 (Litmus Project v0.4 시작) 
+    - Login 기능 제거, ColorPicker 제거, 3D Plot 제거
+    - DB 1600 json 파일 업데이트 및 Cell Group json 파일 추가
+    - Group 및 Cell 연산 함수 구현 및 표시
+    - Color Coordinate 표시 내용 축약
+
 20190405 Supernova 컨셉 수립, proximity 계산 및 plot 과 geo map 표시
 20190404 Deploy 버전 정돈 (최초)
 20190328 Geo Map 기능 구현

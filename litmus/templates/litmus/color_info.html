@@ -2,7 +2,7 @@
 
 {% block head %}
 <style>
-    #map {height: 500px; width:800px}
+    #map {height: 480px; width:720px}
     html, body {
         height: 100%;
         margin: 0;
@@ -45,9 +45,10 @@
 <br>
 <div class="container">
     <div class="row content">
-        <div class="col-sm-3 "> 
+        <div class="col-sm-3 ">
+            <br>
             <div class="card" style="width: 160px; height: 160px;">
-                <div class="card-body" style="background-color:{{litmus.hexa}}">           
+                <div class="card-body" style="background-color:{{litmus.hexa}} !important">           
                     {% if litmus.depth == "Dark" or litmus.depth == "Deep"%}
                     <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
                     <h6 style="color:white">{{litmus.hexa}}</h6>  
@@ -67,6 +68,7 @@
             <br>
         </div>
         <div class="col-sm-9 text-left"> 
+            <br>
             <h5>Color Coordinates</h5>
             <hr>
             <table class="table-condensed" style="font-size:small; ">
@@ -170,32 +172,12 @@
         {% endfor %}
         <br><br>
     {% endif %}
-        <br>
-        <h5>Proximity</h5>
-        <hr>
-        {% for item in litmus.proximity %}
-        <div style="display: inline-block;">
-            {% if item.name == "Black" or item.name == "Purple" or item.name == "Brown" or item.name == "Blue" %}
-                <p><a class="btn btn-primary btn-block border-light"
-                    style="width: 70px; height: 60px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.hexa}};">
-                    {{ item.name }}<br>
-                    {{ item.distance|floatformat:4 }}
-                </a></p>
-            {% else %}
-                <p><a class="btn btn-default btn-block border-light font-weight-bold"
-                    style="width: 70px; height: 60px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.hexa}}">
-                    {{ item.name }}<br>
-                    {{ item.distance|floatformat:4 }}
-                </a></p>
-            {% endif %}
-        </div>
-        {% endfor %}
-        <br><br>
 
     <h5>Geo Map</h5>
     <hr>
     <div id="map"></div>
-</div>  
+</div>
+
 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr7uqzPRQYrFASLrIVkMbK8yCk6vbavtQ&callback=initMap"
 ></script>
 
@@ -206,7 +188,7 @@
 <script>
     var map;
     function initMap() {
-        var map_center = {lat: 40, lng: 150}; 
+        var map_center = {lat: 38, lng: 138}; 
         var map = new google.maps.Map(document.getElementById('map'), {zoom: 1.4, center: map_center});
         // var marker = new google.maps.Marker({position: map_center, map: map, title:"title"});
         var locations = [

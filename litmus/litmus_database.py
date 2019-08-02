@@ -44,7 +44,7 @@ class Litmus():
                     'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),
                     # 'geo': CVC.rgb_GEOHSL(rgb),
-                    # 'geo': CVC.rgb_GEOluv(rgb, profile='CIE RGB', illuminant='D65_2'),
+                    # 'geo': CVC.rgb_GEOluv(rgb, profile='sRGB', illuminant='D65_2'),
                     'geo': CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2'),
                     #'group':'',
                     'cell':cls.get_cell(rgb),

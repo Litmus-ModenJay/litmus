@@ -22,7 +22,7 @@ class Litmus():
                 cell = {'id':index, 'room':value['Cell'], 'color':value['Group']}
                 cls.cell.append(cell)
 
-            with open("static/secret/LitmusDB 20190801.json") as f:
+            with open("static/secret/LitmusDB 20190815.json") as f:
                 dj = json.loads(f.read())
             # for index, value in enumerate(dj['Default']):
             for index, value in enumerate(dj):
@@ -30,10 +30,8 @@ class Litmus():
                 hexa = value['Hexa']
                 star = value['Class']
                 family = value['Family']
-                if family == '':
-                    family = 'Single'
-                tag = value['Keyword'].split(';')
-                
+                category = value['Category']
+                keyword = value['Keyword']
                 rgb = CVC.hexa_rgb(hexa)
                 litmus = {
                     'id':index, 
@@ -41,6 +39,8 @@ class Litmus():
                     'hexa':hexa,
                     'star':star,
                     'family':family,
+                    'category':category,
+                    'keyword':keyword,
                     'rgb': rgb, 
                     # 'geo': CVC.rgb_GEOrgb(rgb),
                     # 'geo': CVC.rgb_GEOHSL(rgb),
@@ -50,7 +50,6 @@ class Litmus():
                     'cell':cls.get_cell(rgb),
                     'group':cls.get_group(rgb, 'cell'),
                     'depth':cls.get_depth(rgb),
-                    'proximity':{}
                     }
                 if star == 'Supernova':
                     cls.supernova.append({'id':litmus['id'], 'case':'supernova', 'litmus':litmus})

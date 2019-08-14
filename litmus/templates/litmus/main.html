@@ -10,7 +10,7 @@
 
     <!-- Search with Color Picker-->
     <br><br><br><br>
-    <form class="form-inline justify-content-center"  action="{% url 'litmus:colorSearch' %}" id="color_search" method="POST">
+    <form class="form-inline justify-content-center"  action="{% url 'litmus:main' %}" id="color_search" method="POST">
         {% csrf_token %}
         <div class="form-group" >
             <input type="text"  name="search" id="search_input" class="form-control input-group colorpicker-component" style="text-align:left" placeholder="color name or code">

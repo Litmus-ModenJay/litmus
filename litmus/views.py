@@ -19,7 +19,7 @@ def main(request):
         word = request.POST['search']
         search = search_main(word)
         if search:
-            context = {'word':word, 'search':search, 'plot':plot}
+            context = {'word':word, 'search':search}
             return render(request, 'litmus/color_search.html', context)
     context = {'count':'Normal'}
     return render(request, 'litmus/main.html', context)
@@ -28,9 +28,11 @@ def colorSearch(request):
     if request.method == "POST":
         word = request.POST['search']
         search = search_main(word)
+        word = 'something'
         if search:
             context = {'word':word, 'search':search}
             return render(request, 'litmus/color_search.html', context)
+    context = {'count':'Normal'}
     return render(request, 'litmus/color_search.html', context)
 
 def colorInfo(request, pk): 

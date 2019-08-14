@@ -2,30 +2,29 @@ from .litmus_database import Litmus
 from .color_space import CVC
 
 def search_main(word):
-    if len(word) < 3: # 2글자 이하는 검색에서 제외
-        return {}
     search = {}
-    if word[0] == '#':
-        tag = word[1:]
-        hexa = is_hexa(tag) # 헥사코드인지 확인 - #시작 16진 7 숫자 (#FFFFFF) or 16진 6 숫자 (FFFFFF)
-        if hexa: 
-            search = search_by_hexa(hexa, radius=0.1)
+    if len(word) > 2: # 2글자 이하는 검색에서 제외
+        if word[0] == '#':
+            tag = word[1:]
+            hexa = is_hexa(tag) # 헥사코드인지 확인 - #시작 16진 7 숫자 (#FFFFFF) or 16진 6 숫자 (FFFFFF)
+            if hexa: 
+                search = search_by_hexa(hexa, radius=0.1)
+            else:
+                category = is_tag(tag) # 키워드인지 확인 - #Family or #Keyword
+                if category == 'family':
+                    search = search_by_family(tag)
+                elif category == 'keyword':
+                    search = serch_by_keyword(tag)
+        elif word[0] == '@':
+            geo = is_geo(word[1:])
+            if geo:
+                search = search_by_geo(geo, radius = 10)
         else:
-            category = is_tag(tag) # 키워드인지 확인 - #Family or #Keyword
-            if category == 'family':
-                search = search_by_family(tag)
-            elif category == 'keyword':
-                search = serch_by_keyword(tag)
-    elif word[0] == '@':
-        geo = is_geo(word[1:])
-        if geo:
-            search = search_by_geo(geo, radius = 10)
-    else:
-        search = search_by_name(word)
-    if search:
-        # 디폴트 리스트를 검색 결과에 추가 (supernova & giant)
-        search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
-        # search.update({'giant':{'count':len(Litmus.giant), 'list':Litmus.giant}})
+            search = search_by_name(word)
+        if search:
+            # 디폴트 리스트를 검색 결과에 추가 (supernova & giant)
+            search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
+            # search.update({'giant':{'count':len(Litmus.giant), 'list':Litmus.giant}})
     return search
 
 def search_info(my_id, hexa):

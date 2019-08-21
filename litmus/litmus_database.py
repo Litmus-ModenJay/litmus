@@ -5,12 +5,20 @@ from .color_space import CVC
 
 class Litmus():
     db = []
-    cell = []
-    # group = ['Red', 'Orange', 'Yellow', 'Green', 'cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
+    cell = {}
+    # group = ['Red', 'Orange', 'Yellow', 'Green', 'Cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
     group = []
     depth = ['Light', 'Soft', 'Deep', 'Dark']
     supernova = []
     giant = []
+    dwarf = []
+    comet = []
+    star = {'Supernova':[], 'Giant':[], 'Dwarf':[], 'Comet':[]}
+    family = {}
+    keyword = { "A.Universe & Star":[], "B. Earth & Nature":[], "C. Plant & Flower":[], "D. Animal & Bird":[], 
+                "E. Human Body & Spirit":[], "F. Time & Season":[], "G. Space & Place":[], "H. Wear& Fashion":[], 
+                "I. Food & Drink":[], "J. House & Tool":[], "K. Literature & History":[], "M. Art & Color":[], 
+                "N. Material & Pigment":[], "O. Science & Technology":[], "P. Military & Society":[] }
     proxi_origin = []
 
     @classmethod
@@ -19,8 +27,8 @@ class Litmus():
             with open("static/secret/LitmusGroup 20190801.json") as f:
                 cj = json.loads(f.read())
             for index, value in enumerate(cj):
-                cell = {'id':index, 'room':value['Cell'], 'color':value['Group']}
-                cls.cell.append(cell)
+                room = str(value['Cell'])
+                cls.cell.update({room: {'group':value['Group'], 'owner':{'star':''} }})
 
             with open("static/secret/LitmusDB 20190815.json") as f:
                 dj = json.loads(f.read())
@@ -33,32 +41,60 @@ class Litmus():
                 category = value['Category']
                 keyword = value['Keyword']
                 rgb = CVC.hexa_rgb(hexa)
+                HSL = CVC.rgb_HSLrgb(rgb)
+                geo = CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2')
+                room = cls.get_cell(rgb)
+                cell = {'room':room, 'name':''} # room 은 cell의 방번호, cell 은 순번
+                group = cls.get_group(room, 'cell')
+                depth = cls.get_depth(HSL)
+
+                # if star not in cls.star.keys() :
+                #     cls.star.update({star:[]})
+                # cls.star[star].append({'id':index, 'name':name})
+                
+                if star in cls.star.keys() :
+                    cls.star[star].append({'id':index, 'name':name})
+                    ownerclass = cls.cell[room]['owner']['star']
+                    if star == 'Supernova':
+                        cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
+                    elif star == 'Giant':
+                        if not ownerclass == 'Supernova':
+                            cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
+                    elif star == 'Dwarf':
+                        if ownerclass not in ['Supernova', 'Giant']:
+                            cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
+                    else :
+                        if ownerclass not in ['Supernova', 'Giant', 'Dwarf']:
+                            cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
+
+                if family not in cls.family.keys() :
+                    cls.family.update({family:[]})
+                cls.family[family].append({'id':index, 'name':name})
+                
+                if keyword not in cls.keyword.keys() :
+                    cls.keyword.update({keyword:[]})
+                cls.keyword[keyword].append({'id':index, 'name':name, 'category':category})
+
                 litmus = {
-                    'id':index, 
-                    'name':name, 
-                    'hexa':hexa,
-                    'star':star,
-                    'family':family,
-                    'category':category,
-                    'keyword':keyword,
+                    'id': index, 
+                    'name': name, 
+                    'hexa': hexa,
+                    'star': star,
+                    'family': family,
+                    'category': category,
+                    'keyword': keyword,
                     'rgb': rgb, 
-                    # 'geo': CVC.rgb_GEOrgb(rgb),
-                    # 'geo': CVC.rgb_GEOHSL(rgb),
-                    # 'geo': CVC.rgb_GEOluv(rgb, profile='sRGB', illuminant='D65_2'),
-                    'geo': CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2'),
-                    #'group':'',
-                    'cell':cls.get_cell(rgb),
-                    'group':cls.get_group(rgb, 'cell'),
-                    'depth':cls.get_depth(rgb),
+                    'geo': geo,
+                    'cell': cell,
+                    'group': group,
+                    'depth': depth,
                     }
-                if star == 'Supernova':
-                    cls.supernova.append({'id':litmus['id'], 'case':'supernova', 'litmus':litmus})
-                if star == 'Giant' or star == 'Supernova':
-                    cls.giant.append({'id':litmus['id'], 'case':'giant', 'litmus':litmus})
-                cls.db.append(litmus)
-            # Calculate Proximity Origin
-            cls.proxi_origin = Litmus.get_proxy_origin('rgb supernova')
-            
+                cls.db.append(litmus)  
+
+        # Set cell owner name after data read and preset
+        cls.set_ownername()
+
+
     @staticmethod
     def count():
         return len(Litmus.db)
@@ -66,9 +102,15 @@ class Litmus():
     @staticmethod
     def get_by_id(id):
         litmus = Litmus.db[id]
-        proximity = Litmus.get_proximity(litmus['rgb'], 'rgb')
-        litmus.update({'proximity':proximity})
+        # owner = Litmus.cell[litmus['cell']['room']]['owner']['name']
+        # litmus.update({'owner':owner})
         return litmus
+
+    @staticmethod
+    def set_ownername():
+        for litmus in Litmus.db :
+            Litmus.db[litmus['id']]['cell']['name'] = Litmus.cell[litmus['cell']['room']]['owner']['name']       
+        return
 
     @staticmethod
     def classify_by_group(sort, order):
@@ -130,20 +172,6 @@ class Litmus():
         return sorted_p
 
     @staticmethod
-    def get_depth(rgb) :
-        L = CVC.rgb_HSLrgb(rgb)[2]
-        depth = ''
-        if L >= 0.75 :
-            depth = "Light"
-        elif L >= 0.5 :
-            depth = "Soft"
-        elif L >= 0.25 :
-            depth = "Deep"
-        else :
-            depth = "Dark"
-        return depth
-
-    @staticmethod
     def get_cell(rgb):
         room_r = int((rgb[0]*64)//8 + 1)
         if room_r >= 9:
@@ -156,95 +184,25 @@ class Litmus():
             room_b = 8  
         room = str(room_r) + str(room_g) + str(room_b)
         return room
-
+         
     @staticmethod
-    def get_group(rgb, method):
+    def get_group(room, method):
         if method == 'cell':
-            room_r = (rgb[0]*64)//8
-            if room_r >= 8:
-                room_r = 7
-            room_g = (rgb[1]*64)//8
-            if room_g >= 8:
-                room_g = 7
-            room_b = (rgb[2]*64)//8
-            if room_b >= 8:
-                room_b = 7  
-            room = int(room_r*64 + room_g*8 + room_b)
-            group = Litmus.cell[room]['color']
+            group = Litmus.cell[room]['group']
         return group
 
     @staticmethod
-    def get_group_old(rgb, method):
-        if method == 'rgb':
-            HSL = CVC.rgb_HSLrgb(rgb)
-            H, L, C = HSL[0], HSL[2], HSL[3]
-            group = ''
-            if L > 0.9 :
-                group = "White"
-            elif L < 0.1 :
-                group = "Black"
-            else :
-                if C < 0.1 :
-                    group = "Gray"
-                else :
-                    if H >= 15 and H < 45 :
-                        if L >= 0.4 :
-                            group = "Orange"
-                        else :
-                            group = "Brown"
-                    elif H >= 45 and H < 75 :
-                        group = "Yellow"
-                    elif H >= 75 and H < 105 :
-                        if L >= 0.5 :
-                            if H >= 90 :
-                                group = "Green"
-                            else :
-                                group = "Yellow"
-                        else :
-                            group = "Green"
-                    elif H >= 105 and H < 135 :
-                        group = "Green"
-                    elif H >= 135 and H < 165 :
-                        if L >= 0.5 :
-                            group = "Cyan"
-                        else :
-                            group = "Green"
-                    elif H >= 165 and H < 195 :
-                        if L < 0.5 :
-                            if H >= 180 :
-                                group = "Blue"
-                            else :
-                                group = "Green"
-                        else :
-                            group = "Cyan"
-                    elif H >= 195 and H < 225 :
-                        if L >= 0.5 :
-                            group = "Cyan"
-                        else :
-                            group = "Blue"
-                    elif H >= 225 and H < 255 :
-                        group = "Blue"
-                    elif H >= 255 and H < 285 :
-                        if L >= 0.5 :
-                            group = "Purple"
-                        else :
-                            group = "Blue"
-                    elif H >= 285 and H < 315 :
-                        if L < 0.7 :
-                            group = "Purple"
-                        else :
-                            group = "Pink"
-                    elif H >= 315 and H < 345 :
-                        if L < 0.7 :
-                            if H >= 330 :
-                                group = "Red"
-                            else :
-                                group = "Purple"
-                        else :
-                            group = "Pink"
-                    else :
-                        if L < 0.7 :
-                            group = "Red"
-                        else :
-                            group = "Pink"
-        return group 
+    def get_depth(HSL) :
+        L = HSL[2]
+        depth = ''
+        if L >= 0.75 :
+            depth = "Light"
+        elif L >= 0.5 :
+            depth = "Soft"
+        elif L >= 0.25 :
+            depth = "Deep"
+        else :
+            depth = "Dark"
+        return depth
+
+    

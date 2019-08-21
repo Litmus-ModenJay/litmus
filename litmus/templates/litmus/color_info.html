@@ -47,13 +47,13 @@
     <div class="row content">
         <div class="col-sm-3 ">
             <br>
-            <div class="card" style="width: 160px; height: 160px;">
+            <div class="card" style="width: 150px; height: 150px;">
                 <div class="card-body" style="background-color:{{litmus.hexa}} !important">           
                     {% if litmus.depth == "Dark" or litmus.depth == "Deep"%}
                     <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
-                    <h6 style="color:white">{{litmus.hexa}}</h6>  
+                    <h6 style="color:white">{{litmus.hexa}}</h6>  S
                     {% else %}
-                    <h5 class="card-title" style="color:black; font-weight: bold">{{litmus.name}}</h5>
+                    <h5 class="card-title" style="color:black; ">{{litmus.name}}</h5>
                     <h6 style="color:black">{{litmus.hexa}}</h6> 
                     {% endif %}                  
                 </div> 
@@ -61,9 +61,10 @@
             <br>
             <table class="table-condensed" style="font-size:small; padding:10px">
                 <tr><td>&ensp;</td><td>Group&ensp;</td><td>{{litmus.group}}</td></tr>
-                <tr><td>&ensp;</td><td>Cell</td><td>{{litmus.cell}}</td></tr>
+                <tr><td>&ensp;</td><td>Cell&ensp;{{litmus.cell.room}}&ensp; </td><td>{{litmus.cell.name}}</td></tr>
                 <tr><td>&ensp;</td><td>Class</td><td>{{litmus.star}}</td></tr>
                 <tr><td>&ensp;</td><td>Family</td><td>{{litmus.family}}</td></tr>
+                <tr><td>&ensp;</td><td>Category</td><td>{{litmus.category}}</td></tr>
             </table>
             <br>
         </div>
@@ -76,7 +77,7 @@
                     <td>R {{vector.RGB.RGB.R}}&ensp; G {{vector.RGB.RGB.G}}&ensp; B {{vector.RGB.RGB.B}}</td></tr>
                 <tr><td>rgb</td>
                     <td>r {{vector.RGB.rgb.r|floatformat:4}}&ensp; g {{vector.RGB.rgb.g|floatformat:4}}&ensp; b {{vector.RGB.rgb.b|floatformat:4}}</td></tr> 
-                <tr><td>rgb Parameters &ensp; </td>    
+                <tr><td>&ensp;(parameters) &ensp; </td>    
                     <td>Sum {{vector.RGB.Param.Sum|floatformat:4}}&ensp; Max {{vector.RGB.Param.Max|floatformat:4}}&ensp; Min {{vector.RGB.Param.Min|floatformat:4}}&ensp; Sigma {{vector.RGB.Param.Sigma|floatformat:4}}&ensp; Delta {{vector.RGB.Param.Delta|floatformat:4}}</td></tr> 
                 <tr><td>HSL </td> 
                     <td>H {{vector.HSLV.HSL.H|floatformat:2}}&ensp; S {{vector.HSLV.HSL.S|floatformat:4}}&ensp; L {{vector.HSLV.HSL.L|floatformat:4}}&ensp; C {{vector.HSLV.HSL.C|floatformat:4}}</td></tr>

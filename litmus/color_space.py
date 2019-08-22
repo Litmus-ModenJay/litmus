@@ -2,12 +2,14 @@ import math
 
 # Color Vector Conversion & Classification
 class CVC():
+    """
     @staticmethod
     def supernova():
         return [('Red','#FF0000'), ('Orange', '#FF7F00'), ('Yellow', '#FFFF00'), 
             ('Green', '#00FF00'), ('Cyan', '#00FFFF'), ('Blue', '#0000FF'), 
             ('Purple', '#800080'), ('Pink', '#FFC0CB'), ('Brown', '#964800'), 
             ('White', '#FFFFFF'), ('Gray', '#808080'), ('Black', '#000000')]
+    """
     
     @staticmethod
     def hexa_RGB(hexa):

@@ -46,11 +46,8 @@ class Litmus():
                 room = cls.get_cell(rgb)
                 cell = {'room':room, 'name':''} # room 은 cell의 방번호, cell 은 순번
                 group = cls.get_group(room, 'cell')
+                wheel = cls.get_wheel(rgb, 'lab')
                 depth = cls.get_depth(HSL)
-
-                # if star not in cls.star.keys() :
-                #     cls.star.update({star:[]})
-                # cls.star[star].append({'id':index, 'name':name})
                 
                 if star in cls.star.keys() :
                     cls.star[star].append({'id':index, 'name':name})
@@ -87,6 +84,7 @@ class Litmus():
                     'geo': geo,
                     'cell': cell,
                     'group': group,
+                    'wheel': wheel,
                     'depth': depth,
                     }
                 cls.db.append(litmus)  
@@ -130,46 +128,6 @@ class Litmus():
         
         return db
         
-    @staticmethod
-    def get_proxy_origin(method):
-        proxi_origin = []
-        if method == 'rgb supernova':
-            for supernova in Litmus.supernova:
-                name = supernova['litmus']['name']
-                hexa = supernova['litmus']['hexa']
-                rgb = supernova['litmus']['rgb']
-                proxi_origin.append({'name':name, 'rgb':rgb, 'hexa':hexa})
-
-        if method == 'rgb family-center':
-            origin = {}
-            for supernova in Litmus.supernova:
-                origin.update({supernova['litmus']['name']: {'count':0, 'rgb':(0,0,0) }})
-            for litmus in Litmus.db:
-                if litmus['star'] == 'Planet':
-                    for supernova in Litmus.supernova:
-                        name = supernova['litmus']['name']
-                        for family in litmus['family']:
-                            if family == name:
-                                count = origin[name]['count']+1
-                                rgb = tuple(origin[name]['rgb'][i] + litmus['rgb'][i] for i in range(0,3))
-                                origin.update({name: {'count':count, 'rgb':rgb} })
-            for supernova in Litmus.supernova:
-                name = supernova['litmus']['name']
-                hexa = supernova['litmus']['hexa']
-                rgb = tuple(origin[name]['rgb'][i] / origin[name]['count'] for i in range(0,3))
-                proxi_origin.append({'name':name, 'rgb':rgb, 'hexa':hexa})
-        return proxi_origin
-
-    @staticmethod
-    def get_proximity(rgb, method):
-        if method == 'rgb':
-            proximity = []
-            for proxi in Litmus.proxi_origin:
-                origin = proxi['rgb']
-                distance = ((rgb[0]-origin[0])**2 + (rgb[1]-origin[1])**2 + (rgb[2]-origin[2])**2)**0.5
-                proximity.append({'name':proxi['name'], 'hexa':proxi['hexa'], 'distance':distance})
-            sorted_p = sorted(proximity, key=lambda p: p['distance'])
-        return sorted_p
 
     @staticmethod
     def get_cell(rgb):
@@ -188,9 +146,80 @@ class Litmus():
     @staticmethod
     def get_group(room, method):
         if method == 'cell':
-            group = Litmus.cell[room]['group']
+            conv = {'R':'Red', 'O':'Orange', 'Y':'Yellow', 'G':'Green', 'B':'Blue', 'Pr':'Purple', 'P':'Pink', 'Br':'Brown', 
+                        'W':'White', 'Gr':'Gray', 'K':'Black'}
+            ab = Litmus.cell[room]['group']
+            group = conv[ab]
         return group
 
+    @staticmethod
+    def get_wheel(rgb, method) :
+        if method == 'lab':
+            XYZ = CVC.rgb_XYZ(rgb, 'sRGB')
+            lab = CVC.XYZ_Labuv(XYZ, 'D65_2')
+            bright, chroma, hue = lab[0], lab[5], lab[3]
+
+            if hue >= 350 :
+                H_name = 'PR'
+            elif hue >= 328 :
+                H_name = 'P'
+            elif hue >= 307 :
+                H_name = 'BP'
+            elif hue >= 216 :
+                H_name = 'B'
+            elif hue >= 158 :
+                H_name = 'GB'
+            elif hue >= 123 :
+                H_name = 'G'
+            elif hue >= 100 :
+                H_name = 'GY'
+            elif hue >= 74 :
+                H_name = 'Y'
+            elif hue >= 41 :
+                H_name = 'YR'
+            elif hue >= 10 :
+                H_name = 'R'
+            else :
+                H_name = 'PR'
+
+            L = int(bright*20)
+            C = int(chroma/0.15)
+
+            if C >= 5 :
+                C_name = "vivid"
+            elif C >= 3 :
+                if L >= 14 :
+                    C_name = "light"
+                elif L >= 7 :
+                    C_name = "medium"
+                else :
+                    C_name = "deep"
+            elif C >= 1 :
+                if L >= 16 :
+                    C_name = "pale"
+                elif L >= 11 :
+                    C_name = "soft"
+                elif L >= 6 :
+                    C_name = "dull"
+                else :
+                    C_name = "dark"
+            else :
+                H_name = "Gy"
+                if L >= 17 :
+                    H_name = 'Wh'
+                    C_name = ''
+                elif L >= 13 :
+                    C_name = "light"
+                elif L >= 9 :
+                    C_name = "medium"
+                elif L >= 4 :
+                    C_name = "dark"
+                else :
+                    H_name = 'BK'
+                    C_name = ''
+            wheel = {'H_name':H_name, 'C_name':C_name, 'C': C, 'L': L, }
+        return wheel
+        
     @staticmethod
     def get_depth(HSL) :
         L = HSL[2]

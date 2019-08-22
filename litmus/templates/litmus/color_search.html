@@ -48,7 +48,7 @@
         <hr>
         {% for item in search.identical.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or litmus.depth == "Deep" %}
+            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -72,7 +72,7 @@
         <hr>
         {% for item in search.neighbor.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or litmus.depth == "Deep" %}
+            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -95,7 +95,7 @@
         <hr>
         {% for item in search.family.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or litmus.depth == "Deep" %}
+            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">
@@ -118,7 +118,7 @@
         <hr>
         {% for item in search.match.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or litmus.depth == "Deep" %}
+            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
                 <p><a class="btn btn-primary btn-block border-light"
                     style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
                     href="{% url 'litmus:colorInfo' pk=item.id %}">

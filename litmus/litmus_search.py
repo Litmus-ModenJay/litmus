@@ -4,27 +4,29 @@ from .color_space import CVC
 def search_main(word):
     search = {}
     if len(word) > 2: # 2글자 이하는 검색에서 제외
-        if word[0] == '#':
-            tag = word[1:]
-            hexa = is_hexa(tag) # 헥사코드인지 확인 - #시작 16진 7 숫자 (#FFFFFF) or 16진 6 숫자 (FFFFFF)
-            if hexa: 
-                search = search_by_hexa(hexa, radius=0.1)
-            else:
-                category = is_tag(tag) # 키워드인지 확인 - #Family or #Keyword
-                if category == 'family':
-                    search = search_by_family(tag)
-                elif category == 'keyword':
-                    search = serch_by_keyword(tag)
-        elif word[0] == '@':
-            geo = is_geo(word[1:])
-            if geo:
+        symbol = word[0]
+        tag = word[1:]
+        if symbol == '#':
+            if is_hexa(tag): # 헥사코드인지 확인 - #시작 16진 7 숫자 (#FFFFFF) or 16진 6 숫자 (FFFFFF)
+                search = search_by_hexa(word, radius=0.1)
+        elif symbol == '&':
+            if tag in Litmus.family.keys():
+                search = search_by_family(tag)
+        elif symbol == '/':
+            cap = tag.capitalize()
+            if cap in Litmus.keyword.keys():
+                search = search_by_keyword(cap)
+        elif symbol == '$':
+            if tag in Litmus.cell.keys():
+                search = search_by_cell(tag)
+        elif symbol == '@':
+            geo = is_geo(tag)
+            if geo :
                 search = search_by_geo(geo, radius = 10)
         else:
             search = search_by_name(word)
         if search:
-            # 디폴트 리스트를 검색 결과에 추가 (supernova & giant)
             search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
-            # search.update({'giant':{'count':len(Litmus.giant), 'list':Litmus.giant}})
     return search
 
 def search_info(my_id, hexa):
@@ -69,13 +71,34 @@ def search_by_name(word):
 
 def search_by_family(tag): 
     family = []
-    for litmus in Litmus.db:
-        for item in litmus['family']:
-            if tag == item:
-                family.append({'id': litmus['id'], 'case':'family', 'litmus':litmus})
+    for item in Litmus.family[tag]:
+        litmus = Litmus.db[int(item['id'])]
+        family.append({'id': litmus['id'], 'case':'family', 'litmus':litmus})
     if family:
         sorted_f = sorted(family, key=lambda f: f['litmus']['name'])
         return {'family':{'count':len(sorted_f), 'list':sorted_f}}
+    else:
+        return {}
+
+def search_by_keyword(tag): 
+    keyword = []
+    for item in Litmus.keyword[tag.capitalize()]:
+        litmus = Litmus.db[int(item['id'])]
+        keyword.append({'id': litmus['id'], 'case':'keyword', 'litmus':litmus})
+    if keyword:
+        sorted_k = sorted(keyword, key=lambda k: k['litmus']['name'])
+        return {'keyword':{'count':len(sorted_k), 'list':sorted_k}}
+    else:
+        return {}
+
+def search_by_cell(tag): 
+    cell = []
+    for litmus in Litmus.db:
+        if tag == litmus['cell']['room'] :
+            cell.append({'id': litmus['id'], 'case':'cell', 'litmus':litmus})
+    if cell:
+        sorted_c = sorted(cell, key=lambda c: c['litmus']['name'])
+        return {'cell':{'count':len(sorted_c), 'list':sorted_c}}
     else:
         return {}
   
@@ -108,19 +131,6 @@ def is_hexa(tag):
         return '#'+ hexa
     except ValueError:
         return False
-
-def is_tag(tag):
-    # tag 가 Litmus.giant 에 속하는지 검색
-    for star in Litmus.giant:
-        if tag == star['litmus']['name']:
-            return 'family'
-    """
-    # tag 가 Litmus.keyword 에 속하는지 검색
-    for word in Litmus.keyword:
-        if tag == word:
-            return 'keyword'
-    """
-    return ''
 
 def is_geo(word):
     if len(word.split(',')) == 2:

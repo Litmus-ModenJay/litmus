@@ -6,21 +6,17 @@ from .color_space import CVC
 class Litmus():
     db = []
     cell = {}
-    # group = ['Red', 'Orange', 'Yellow', 'Green', 'Cyan', 'Blue', 'Purple', 'Pink', 'Brown', 'White', 'Gray', 'Black']
-    group = []
-    depth = ['Light', 'Soft', 'Deep', 'Dark']
-    supernova = []
-    giant = []
-    dwarf = []
-    comet = []
     star = {'Supernova':[], 'Giant':[], 'Dwarf':[], 'Comet':[]}
+    supernova = []
     family = {}
+    keyword = {}
+    """
     keyword = { "A.Universe & Star":[], "B. Earth & Nature":[], "C. Plant & Flower":[], "D. Animal & Bird":[], 
                 "E. Human Body & Spirit":[], "F. Time & Season":[], "G. Space & Place":[], "H. Wear& Fashion":[], 
                 "I. Food & Drink":[], "J. House & Tool":[], "K. Literature & History":[], "M. Art & Color":[], 
                 "N. Material & Pigment":[], "O. Science & Technology":[], "P. Military & Society":[] }
-    proxi_origin = []
-
+    """
+    
     @classmethod
     def initialize(cls, method):
         if method == "Json":
@@ -32,7 +28,7 @@ class Litmus():
 
             with open("static/secret/LitmusDB 20190815.json") as f:
                 dj = json.loads(f.read())
-            # for index, value in enumerate(dj['Default']):
+            
             for index, value in enumerate(dj):
                 name = value['Name']
                 hexa = value['Hexa']
@@ -41,19 +37,36 @@ class Litmus():
                 category = value['Category']
                 keyword = value['Keyword']
                 rgb = CVC.hexa_rgb(hexa)
-                HSL = CVC.rgb_HSLrgb(rgb)
                 geo = CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2')
                 room = cls.get_cell(rgb)
                 cell = {'room':room, 'name':''} # room 은 cell의 방번호, cell 은 순번
                 group = cls.get_group(room, 'cell')
                 wheel = cls.get_wheel(rgb, 'lab')
-                depth = cls.get_depth(HSL)
+                text = cls.get_text(wheel)
                 
+                litmus = {
+                    'id': index, 
+                    'name': name, 
+                    'hexa': hexa,
+                    'star': star,
+                    'family': family,
+                    'category': category,
+                    'keyword': keyword,
+                    'rgb': rgb, 
+                    'geo': geo,
+                    'cell': cell,
+                    'group': group,
+                    'wheel': wheel,
+                    'text': text,
+                    }
+                cls.db.append(litmus)  
+
                 if star in cls.star.keys() :
                     cls.star[star].append({'id':index, 'name':name})
                     ownerclass = cls.cell[room]['owner']['star']
                     if star == 'Supernova':
                         cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
+                        cls.supernova.append({'id': litmus['id'], 'case':'supernova', 'litmus':litmus})
                     elif star == 'Giant':
                         if not ownerclass == 'Supernova':
                             cls.cell[room]['owner'] = {'id':index, 'name':name, 'star':star}
@@ -71,23 +84,6 @@ class Litmus():
                 if keyword not in cls.keyword.keys() :
                     cls.keyword.update({keyword:[]})
                 cls.keyword[keyword].append({'id':index, 'name':name, 'category':category})
-
-                litmus = {
-                    'id': index, 
-                    'name': name, 
-                    'hexa': hexa,
-                    'star': star,
-                    'family': family,
-                    'category': category,
-                    'keyword': keyword,
-                    'rgb': rgb, 
-                    'geo': geo,
-                    'cell': cell,
-                    'group': group,
-                    'wheel': wheel,
-                    'depth': depth,
-                    }
-                cls.db.append(litmus)  
 
         # Set cell owner name after data read and preset
         cls.set_ownername()
@@ -127,7 +123,7 @@ class Litmus():
                 db[group]['litmus'] = sorted(db[group]['litmus'], reverse=True, key=lambda g: g[sort])
         
         return db
-        
+
 
     @staticmethod
     def get_cell(rgb):
@@ -186,34 +182,34 @@ class Litmus():
             C = int(chroma/0.15)
 
             if C >= 5 :
-                C_name = "vivid"
+                C_name = "Vivid"
             elif C >= 3 :
                 if L >= 14 :
-                    C_name = "light"
+                    C_name = "Light"
                 elif L >= 7 :
-                    C_name = "medium"
+                    C_name = "Medium"
                 else :
-                    C_name = "deep"
+                    C_name = "Deep"
             elif C >= 1 :
                 if L >= 16 :
-                    C_name = "pale"
+                    C_name = "Pale"
                 elif L >= 11 :
-                    C_name = "soft"
+                    C_name = "Soft"
                 elif L >= 6 :
-                    C_name = "dull"
+                    C_name = "Dull"
                 else :
-                    C_name = "dark"
+                    C_name = "Dark"
             else :
                 H_name = "Gy"
                 if L >= 17 :
                     H_name = 'Wh'
                     C_name = ''
                 elif L >= 13 :
-                    C_name = "light"
+                    C_name = "Light"
                 elif L >= 9 :
-                    C_name = "medium"
+                    C_name = "Medium"
                 elif L >= 4 :
-                    C_name = "dark"
+                    C_name = "Dark"
                 else :
                     H_name = 'BK'
                     C_name = ''
@@ -221,17 +217,15 @@ class Litmus():
         return wheel
         
     @staticmethod
-    def get_depth(HSL) :
-        L = HSL[2]
-        depth = ''
-        if L >= 0.75 :
-            depth = "Light"
-        elif L >= 0.5 :
-            depth = "Soft"
-        elif L >= 0.25 :
-            depth = "Deep"
+    def get_text(wheel) :
+        L = wheel['L']
+        if L >= 10 :
+            text_color = '#000000'
+            text_font = 'bold'
         else :
-            depth = "Dark"
-        return depth
+            text_color = '#FFFFFF'
+            text_font = 'normal'
+        return {'color': text_color, 'font': text_font}
+
 
     

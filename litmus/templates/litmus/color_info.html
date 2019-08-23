@@ -45,19 +45,14 @@
     <div class="row content">
         <div class="col-sm-3 ">
             <br>
-            <div class="card" style="width: 150px; height: 135px;">
-                <div class="card-body" style="background-color:{{litmus.hexa}} !important">           
-                    {% if litmus.depth == "Dark" or litmus.depth == "Deep" %}
-                    <h5 class="card-title" style="color:white">{{litmus.name}}</h5>
-                    <h6 style="color:white">{{litmus.hexa}}</h6>
-                    {% else %}
-                    <h5 class="card-title" style="color:black; ">{{litmus.name}}</h5>
-                    <h6 style="color:black">{{litmus.hexa}}</h6> 
-                    {% endif %}                  
-                </div> 
+            <div class="card" style="width: 150px; height: 150px;">
+                <div class="card-body" style="background-color:{{litmus.hexa}}; padding:10px">           
+                    <p class="card-title" style="color:{{litmus.text.color}}; font-size:13pt; font-weight:{{litmus.text.font}}">{{litmus.name}}</P>
+                    <p style="color:{{litmus.text.color}}; font-weight:{{litmus.text.font}}; font-size:10pt">{{litmus.hexa}}</p>
+                </div>
             </div>
-            <br>
-            <table class="table-condensed" style="font-size:small; padding:10px">
+            <div style="line-height:0.5em"><br></div>
+            <table class="table-condensed" style="font-size:small">
                 <tr><td>&ensp;</td><td>Group&ensp;</td><td>{{litmus.group}}</td></tr>
                 <tr><td>&ensp;</td><td>Cell&ensp;{{litmus.cell.room}}&ensp; </td><td>{{litmus.cell.name}}</td></tr>
                 <tr><td>&ensp;</td><td>Wheel</td><td>{{litmus.wheel.H_name}} {{litmus.wheel.C_name}}</td></tr>
@@ -100,51 +95,18 @@
     </div>
 </div>
 <div class="container">
-    {% if search.identical.count > 2 %}
-        <br>
-        <h5>Identical Colors <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.identical.count}}</span></h5>
-        <hr>
-        {% for item in search.identical.list %}
-        {% if item.case == 'identical' %}
-        <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
-                <p><a class="btn btn-primary btn-block border-light"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':17' }}
-                </a></p>
-            {% else %}
-                <p><a class="btn btn-default btn-block border-light font-weight-bold"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':17' }}
-                </a></p>
-            {% endif %}
-        </div>
-        {% endif %}
-        {% endfor %}
-        <br><br>
-    {% endif %}
     {% if search.neighbor.count %}
-        <br>
+        <br><br>
         <h5>Neighbor Colors" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbor.count}}</span></h5>
         <hr>
         {% for item in search.neighbor.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark"  or item.litmus.depth == "Deep" %}
-                <p><a class="btn btn-primary btn-block border-light"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':15' }}<br>d={{item.distance|floatformat:4}}
-                </a></p>
-            {% else %}
-                <p><a class="btn btn-default btn-block border-light font-weight-bold"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':15' }}<br>d={{item.distance|floatformat:4}}
-                </a></p>
-            {% endif %}
-        </div>
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name|slice:':16' }}<br>d={{item.distance|floatformat:4}}
+            </a></p>
+         </div>
         {% endfor %}
         <br><br>
     {% endif %}
@@ -154,19 +116,11 @@
         <hr>
         {% for item in search.family.list %}
         <div style="display: inline-block;">
-            {% if item.litmus.depth == "Dark" or item.litmus.depth == "Deep" %}
-                <p><a class="btn btn-primary btn-block border-light"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:white; background-color:{{item.litmus.hexa}};"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':15' }}
-                </a></p>
-            {% else %}
-                <p><a class="btn btn-default btn-block border-light font-weight-bold"
-                    style="width: 100px; height: 100px; font-size:8pt; text-align:left; padding:5px; color:black; background-color:{{item.litmus.hexa}}"
-                    href="{% url 'litmus:colorInfo' pk=item.id %}">
-                    {{ item.litmus.name|slice:':15' }}
-                </a></p>
-            {% endif %}
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name|slice:':16' }}
+            </a></p>
         </div>
         {% endfor %}
         <br><br>
@@ -177,13 +131,10 @@
     <div id="map"></div>
 </div>
 
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr7uqzPRQYrFASLrIVkMbK8yCk6vbavtQ&callback=initMap"
-></script>
-
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCr7uqzPRQYrFASLrIVkMbK8yCk6vbavtQ&callback=initMap"></script>
 {% endblock %}
 
 {% block scripts %}
-
 <script>
     var map;
     function initMap() {

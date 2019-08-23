@@ -28,7 +28,7 @@ def colorSearch(request):
     if request.method == "POST":
         word = request.POST['search']
         search = search_main(word)
-        word = 'something'
+        # word = 'something'
         if search:
             context = {'word':word, 'search':search}
             return render(request, 'litmus/color_search.html', context)

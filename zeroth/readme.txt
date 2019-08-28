@@ -1,4 +1,4 @@
-
+20190828 Information 표시 형식 변경
 20190823 검색 알고리즘 새로 정리, 검색 결과 표시 형식 변경
 20190801 (Litmus Project v0.4 시작) 
     - Login 기능 제거, ColorPicker 제거, 3D Plot 제거

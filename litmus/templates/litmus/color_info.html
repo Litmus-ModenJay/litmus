@@ -28,14 +28,14 @@
     <div class="row content">
         <!-- Title -->
         <div class="col-sm-8 text-left"> 
-            <h4>Color Information</h4>
+            <h4>{{litmus.name}}</h4>
         </div>   
         <!-- Setting of Link Button -->
         <div class="col-sm-2" style="text-align:right">
             <p></p>
         </div>
         <div class="col-sm-2" style="text-align:right">
-            <p><a class="btn btn-info btn-sm border-light" style="background-color:royalblue; width:110pt"
+            <p><a class="btn btn-info btn-sm border-light" style="background-color:royalblue; width:100pt"
                 href="{% url 'litmus:main' %}">Color Search</a></p>
             <p></p>
         </div>
@@ -51,60 +51,89 @@
                     <p style="color:{{litmus.text.color}}; font-weight:{{litmus.text.font}}; font-size:10pt">{{litmus.hexa}}</p>
                 </div>
             </div>
-            <div style="line-height:0.5em"><br></div>
-            <table class="table-condensed" style="font-size:small">
-                <tr><td>&ensp;</td><td>Group&ensp;</td><td>{{litmus.group}}</td></tr>
-                <tr><td>&ensp;</td><td>Cell&ensp;{{litmus.cell.room}}&ensp; </td><td>{{litmus.cell.name}}</td></tr>
-                <tr><td>&ensp;</td><td>Wheel</td><td>{{litmus.wheel.H_name}} {{litmus.wheel.C_name}}</td></tr>
-                <tr><td>&ensp;</td><td>Family</td><td>{{litmus.family}}</td></tr>
-                <tr><td>&ensp;</td><td>Class</td><td>{{litmus.star}}</td></tr>
-            </table>
+            
             <br>
         </div>
-        <div class="col-sm-9 text-left"> 
+        <div class="col-sm-9 text-left" > 
             <br>
-            <h5>Color Coordinates</h5>
-            <hr>
-            <table class="table-condensed" style="font-size:small; ">
-                <tr><td>RGB</td>
-                    <td>R {{vector.RGB.RGB.R}}&ensp; G {{vector.RGB.RGB.G}}&ensp; B {{vector.RGB.RGB.B}}</td></tr>
-                <tr><td>rgb</td>
-                    <td>r {{vector.RGB.rgb.r|floatformat:4}}&ensp; g {{vector.RGB.rgb.g|floatformat:4}}&ensp; b {{vector.RGB.rgb.b|floatformat:4}}</td></tr> 
-                <tr><td>Parameter &ensp; </td>    
-                    <td>Sum {{vector.RGB.Param.Sum|floatformat:4}}&ensp; Max {{vector.RGB.Param.Max|floatformat:4}}&ensp; Min {{vector.RGB.Param.Min|floatformat:4}}&ensp; Sigma {{vector.RGB.Param.Sigma|floatformat:4}}&ensp; Delta {{vector.RGB.Param.Delta|floatformat:4}}</td></tr> 
-                <tr><td>HSL </td> 
-                    <td>H {{vector.HSLV.HSL.H|floatformat:2}}&ensp; S {{vector.HSLV.HSL.S|floatformat:4}}&ensp; L {{vector.HSLV.HSL.L|floatformat:4}}&ensp; C {{vector.HSLV.HSL.C|floatformat:4}}</td></tr>
-                <tr><td>HSV</td>
-                    <td>H {{vector.HSLV.HSV.H|floatformat:2}}&ensp; S {{vector.HSLV.HSV.S|floatformat:4}}&ensp; V {{vector.HSLV.HSV.V|floatformat:4}}&ensp; C {{vector.HSLV.HSV.C|floatformat:4}}</td></tr>
-                <tr><td>CMYK &ensp; </td>
-                    <td>K {{vector.CMYK.K|floatformat:4}}&ensp; C {{vector.CMYK.C|floatformat:4}}&ensp; M {{vector.CMYK.M|floatformat:4}}&ensp; Y {{vector.CMYK.Y|floatformat:4}}</td></tr>
-                <tr><td>XYZ &ensp; </td>
-                    <td>X {{vector.XYZ.sRGB.X|floatformat:4}}&ensp; Y {{vector.XYZ.sRGB.Y|floatformat:4}}&ensp; Z {{vector.XYZ.sRGB.Z|floatformat:4}}&ensp; 
-                        x {{vector.XYZ.sRGB.x|floatformat:4}}&ensp; y {{vector.XYZ.sRGB.y|floatformat:4}}&ensp; I {{vector.XYZ.sRGB.I|floatformat:4}}</td></tr>
-                <tr><td>Lab &ensp; </td>
-                    <td>L {{vector.Labuv.sRGB_D65_2.Lab.L|floatformat:4}}&ensp; a* {{vector.Labuv.sRGB_D65_2.Lab.a|floatformat:4}}&ensp; b* {{vector.Labuv.sRGB_D65_2.Lab.b|floatformat:4}}&ensp; 
-                        H {{vector.Labuv.sRGB_D65_2.Lab.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Lab.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Lab.S|floatformat:4}}</td></tr>
-                <tr><td>Luv &ensp;</td>
-                    <td>L {{vector.Labuv.sRGB_D65_2.Luv.L|floatformat:4}}&ensp; u* {{vector.Labuv.sRGB_D65_2.Luv.u|floatformat:4}}&ensp; v* {{vector.Labuv.sRGB_D65_2.Luv.v|floatformat:4}}&ensp; 
-                        H {{vector.Labuv.sRGB_D65_2.Luv.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Luv.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Luv.S|floatformat:4}}</td></tr>
-                <tr><td>GeoLab</td>
-                    <td>Latitude {{vector.Labuv.sRGB_D65_2.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{vector.Labuv.sRGB_D65_2.GeoLab.Long|floatformat:2}}&ensp; Radius {{vector.Labuv.sRGB_D65_2.GeoLab.Radius|floatformat:4}}</td></tr> 
+            <div style="line-height:20px"></div>
+            <table class="table-condensed" style="font-size:small; font-weight:normal; line-height:22px">
+                <tr><td>Name &ensp;</td><td>{{litmus.name}}</td></tr>
+                <tr><td>Hexa &ensp;</td><td>{{litmus.hexa}}</td></tr>
+                <tr><td>Wheel &ensp;</td><td>{{litmus.wheel.C_name}} {{litmus.wheel.H_name}}</td></tr>
+                <tr><td>Cell &ensp;</td><td>Block {{litmus.cell.room}}&ensp;{{litmus.group}}&ensp; </td>
+                    {% if not litmus.cell.owner.name == litmus.name %}
+                    <td><a class="btn btn-primary btn-block border-light"
+                        style="width: 150px; font-size:8pt; text-align:center; padding:2px; padding-left:5px; padding-right:5px; font-weight:{{litmus.cell.owner.text.font}};  color:{{litmus.cell.owner.text.color}}; background-color:{{litmus.cell.owner.hexa}};"
+                        href="{% url 'litmus:colorInfo' pk=litmus.cell.owner.id %}">
+                        {{litmus.cell.owner.name}}</a></td>
+                    {% endif %}</tr>
+                <tr><td>Family</td><td>{{litmus.family.name}}</td>
+                    {% if not litmus.family.owner.name == litmus.name %}
+                    <td><a class="btn btn-primary btn-block border-light"
+                        style="width: 150px; font-size:8pt; text-align:center; padding:2px; padding-left:5px; padding-right:5px; font-weight:{{litmus.family.owner.text.font}};  color:{{litmus.family.owner.text.color}}; background-color:{{litmus.family.owner.hexa}};"
+                        href="{% url 'litmus:colorInfo' pk=litmus.family.owner.id %}">
+                        {{litmus.family.owner.name}}</a></td>
+                    {% endif %}</tr>
+                <tr><td>Class</td>
+                    {% if litmus.star == 5 %}
+                    <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
+                    {% elif litmus.star == 4 %}
+                    <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
+                    {% elif litmus.star == 3 %}
+                    <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
+                    {% elif litmus.star == 2 %}
+                    <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
+                    {% elif litmus.star == 1 %}
+                    <td><i class="fas fa-star" style="color:orange"></i></td>
+                    {% endif %}
+                </tr>
             </table>
             <br>
         </div>
     </div>
 </div>
 <div class="container">
+    <br>
+    <h5>Color Coordinates</h5>
+    <hr>
+    <table class="table-condensed" style="font-size:small; ">
+        <tr><td>RGB</td>
+            <td>R {{vector.RGB.RGB.R}}&ensp; G {{vector.RGB.RGB.G}}&ensp; B {{vector.RGB.RGB.B}}</td></tr>
+        <tr><td>rgb</td>
+            <td>r {{vector.RGB.rgb.r|floatformat:4}}&ensp; g {{vector.RGB.rgb.g|floatformat:4}}&ensp; b {{vector.RGB.rgb.b|floatformat:4}}&ensp; 
+                Sum {{vector.RGB.Param.Sum|floatformat:4}}&ensp; Max {{vector.RGB.Param.Max|floatformat:4}}&ensp; Min {{vector.RGB.Param.Min|floatformat:4}}&ensp; 
+                Sigma {{vector.RGB.Param.Sigma|floatformat:4}}&ensp; Delta {{vector.RGB.Param.Delta|floatformat:4}}</td></tr> 
+        <tr><td>HSL </td> 
+            <td>H {{vector.HSLV.HSL.H|floatformat:2}}&ensp; S {{vector.HSLV.HSL.S|floatformat:4}}&ensp; L {{vector.HSLV.HSL.L|floatformat:4}}&ensp; C {{vector.HSLV.HSL.C|floatformat:4}}</td></tr>
+        <tr><td>HSV</td>
+            <td>H {{vector.HSLV.HSV.H|floatformat:2}}&ensp; S {{vector.HSLV.HSV.S|floatformat:4}}&ensp; V {{vector.HSLV.HSV.V|floatformat:4}}&ensp; C {{vector.HSLV.HSV.C|floatformat:4}}</td></tr>
+        <tr><td>CMYK &ensp; </td>
+            <td>K {{vector.CMYK.K|floatformat:4}}&ensp; C {{vector.CMYK.C|floatformat:4}}&ensp; M {{vector.CMYK.M|floatformat:4}}&ensp; Y {{vector.CMYK.Y|floatformat:4}}</td></tr>
+        <tr><td>XYZ &ensp; </td>
+            <td>X {{vector.XYZ.sRGB.X|floatformat:4}}&ensp; Y {{vector.XYZ.sRGB.Y|floatformat:4}}&ensp; Z {{vector.XYZ.sRGB.Z|floatformat:4}}&ensp; 
+                x {{vector.XYZ.sRGB.x|floatformat:4}}&ensp; y {{vector.XYZ.sRGB.y|floatformat:4}}&ensp; I {{vector.XYZ.sRGB.I|floatformat:4}}</td></tr>
+        <tr><td>Lab &ensp; </td>
+            <td>L {{vector.Labuv.sRGB_D65_2.Lab.L|floatformat:4}}&ensp; a* {{vector.Labuv.sRGB_D65_2.Lab.a|floatformat:4}}&ensp; b* {{vector.Labuv.sRGB_D65_2.Lab.b|floatformat:4}}&ensp; 
+                H {{vector.Labuv.sRGB_D65_2.Lab.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Lab.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Lab.S|floatformat:4}}</td></tr>
+        <tr><td>Luv &ensp;</td>
+            <td>L {{vector.Labuv.sRGB_D65_2.Luv.L|floatformat:4}}&ensp; u* {{vector.Labuv.sRGB_D65_2.Luv.u|floatformat:4}}&ensp; v* {{vector.Labuv.sRGB_D65_2.Luv.v|floatformat:4}}&ensp; 
+                H {{vector.Labuv.sRGB_D65_2.Luv.H|floatformat:2}}&ensp; C {{vector.Labuv.sRGB_D65_2.Luv.C|floatformat:4}}&ensp; S {{vector.Labuv.sRGB_D65_2.Luv.S|floatformat:4}}</td></tr>
+        <tr><td>GeoLab &ensp; </td>
+            <td>Latitude {{vector.Labuv.sRGB_D65_2.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{vector.Labuv.sRGB_D65_2.GeoLab.Long|floatformat:2}}&ensp; Radius {{vector.Labuv.sRGB_D65_2.GeoLab.Radius|floatformat:4}}</td></tr> 
+    </table>
+    <br>
+    
     {% if search.neighbor.count %}
         <br><br>
-        <h5>Neighbor Colors" <span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.neighbor.count}}</span></h5>
+        <h5>Neighbor Colors &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.neighbor.count}}</span></h5>
         <hr>
         {% for item in search.neighbor.list %}
         <div style="display: inline-block;">
             <p><a class="btn btn-primary btn-block border-light"
                 style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
                 href="{% url 'litmus:colorInfo' pk=item.id %}">
-                {{ item.litmus.name|slice:':16' }}<br>d={{item.distance|floatformat:4}}
+                {{ item.litmus.name}}<br>d={{item.distance|floatformat:4}}
             </a></p>
          </div>
         {% endfor %}
@@ -112,20 +141,35 @@
     {% endif %}
     {% if search.family.count %}
         <br>
-        <h5>Family colors<span class="badge badge-warning" style="font-size:12pt; text-align:center">{{search.family.count}}</span></h5>
+        <h5>Family Colors &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.family.count}}</span></h5>
         <hr>
         {% for item in search.family.list %}
         <div style="display: inline-block;">
             <p><a class="btn btn-primary btn-block border-light"
-                style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                style="width: 150px; height:30px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
                 href="{% url 'litmus:colorInfo' pk=item.id %}">
-                {{ item.litmus.name|slice:':16' }}
+                {{ item.litmus.name}}
             </a></p>
         </div>
         {% endfor %}
         <br><br>
     {% endif %}
-
+    {% if search.cell.count %}
+    <br>
+    <h5>Colors in the same RGB block {{litmus.cell.room}} &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.cell.count}}</span></h5>
+    <hr>
+    {% for item in search.cell.list %}
+    <div style="display: inline-block;">
+        <p><a class="btn btn-primary btn-block border-light"
+            style="width: 150px; height:30px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+            href="{% url 'litmus:colorInfo' pk=item.id %}">
+            {{ item.litmus.name}}
+        </a></p>
+    </div>
+    {% endfor %}
+    <br><br>
+{% endif %}
+    <br>
     <h5>Geo Map</h5>
     <hr>
     <div id="map"></div>

@@ -40,7 +40,7 @@ def colorInfo(request, pk):
     litmus = Litmus.get_by_id(color_id)
     hexa = litmus['hexa']
     vector = ColorVector(hexa).all
-    search = search_info(color_id, hexa)
+    search = search_info(color_id)
     message = ""
     context = {'message':message, 'litmus':litmus, 'vector':vector, 'search':search}
     return render(request, 'litmus/color_info.html', context)

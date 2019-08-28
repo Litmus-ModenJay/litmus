@@ -29,11 +29,17 @@ def search_main(word):
             search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
     return search
 
-def search_info(my_id, hexa):
+def search_info(my_id):
+    litmus = Litmus.db[my_id]
+    hexa = litmus['hexa']
+    family = litmus['family']['name']
+    cell = litmus['cell']['room']
     search = search_by_hexa(hexa, radius=0.1)
     for item in search['identical']['list']:
         if my_id == item['id']:
             item['case'] = 'self'
+    search.update(search_by_family(family))
+    search.update(search_by_cell(cell))
     search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
     return search
 
@@ -71,8 +77,8 @@ def search_by_name(word):
 
 def search_by_family(tag): 
     family = []
-    for item in Litmus.family[tag]:
-        litmus = Litmus.db[int(item['id'])]
+    for index in Litmus.family[tag]['list']:
+        litmus = Litmus.db[int(index)]
         family.append({'id': litmus['id'], 'case':'family', 'litmus':litmus})
     if family:
         sorted_f = sorted(family, key=lambda f: f['litmus']['name'])
@@ -80,22 +86,11 @@ def search_by_family(tag):
     else:
         return {}
 
-def search_by_keyword(tag): 
-    keyword = []
-    for item in Litmus.keyword[tag.capitalize()]:
-        litmus = Litmus.db[int(item['id'])]
-        keyword.append({'id': litmus['id'], 'case':'keyword', 'litmus':litmus})
-    if keyword:
-        sorted_k = sorted(keyword, key=lambda k: k['litmus']['name'])
-        return {'keyword':{'count':len(sorted_k), 'list':sorted_k}}
-    else:
-        return {}
-
 def search_by_cell(tag): 
     cell = []
-    for litmus in Litmus.db:
-        if tag == litmus['cell']['room'] :
-            cell.append({'id': litmus['id'], 'case':'cell', 'litmus':litmus})
+    for index in Litmus.cell[tag]['list']:
+        litmus = Litmus.db[int(index)]
+        cell.append({'id': litmus['id'], 'case':'cell', 'litmus':litmus})
     if cell:
         sorted_c = sorted(cell, key=lambda c: c['litmus']['name'])
         return {'cell':{'count':len(sorted_c), 'list':sorted_c}}

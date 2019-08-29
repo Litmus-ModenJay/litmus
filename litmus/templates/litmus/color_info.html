@@ -51,32 +51,30 @@
                     <p style="color:{{litmus.text.color}}; font-weight:{{litmus.text.font}}; font-size:10pt">{{litmus.hexa}}</p>
                 </div>
             </div>
-            
             <br>
         </div>
         <div class="col-sm-9 text-left" > 
             <br>
             <div style="line-height:20px"></div>
             <table class="table-condensed" style="font-size:small; font-weight:normal; line-height:22px">
-                <tr><td>Name &ensp;</td><td>{{litmus.name}}</td></tr>
-                <tr><td>Hexa &ensp;</td><td>{{litmus.hexa}}</td></tr>
-                <tr><td>Wheel &ensp;</td><td>{{litmus.wheel.C_name}} {{litmus.wheel.H_name}}</td></tr>
-                <tr><td>Cell &ensp;</td><td>Block {{litmus.cell.room}}&ensp;{{litmus.group}}&ensp; </td>
+                <tr><td>{{litmus.name}}</td></tr>
+                <tr><td>{{litmus.hexa}}</td></tr>
+                <tr><td>{{litmus.wheel.C_name}} {{litmus.wheel.H_name}}</td></tr>
+                <tr><td>RGB Cell #{{litmus.cell.room}} {{litmus.group}}&ensp; </td>
                     {% if not litmus.cell.owner.name == litmus.name %}
                     <td><a class="btn btn-primary btn-block border-light"
                         style="width: 150px; font-size:8pt; text-align:center; padding:2px; padding-left:5px; padding-right:5px; font-weight:{{litmus.cell.owner.text.font}};  color:{{litmus.cell.owner.text.color}}; background-color:{{litmus.cell.owner.hexa}};"
                         href="{% url 'litmus:colorInfo' pk=litmus.cell.owner.id %}">
                         {{litmus.cell.owner.name}}</a></td>
                     {% endif %}</tr>
-                <tr><td>Family</td><td>{{litmus.family.name}}</td>
+                <tr><td>Family of {{litmus.family.name}}</td>
                     {% if not litmus.family.owner.name == litmus.name %}
                     <td><a class="btn btn-primary btn-block border-light"
                         style="width: 150px; font-size:8pt; text-align:center; padding:2px; padding-left:5px; padding-right:5px; font-weight:{{litmus.family.owner.text.font}};  color:{{litmus.family.owner.text.color}}; background-color:{{litmus.family.owner.hexa}};"
                         href="{% url 'litmus:colorInfo' pk=litmus.family.owner.id %}">
                         {{litmus.family.owner.name}}</a></td>
                     {% endif %}</tr>
-                <tr><td>Class</td>
-                    {% if litmus.star == 5 %}
+                <tr>{% if litmus.star == 5 %}
                     <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
                     {% elif litmus.star == 4 %}
                     <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
@@ -86,8 +84,7 @@
                     <td><i class="fas fa-star" style="color:orange"></i><i class="fas fa-star" style="color:orange"></i></td>
                     {% elif litmus.star == 1 %}
                     <td><i class="fas fa-star" style="color:orange"></i></td>
-                    {% endif %}
-                </tr>
+                    {% endif %}</tr>
             </table>
             <br>
         </div>
@@ -123,9 +120,53 @@
             <td>Latitude {{vector.Labuv.sRGB_D65_2.GeoLab.Lati|floatformat:2}}&ensp; Longitude {{vector.Labuv.sRGB_D65_2.GeoLab.Long|floatformat:2}}&ensp; Radius {{vector.Labuv.sRGB_D65_2.GeoLab.Radius|floatformat:4}}</td></tr> 
     </table>
     <br>
-    
+    {% if search.complementary.count %}
+        <br>
+        <h5>Complementary Colors &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.complementary.count}}</span></h5>
+        <hr>
+        <table class="table-condensed" style="font-size:small; font-weight:normal; line-height:22px">
+            <tr><th>Additive &ensp;</th><th>Subtractive</th></tr>
+            <tr>{% for item in search.complementary.list %}
+                <td><a class="btn btn-primary btn-block border-light"
+                    style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                    href="{% url 'litmus:colorInfo' pk=item.id %}">
+                    {{ item.litmus.name}}<br>{{litmus.hexa}}</a></td>
+                {% endfor %}</tr>
+        </table>
+        <br>
+    {% endif %}
+    {% if search.shade.count %}
+        <br>
+        <h5>Shade &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.shade.count}}</span></h5>
+        <hr>
+        {% for item in search.shade.list %}
+        <div style="display: inline-block;">
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height:45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name}}<br>{{litmus.hexa}}
+            </a></p>
+        </div>
+        {% endfor %}
+        <br>
+    {% endif %}
+    {% if search.tint.count %}
+        <br>
+        <h5>Tint &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.tint.count}}</span></h5>
+        <hr>
+        {% for item in search.tint.list %}
+        <div style="display: inline-block;">
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height:45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name}}<br>{{litmus.hexa}}
+            </a></p>
+        </div>
+        {% endfor %}
+        <br>
+    {% endif %}
     {% if search.neighbor.count %}
-        <br><br>
+        <br>
         <h5>Neighbor Colors &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.neighbor.count}}</span></h5>
         <hr>
         {% for item in search.neighbor.list %}
@@ -137,7 +178,7 @@
             </a></p>
          </div>
         {% endfor %}
-        <br><br>
+        <br>
     {% endif %}
     {% if search.family.count %}
         <br>
@@ -146,29 +187,45 @@
         {% for item in search.family.list %}
         <div style="display: inline-block;">
             <p><a class="btn btn-primary btn-block border-light"
-                style="width: 150px; height:30px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                style="width: 150px; height:45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
                 href="{% url 'litmus:colorInfo' pk=item.id %}">
-                {{ item.litmus.name}}
+                {{ item.litmus.name}}<br>{{litmus.hexa}}
             </a></p>
         </div>
         {% endfor %}
-        <br><br>
+        <br>
     {% endif %}
     {% if search.cell.count %}
-    <br>
-    <h5>Colors in the same RGB block {{litmus.cell.room}} &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.cell.count}}</span></h5>
-    <hr>
-    {% for item in search.cell.list %}
-    <div style="display: inline-block;">
-        <p><a class="btn btn-primary btn-block border-light"
-            style="width: 150px; height:30px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
-            href="{% url 'litmus:colorInfo' pk=item.id %}">
-            {{ item.litmus.name}}
-        </a></p>
-    </div>
-    {% endfor %}
-    <br><br>
-{% endif %}
+        <br>
+        <h5>Colors in this RGB Cell #{{litmus.cell.room}}&ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.cell.count}}</span></h5>
+        <hr>
+        {% for item in search.cell.list %}
+        <div style="display: inline-block;">
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height:45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name}}<br>{{litmus.hexa}}
+            </a></p>
+        </div>
+        {% endfor %}
+        <br>
+    {% endif %}
+    {% if search.adjacent.count %}
+        <br>
+        <h5>Adjacent Cells &ensp; <span class="badge badge-success" style="font-size:12pt; text-align:center">{{search.adjacent.count}}</span></h5>
+        <hr>
+        {% for item in search.adjacent.list %}
+        <div style="display: inline-block;">
+            <p><a class="btn btn-primary btn-block border-light"
+                style="width: 150px; height:45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
+                href="{% url 'litmus:colorInfo' pk=item.id %}">
+                {{ item.litmus.name}}<br>{{litmus.hexa}}
+            </a></p>
+        </div>
+        {% endfor %}
+        <br>
+    {% endif %}
+    
     <br>
     <h5>Geo Map</h5>
     <hr>

@@ -40,6 +40,7 @@ def search_info(my_id):
             item['case'] = 'self'
     search.update(search_by_family(family))
     search.update(search_by_cell(cell))
+    search.update(get_thesaurus(my_id))
     search.update({'supernova':{'count':len(Litmus.supernova), 'list':Litmus.supernova}})
     return search
 
@@ -115,6 +116,88 @@ def search_by_geo(geo, radius):
         return {'identical':{'count':len(sorted_i), 'list':sorted_i}, 'neighbor':{'count':len(sorted_n), 'list':sorted_n}}
     else:
         return {}
+
+def get_thesaurus(litmus_id) :
+    thesaurus = {}
+    litmus = Litmus.db[litmus_id]
+    rgb = litmus['rgb']
+    room = litmus['cell']['room']
+    r, g, b = room[0:1], room[1:2], room[2:3]
+    level = int( (int(r) + int(g) + int(b)) / 2 )
+    
+    complementary = []
+    additive = (1-rgb[0], 1-rgb[1], 1-rgb[2])
+    index = find_nearest(additive, 0.1)
+    complementary.append({'id': index, 'case':'complementary', 'litmus':Litmus.db[index] })
+    CMYK = CVC.rgb_CMYK(rgb)
+    subtractive = ( CMYK[0]*(1-CMYK[3]), CMYK[1]*(1-CMYK[3]), CMYK[2]*(1-CMYK[3]) )
+    index = find_nearest(subtractive, 0.1)
+    complementary.append({'id': index, 'case':'complementary', 'litmus':Litmus.db[index] })
+    thesaurus.update({'complementary':{'count':len(complementary), 'list':complementary}})
+
+    shade = []
+    if level > 2 :
+        for i in range (1, level-1) :
+            new_rgb = ( rgb[0]*i/level, rgb[1]*i/level, rgb[2]*i/level )
+            new_id = find_nearest(new_rgb, 0.1)
+            shade.append({'id': new_id, 'case':'shade', 'litmus':Litmus.db[new_id] })
+    if shade :
+        thesaurus.update({'shade':{'count':len(shade), 'list':shade}})
+
+    tint = []
+    if level < 7 :
+        for i in range (1, 12 - level) :
+            new_rgb = ( 1-(1-rgb[0])*i/(12-level), 1-(1-rgb[1])*i/(12-level), 1-(1-rgb[2])*i/(12-level) )
+            new_id = find_nearest(new_rgb, 0.1)
+            tint.append({'id': new_id, 'case':'tint', 'litmus':Litmus.db[new_id] })
+    if tint :
+        thesaurus.update({'tint':{'count':len(tint), 'list':tint}})
+
+    adjacent = []
+    if int(r) > 1 :
+        cell = str(int(r)-1) + g + b
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if int(r) < 8 :
+        cell = str(int(r)+1) + g + b
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if int(g) > 1 :
+        cell = r + str(int(g)-1) + b
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if int(g) < 8 :
+        cell = r + str(int(g)+1) + b
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if int(b) > 1 :
+        cell = r + g + str(int(b)-1)
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if int(b) < 8 :
+        cell = r + g + str(int(b)+1)
+        index = Litmus.cell[cell]['owner']['id']
+        adjacent.append({'id': index, 'case':'adjavent', 'litmus':Litmus.db[index] })
+    if adjacent :
+        thesaurus.update({'adjacent':{'count':len(adjacent), 'list':adjacent}})
+    
+    return thesaurus
+
+def find_nearest(rgb, radius) :
+    me = rgb
+    neighbor = []
+    for litmus in Litmus.db:
+        you = litmus['rgb']
+        d = tuple(abs(you[i] - me[i]) for i in range(0,3))
+        if d[0] < radius and d[1] < radius and d[2] < radius: 
+            distance = (d[0]**2 + d[1]**2+ d[2]**2)**0.5
+            neighbor.append({'id': litmus['id'], 'distance':distance})
+    if neighbor:
+        sorted_n = sorted(neighbor, key=lambda n: n['distance'])
+        return sorted_n[0]['id']
+    else:
+        return ''
+
 
 def is_hexa(tag):
     if len(tag) == 6:

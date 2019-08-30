@@ -60,7 +60,7 @@
 
     {% if search.neighbor.count %}
         <br>
-        <h5>Colors Neighbor to "{{word}}" <span class="badge badge-success" style="font-size:10pt; text-align:center">{{search.neighbor.count}}</span></h5>
+        <h5>Colors Neighbor to "{{word}}" <span class="badge badge-success" style="width:40px; font-size:10pt; text-align:center">{{search.neighbor.count}}</span></h5>
         <hr>
         {% for item in search.neighbor.list %}
         <div style="display: inline-block;">
@@ -75,7 +75,7 @@
     {% endif %}
     {% if search.cell.count %}
         <br>
-        <h5>Colors in "{{word|slice:'1:'}}" RGB Cell &ensp;<span class="badge badge-success" style="font-size:10pt; text-align:center">{{search.cell.count}}</span></h5>
+        <h5>Colors in "{{word|slice:'1:'}}" RGB Cell &ensp;<span class="badge badge-success" style="width:40px; font-size:10pt; text-align:center">{{search.cell.count}}</span></h5>
         <hr>
         {% for item in search.cell.list %}
         <div style="display: inline-block;">
@@ -90,7 +90,7 @@
     {% endif %}
     {% if search.family.count %}
         <br>
-        <h5>Family colors of "{{word|slice:'1:'}}" <span class="badge badge-success" style="font-size:10pt; text-align:center">{{search.family.count}}</span></h5>
+        <h5>Family colors of "{{word|slice:'1:'}}" <span class="badge badge-success" style="width:40px; font-size:10pt; text-align:center">{{search.family.count}}</span></h5>
         <hr>
         {% for item in search.family.list %}
         <div style="display: inline-block;">
@@ -103,24 +103,12 @@
         {% endfor %}
         <br><br>
     {% endif %}
-    {% if search.keyword.count %}
-    <br>
-    <h5>Family colors of "{{word|slice:'1:'}}" <span class="badge badge-success" style="font-size:10pt; text-align:center">{{search.keyword.count}}</span></h5>
-    <hr>
-    {% for item in search.keyword.list %}
-    <div style="display: inline-block;">
-        <p><a class="btn btn-primary btn-block border-light"
-            style="width: 150px; height: 45px; font-size:8pt; font-weight:{{item.litmus.text.font}}; text-align:left; padding:5px; color:{{item.litmus.text.color}}; background-color:{{item.litmus.hexa}};"
-            href="{% url 'litmus:colorInfo' pk=item.id %}">
-            {{ item.litmus.name }}
-        </a></p>
-    </div>
     {% endfor %}
     <br><br>
 {% endif %}
     {% if search.match.count %}
         <br>
-        <h5>Colors including word "{{word}}" <span class="badge badge-success" style="font-size:10pt; text-align:center">{{search.match.count}}</span></h5>
+        <h5>Colors including word "{{word}}" <span class="badge badge-success" style="width:40px; font-size:10pt; text-align:center">{{search.match.count}}</span></h5>
         <hr>
         {% for item in search.match.list %}
         <div style="display: inline-block;">

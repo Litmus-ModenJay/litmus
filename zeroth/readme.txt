@@ -1,3 +1,5 @@
+20190830 Litmus Project v0.4 완료
+    - LitmusDB star class 및 family 재정리
 20190829 Thesaurus 연산 및 표시
     - Complementary colors
     - Shade/Tint colors

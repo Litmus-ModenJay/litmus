@@ -18,7 +18,7 @@ class Litmus():
                 room = str(value['Cell'])
                 cls.cell.update({room: {'list':[], 'group':value['Group'], 'owner':{'star':0} }})
 
-            with open("static/secret/LitmusDB 20190828.json") as f:
+            with open("static/secret/LitmusDB 20190830.json") as f:
                 dj = json.loads(f.read())
             
             for index, value in enumerate(dj):
@@ -46,7 +46,7 @@ class Litmus():
                 text = cls.get_text(wheel)
                 
                 litmus = {
-                    'id': index, 
+                    'id': int(index), 
                     'name': name, 
                     'hexa': hexa,
                     'star': star,

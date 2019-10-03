@@ -43,7 +43,7 @@ class Litmus():
                     cls.family[family_name]['owner'] = {'id':index, 'name':name, 'star':star}
                 family = {'name':family_name, 'owner':{}}
                 geo = CVC.rgb_GEOlab(rgb, profile='sRGB', illuminant='D65_2')
-                text = cls.get_text(wheel)
+                text = cls.get_text(geo)
                 
                 litmus = {
                     'id': int(index), 
@@ -140,6 +140,88 @@ class Litmus():
         if method == 'lab':
             XYZ = CVC.rgb_XYZ(rgb, 'sRGB')
             lab = CVC.XYZ_Labuv(XYZ, 'D65_2')
+            L, C, hue = lab[0], lab[5], lab[3]
+
+            if hue >= 340.87 :
+                H_name = 'Rose'
+            elif hue >= 317.74 :
+                H_name = 'Purple'
+            elif hue >= 306.47 :
+                H_name = 'Violet'
+            elif hue >= 273.43 :
+                H_name = 'Blue'
+            elif hue >= 218.32 :
+                H_name = 'Sky Blue'
+            elif hue >= 175.76 :
+                H_name = 'Cyan'
+            elif hue >= 145.73 :
+                H_name = 'Aquamarine'
+            elif hue >= 122.42 :
+                H_name = 'Green'
+            elif hue >= 105.84 :
+                H_name = 'Lime'
+            elif hue >= 81.838 :
+                H_name = 'Yellow'
+            elif hue >= 50.413 :
+                H_name = 'Orange'
+            elif hue >= 16.758 :
+                H_name = 'Red'
+            else :
+                H_name = 'Rose'
+
+            if C >= 1 :
+                C_name = "Vivid"
+            elif C >= 0.86 :
+                if L >= 0.48 :
+                    C_name = "Vivid"
+                else :
+                    C_name = "Deep"
+            elif C >= 0.5 :
+                if L >= 0.65 :
+                    C_name = "Light"
+                elif L >= 0.48 :
+                    C_name = "Strong"
+                else :
+                    C_name = "Deep"
+            elif C >= 0.15 :
+                if L >= 0.8 :
+                    C_name = "Pale"
+                elif L >= 0.65 :
+                    C_name = "Soft"
+                elif L >= 0.48 :
+                    C_name = "Dull"
+                else :
+                    C_name = "Dark"
+            elif C >= 0.105 :
+                if L >= 0.8 :
+                    C_name = "Pale"
+                elif L >= 0.48 :
+                    C_name = "Gray"
+                elif L >= 0.15 :
+                    C_name = "Dark Gray"
+                else :
+                    C_name = "Dark"
+            else :
+                if C < 0.036 :
+                    H_name = ""
+                if L >= 0.94 :
+                    C_name = 'White'
+                elif L >= 0.8 :
+                    C_name = "Light Gray"
+                elif L >= 0.48 :
+                    C_name = "Gray"
+                elif L >= 0.15 :
+                    C_name = "Dark Gray"
+                else :
+                    C_name = 'Black'
+            wheel = {'H_name':H_name, 'C_name':C_name}
+        return wheel
+        
+    @staticmethod
+    def get_wheel_old(rgb, method) :
+        if method == 'lab':
+            XYZ = CVC.rgb_XYZ(rgb, 'sRGB')
+            lab = CVC.XYZ_Labuv(XYZ, 'D65_2')
             bright, chroma, hue = lab[0], lab[5], lab[3]
 
             if hue >= 350 :
@@ -204,9 +286,8 @@ class Litmus():
         return wheel
         
     @staticmethod
-    def get_text(wheel) :
-        L = wheel['L']
-        if L > 10 :
+    def get_text(geo) :
+        if geo[0] > 0 :
             text_color = '#000000'
             text_font = 'bold'
         else :
